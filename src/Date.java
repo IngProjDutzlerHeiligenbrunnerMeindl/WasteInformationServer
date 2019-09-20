@@ -1,5 +1,3 @@
-import javafx.scene.input.DataFormat;
-
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;

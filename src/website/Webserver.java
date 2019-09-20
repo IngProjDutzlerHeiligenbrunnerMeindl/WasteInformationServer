@@ -1,3 +1,5 @@
+package website;
+
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -7,8 +9,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.net.InetSocketAddress;
 import java.net.URI;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 
 public class Webserver{
     public void startserver(){
@@ -20,18 +26,38 @@ public class Webserver{
             e.printStackTrace();
         }
 
-        server.createContext("/", new MyHandler());
+        server.createContext("/", new MainPage());
 
-        //receiving get and post data todo
-        server.createContext("/senddata/test", new HttpHandler() {
-            @Override
-            public void handle(HttpExchange httpExchange) throws IOException {
-                if (httpExchange.getRequestMethod().equals("GET")){
-                    String query = httpExchange.getRequestURI().getQuery();
-                    System.out.println(query);
+        server.createContext("/senddata/loginget", httpExchange -> {
+            if (httpExchange.getRequestMethod().equals("GET")){
+                String query = httpExchange.getRequestURI().getQuery();
+                System.out.println(query);
 
+                HashMap<String, String> params = new HashMap<>();
+
+                String[] res = query.split("&");
+                for (String str : res){
+                    String[] values = str.split("=");
+                    params.put(values[0],values[1]);
 
                 }
+                String password = params.get("password");
+                String username = params.get("username");
+
+                System.out.println(StringToMD5(password));
+                //TODO check if user exists in database
+
+
+                //send response
+                String response = "{\"accept\": true}";
+
+                Headers h = httpExchange.getResponseHeaders();
+                h.set("Content-Type", "application/json");
+                httpExchange.sendResponseHeaders(200, 0);
+
+                OutputStream os = httpExchange.getResponseBody();
+                os.write(response.getBytes());
+                os.close();
             }
         });
 
@@ -39,7 +65,19 @@ public class Webserver{
         server.start();
     }
 
-    static class MyHandler implements HttpHandler {
+    public String StringToMD5(String value){
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] messageDigest = md.digest(value.getBytes());
+            BigInteger no = new BigInteger(1, messageDigest);
+            return no.toString(16);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    static class MainPage implements HttpHandler {
         @Override
         public void handle(HttpExchange t) throws IOException {
             System.out.println("a new request...");

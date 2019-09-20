@@ -7,12 +7,12 @@ public class main {
         D.getdata();
         D.printList();
         */
-//        Thread mythread = new Thread(() -> new Webserver().startserver());
-//        mythread.start();
-//
-//
-//        System.out.println("thread started");
+        Thread mythread = new Thread(() -> new website.Webserver().startserver());
+        mythread.start();
 
-        new jdcb().executeQuery("select * from user");
+
+        System.out.println("thread started");
+
+        //new jdcb().executeQuery("select * from user");
     }
 }

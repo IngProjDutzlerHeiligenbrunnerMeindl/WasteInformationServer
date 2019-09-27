@@ -7,27 +7,33 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class jdcb {
-    public void executeQuery(String sql) {
+    String username;
+    String password;
+    String dbName;
+
+    public jdcb(String username, String password, String dbName) {
+        this.username = username;
+        this.password=password;
+        this.dbName = dbName;
+    }
+
+    public ResultSet executeQuery(String sql) {
         Database db = new MySQLConnector(
-                "users",
-                "kOpaIJUjkgb9ur6S",
-                "127.0.0.1",
+                username,
+                password,
+                "192.168.65.15",
                 3306,
-                "wasteinformation");
+                dbName);
 
         Connection c = db.getConnection();
         try {
             PreparedStatement stmt =
                     c.prepareStatement(sql);
 
-            ResultSet r = stmt.executeQuery();
-
-            DefaultTableModel model = Database.logToTable(r);
-
-//            this.resultTable.setModel(model);
-
+            return stmt.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return null;
     }
 }

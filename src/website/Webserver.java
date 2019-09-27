@@ -18,6 +18,7 @@ public class Webserver {
 
         server.createContext("/", new MainPage());
         server.createContext("/senddata/loginget", new LoginRequest());
+        server.createContext("/senddata/registerpost",new RegisterRequest());
 
         server.setExecutor(null); // creates a default executor
         server.start();

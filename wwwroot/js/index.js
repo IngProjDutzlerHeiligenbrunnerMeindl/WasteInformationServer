@@ -15,13 +15,4 @@ $(document).ready(function() {
       }
     },'json');
   });
-
-  $('#signupbtn').click(function(e) {
-    e.preventDefault();
-
-    $.post('/senddata/loginpost','username=luki&password=test',function(data){
-      console.log(data);
-    },'json');
-
-  });
 });

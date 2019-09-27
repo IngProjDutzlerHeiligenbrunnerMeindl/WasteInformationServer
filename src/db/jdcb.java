@@ -7,17 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class jdcb {
-    String username;
-    String password;
-    String dbName;
+Connection conn;
 
     public jdcb(String username, String password, String dbName) {
-        this.username = username;
-        this.password=password;
-        this.dbName = dbName;
-    }
-
-    public ResultSet executeQuery(String sql) {
         Database db = new MySQLConnector(
                 username,
                 password,
@@ -25,15 +17,30 @@ public class jdcb {
                 3306,
                 dbName);
 
-        Connection c = db.getConnection();
+        conn = db.getConnection();
+
+    }
+
+    public ResultSet executeQuery(String sql) {
+
         try {
-            PreparedStatement stmt =
-                    c.prepareStatement(sql);
+            PreparedStatement stmt = conn.prepareStatement(sql);
 
             return stmt.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public int executeUpdate(String sql){
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            return stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 }

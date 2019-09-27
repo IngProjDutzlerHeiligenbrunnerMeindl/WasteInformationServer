@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="lib/bootstrap.min.css">
+
+    <!--Fontawesome CDN-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+
+    <!-- jQuery library -->
+    <script src="lib/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="lib/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="lib/bootstrap.min.js"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="css/profile.css">
+    <script type="text/javascript" src="js/profile.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+              <a class="nav-link" href="settings.html">Settings</a>
+          </li>
+          <li class="nav-item active">
+              <a class="nav-link" href="profile.html">Profile</a>
+          </li>
+        </ul>
+    </div>
+    <div class="mx-auto order-0">
+        <a class="navbar-brand mx-auto" href="#">Profile</a>
+    </div>
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ml-auto">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fas fa-user"> lheilige</i></span>
+            </div>
+            <button type="button" class="btn btn-primary">Logout</button>
+        </ul>
+    </div>
+</nav>
+
+
+<div class="row">
+  <div class="col-lg-3">
+
+  </div>
+
+  <div class="col-lg-6">
+      <!-- .card -->
+      <div class="card card-fluid">
+          <h6 class="card-header"> Account Info</h6>
+          <!-- .card-body -->
+          <div class="card-body">
+              <!-- form -->
+              <form method="post">
+                  <!-- form row -->
+                  <div class="form-row">
+                      <!-- form column -->
+                      <div class="col-md-6 mb-3">
+                          <label for="input01">First Name</label>
+                          <input type="text" class="form-control" id="input01" value="Max" required=""></div>
+                      <!-- /form column -->
+                      <!-- form column -->
+                      <div class="col-md-6 mb-3">
+                          <label for="input02">Last Name</label>
+                          <input type="text" class="form-control" id="input02" value="Mustermann" required=""></div>
+                      <!-- /form column -->
+                  </div>
+                  <!-- /form row -->
+                  <!-- .form-group -->
+                  <div class="form-group">
+                      <label for="input03">Email</label>
+                      <input type="email" class="form-control" id="input03" value="Max@Musterman.com" required=""></div>
+                  <!-- /.form-group -->
+                  <!-- .form-group -->
+                  <div class="form-group">
+                      <label for="input04">New Password</label>
+                      <input type="password" class="form-control" id="input04" value="secret" required=""></div>
+                  <!-- /.form-group -->
+                  <!-- .form-group -->
+                  <div class="form-group">
+                      <label for="input05">Username</label>
+                      <input type="text" class="form-control" id="input05" value="bent10" required="">
+                  </div>
+                  <!-- /.form-group -->
+                  <hr>
+                  <!-- .form-actions -->
+                  <div class="form-actions">
+                      <!-- enable submit btn when user type their current password -->
+                      <input type="password" class="form-control ml-auto mr-3" id="input06"
+                             placeholder="Enter Current Password" required="">
+                      <button type="submit" class="btn btn-primary" disabled="">Update Account</button>
+                  </div>
+                  <!-- /.form-actions -->
+              </form>
+              <!-- /form -->
+          </div>
+          <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+  </div>
+
+  <div class="col-lg-3">
+
+  </div>
+</div>
+
+
+
+</body>
+</html>

@@ -5,10 +5,12 @@ import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 
 import java.net.InetSocketAddress;
+import java.util.logging.Level;
+
 
 public class Webserver {
     public void startserver() {
-        System.out.println("starting server");
+        Log.info("starting server");
         HttpServer server = null;
         try {
             server = HttpServer.create(new InetSocketAddress(8000), 0);
@@ -23,7 +25,8 @@ public class Webserver {
 
         server.setExecutor(null); // creates a default executor
         server.start();
-        System.out.println("Server available at http://127.0.0.1:8000 now");
+        Log.info("Server available at http://127.0.0.1:8000 now");
+
     }
 
 

@@ -22,7 +22,7 @@ public class MainPage implements HttpHandler {
         } else {
             path = uri.getPath();
         }
-        System.out.println("looking for: " + root + path);
+        Log.message("looking for: " + root + path);
 
         File file = new File(root + path).getCanonicalFile();
 

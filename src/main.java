@@ -1,4 +1,5 @@
 import db.jdcb;
+import website.Log;
 
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -15,7 +16,7 @@ public class main {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
                 Thread.sleep(200);
-                System.out.println("Shutting down ...");
+                Log.warning("Shutting down ...");
 
                 //shutdown routine
             }  catch (InterruptedException e) {
@@ -26,8 +27,7 @@ public class main {
         Thread mythread = new Thread(() -> new website.Webserver().startserver());
         mythread.start();
 
-
-        System.out.println("thread started");
+        Log.message("thread started");
 
 
 

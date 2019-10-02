@@ -23,6 +23,7 @@ public class Webserver {
 
         server.setExecutor(null); // creates a default executor
         server.start();
+        System.out.println("Server available at http://127.0.0.1:8000 now");
     }
 
 

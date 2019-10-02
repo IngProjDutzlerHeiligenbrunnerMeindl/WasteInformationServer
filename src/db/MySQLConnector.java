@@ -28,7 +28,7 @@ public class MySQLConnector extends Database {
                     password);
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("no connection to database! start database server");
         }
 
         return con;

@@ -1,8 +1,9 @@
-package website;
+package com.wasteinformationserver.website;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import com.wasteinformationserver.basicutils.Log;
 
 import java.io.File;
 import java.io.FileInputStream;

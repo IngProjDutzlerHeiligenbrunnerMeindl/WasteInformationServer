@@ -1,10 +1,11 @@
-package website;
+package com.wasteinformationserver.website;
 
-import db.jdcb;
+import com.wasteinformationserver.db.PostRequest;
+import com.wasteinformationserver.db.jdcb;
 
 import java.util.HashMap;
 
-public class RegisterRequest extends PostRequest{
+public class RegisterRequest extends PostRequest {
     @Override
     public String request(HashMap<String, String> params) {
         System.out.println(params.toString());

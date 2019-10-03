@@ -1,4 +1,8 @@
-package db;
+package com.wasteinformationserver.db;
+
+import com.wasteinformationserver.basicutils.Log;
+import com.wasteinformationserver.db.Database;
+import com.wasteinformationserver.db.MySQLConnector;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,7 +20,11 @@ Connection conn;
                 3306,
                 dbName);
 
-        conn = db.getConnection();
+        try {
+            conn = db.getConnection();
+        } catch (SQLException e) {
+            Log.error("no connection to Database! DB Server not started...?");
+        }
 
     }
 

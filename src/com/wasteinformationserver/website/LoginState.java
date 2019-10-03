@@ -1,4 +1,4 @@
-package website;
+package com.wasteinformationserver.website;
 
 public class LoginState {
     private LoginState() {}

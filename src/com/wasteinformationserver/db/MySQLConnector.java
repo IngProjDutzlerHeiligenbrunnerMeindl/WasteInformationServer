@@ -1,4 +1,4 @@
-package db;
+package com.wasteinformationserver.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,20 +18,11 @@ public class MySQLConnector extends Database {
         super(user, password, host, port, dbName);
     }
 
-    public Connection getConnection() {
-        Connection con = null;
-
-        try {
-            con = DriverManager.getConnection(
+    public Connection getConnection() throws SQLException {
+           return DriverManager.getConnection(
                     "jdbc:mysql://" + host + ":" + port + "/" + dbName + "?useSSL=false",
                     user,
                     password);
-
-        } catch (SQLException e) {
-            System.err.println("no connection to database! start database server");
-        }
-
-        return con;
     }
 
 }

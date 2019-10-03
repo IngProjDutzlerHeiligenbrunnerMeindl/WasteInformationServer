@@ -1,14 +1,12 @@
-import db.jdcb;
-import website.Log;
+package com.wasteinformationserver;
 
-import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import com.wasteinformationserver.basicutils.Log;
+import com.wasteinformationserver.website.Webserver;
 
 public class main {
     public static void main(String[] args) {
 /*
-        Date D=new Date();
+        com.wasteinformationserver.Date D=new com.wasteinformationserver.Date();
         D.getdata();
         D.printList();
         */
@@ -24,7 +22,7 @@ public class main {
             }
         }));
 
-        Thread mythread = new Thread(() -> new website.Webserver().startserver());
+        Thread mythread = new Thread(() -> new Webserver().startserver());
         mythread.start();
 
         Log.message("thread started");

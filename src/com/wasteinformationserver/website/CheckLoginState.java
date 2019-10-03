@@ -1,4 +1,6 @@
-package website;
+package com.wasteinformationserver.website;
+
+import com.wasteinformationserver.db.PostRequest;
 
 import java.util.HashMap;
 

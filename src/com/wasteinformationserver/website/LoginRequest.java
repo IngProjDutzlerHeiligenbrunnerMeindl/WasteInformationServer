@@ -1,6 +1,7 @@
-package website;
+package com.wasteinformationserver.website;
 
-import db.jdcb;
+import com.wasteinformationserver.db.PostRequest;
+import com.wasteinformationserver.db.jdcb;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

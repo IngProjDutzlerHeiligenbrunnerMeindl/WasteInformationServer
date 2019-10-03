@@ -1,11 +1,11 @@
-package website;
+package com.wasteinformationserver.website;
 
 import com.sun.net.httpserver.HttpServer;
+import com.wasteinformationserver.basicutils.Log;
 
 import java.io.IOException;
 
 import java.net.InetSocketAddress;
-import java.util.logging.Level;
 
 
 public class Webserver {

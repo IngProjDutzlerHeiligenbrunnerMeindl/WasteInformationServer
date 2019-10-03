@@ -1,4 +1,4 @@
-package website;
+package com.wasteinformationserver.website;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;

@@ -1,4 +1,4 @@
-package db;
+package com.wasteinformationserver.db;
 
 import javax.swing.table.DefaultTableModel;
 import java.sql.Connection;
@@ -25,7 +25,7 @@ public abstract class Database {
         this.dbName = dbName;
     }
 
-    public abstract Connection getConnection();
+    public abstract Connection getConnection() throws SQLException;
 
     public static void logToConsole(ResultSet res) {
         try {

@@ -1,10 +1,9 @@
-package website;
+package com.wasteinformationserver.basicutils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.logging.*;
 
 public class Log {
 
@@ -79,7 +78,7 @@ public class Log {
         builder.append("]");
 
         builder.append(" [");
-        builder.append(new Exception().getStackTrace()[1].getClassName());
+        builder.append(new Exception().getStackTrace()[2].getClassName());
         builder.append("]");
 
         builder.append(" [");

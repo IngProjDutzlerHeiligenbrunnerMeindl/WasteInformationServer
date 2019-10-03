@@ -1,8 +1,36 @@
-.test{
-    background-color: #7F7F7F;
+html,body{
+  background-image: url('../rsc/login2.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100%;
+  font-family: 'Numans', sans-serif;
 }
+
 
 .optionsarray{
   margin-left: 20mm;
   margin-top: 20mm;
+}
+
+.create-table{
+  margin-top: 50px;
+  margin-left: 20%;
+  background-color: rgba(0,0,0,0.5) !important;
+  width: 60%;
+  height: 65%;
+
+}
+
+.create-table-window-toolpane{
+  height: 50px;
+  background-color: rgba(0,0,0,0.5) !important;
+}
+
+.exit-icon{
+  color: #FF0000;
+  float: right;
+  display: table-cell;
+      vertical-align: middle;
+      text-align: center;
+      text-decoration: none;
 }

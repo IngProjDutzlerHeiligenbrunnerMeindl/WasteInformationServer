@@ -1,5 +1,6 @@
 package com.wasteinformationserver.website;
 
+import com.wasteinformationserver.basicutils.Log;
 import com.wasteinformationserver.db.PostRequest;
 
 import java.util.HashMap;
@@ -7,7 +8,7 @@ import java.util.HashMap;
 public class CheckLoginState extends PostRequest {
     @Override
     public String request(HashMap<String, String> params) {
-        System.out.println("checkin login state");
+        Log.message("checking login state");
         if ((params.get("action")).equals("getloginstate")){
             if (LoginState.getObject().isLoggedIn()){
                 return "{\"loggedin\":true, \"username\":\""+LoginState.getObject().getUsername()+"\"}";

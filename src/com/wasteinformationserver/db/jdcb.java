@@ -12,18 +12,18 @@ import java.sql.SQLException;
 public class jdcb {
 Connection conn;
 
-    public jdcb(String username, String password, String dbName) {
+    public jdcb(String username, String password,String dbname) {
         Database db = new MySQLConnector(
                 username,
                 password,
                 "192.168.65.15",
                 3306,
-                dbName);
+                dbname);
 
         try {
             conn = db.getConnection();
         } catch (SQLException e) {
-            Log.error("no connection to Database! DB Server not started...?");
+            Log.error("no connection to Database!");
         }
 
     }
@@ -32,7 +32,6 @@ Connection conn;
 
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
-
             return stmt.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();

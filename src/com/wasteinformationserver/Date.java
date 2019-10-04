@@ -19,12 +19,12 @@ public class Date {
     public void getdata() {
 
         GregorianCalendar now = new GregorianCalendar();
-        DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);             // 14.04.2012
+        DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
         String datum = df.format(now.getTime());
 
         URL url = null;
         try {
-            url = new URL("https://www.steyr.at/system/web/kalender.aspx?vdatum=" + datum + "&bdatum=12.10.2019&typ=&typid=0&typids=225781950&detailonr=0&menuonr=225781812");
+            url = new URL("https://www.steyr.at/system/web/kalender.aspx?vdatum="+datum+"&bdatum=19.10.2019&typ=&typid=0&typids=225781950&detailonr=0&menuonr=225781812");
             Scanner scanner = new Scanner(new InputStreamReader(url.openStream()));
 
             int n = 0;
@@ -46,6 +46,12 @@ public class Date {
     }
 
     public void printList() {
+        for (int n = 0; n < list.size(); n++) {
+            System.out.println(list.get(n));
+        }
+    }
+
+    public void printListnew() {
         for (int n = 0; n < listnew.size(); n++) {
             System.out.println(listnew.get(n));
         }
@@ -68,16 +74,28 @@ public class Date {
                         zaehler++;
                     }
 
-                    String string = "004-034556";
+                  /*  String string = "004-034556";
                     String[] parts = string.split("-");
                     String part1 = parts[0]; // 004
-                    String part2 = parts[1]; // 034556
+                    String part2 = parts[1]; // 034556*/
 
-                    for (int q = 0; q < listnew.size(); q++) {
-
-                    }
+                  splitter();
 
                 }
+            }
+        }
+    }
+
+    private void splitter()
+    {
+        String temp="</ul><h2>";
+
+        for (int n=0; n<listnew.size();n++)
+        {
+
+            if(listnew.get(n).equals(temp))
+            {
+
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.wasteinformationserver;
+package com.wasteinformationserver.mqtt;
 
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -6,12 +6,14 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-public class mqtt {
-    public mqtt() {
-        String topic        = "MQTT Examples";
+public class mqtttransmitter {
+
+    public mqtttransmitter() {
+
+        String topic        = "kk";
         String content      = "Message from MqttPublishSample";
         int qos             = 2;
-        String broker       = "tcp://iot.eclipse.org:1883";
+        String broker       = "tcp://192.168.65.15:1883";
         String clientId     = "JavaSample";
         MemoryPersistence persistence = new MemoryPersistence();
 

@@ -17,4 +17,13 @@ $(document).ready(function() {
       console.log(data);
     },'json');
   });
+
+  $('#addnewtable-btn').click(function() {
+    console.log("clicked");
+    $('.create-table').show();
+  });
+
+  $('.exit-icon').click(function() {
+    $('.create-table').hide();
+  });
 });

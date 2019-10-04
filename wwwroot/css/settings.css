@@ -13,11 +13,15 @@ html,body{
 }
 
 .create-table{
-  margin-top: 50px;
-  margin-left: 20%;
   background-color: rgba(0,0,0,0.5) !important;
-  width: 60%;
-  height: 65%;
+
+  position: fixed;
+  top: 10%;
+  left: 10%;
+  width: 80%;
+  height: 80%;
+
+  color: #FFFFFF;
 
 }
 
@@ -29,8 +33,34 @@ html,body{
 .exit-icon{
   color: #FF0000;
   float: right;
-  display: table-cell;
-      vertical-align: middle;
-      text-align: center;
-      text-decoration: none;
+  cursor: pointer;
+  vertical-align: middle;
+  height: 100%;
+}
+
+.create-table-title{
+  text-align: center;
+  font-size: 120%;
+height: 100%;
+
+display: flex;
+flex-direction: column;
+justify-content: center;
+}
+
+.create-table-window-bottom{
+  bottom: 0;
+  height: 40px;
+  width: 100%;
+  background-color: rgba(1,0,0,0.3) !important;
+  position: absolute;
+}
+
+.create-table-window-content{
+    overflow:scroll;
+}
+
+.create-table-window-settings{
+  margin-left: 7%;
+  margin-top: 1%;
 }

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="WasteInformationServer:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/WasteInformationServer_jar</output-path>
+    <root id="archive" name="WasteInformationServer.jar">
+      <element id="module-output" name="WasteInformationServer" />
+    </root>
+  </artifact>
+</component>

@@ -1,6 +1,5 @@
 package com.wasteinformationserver.website;
 
-import com.wasteinformationserver.db.PostRequest;
 import com.wasteinformationserver.db.jdcb;
 
 import java.sql.ResultSet;

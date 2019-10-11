@@ -1,4 +1,4 @@
-package com.wasteinformationserver.db;
+package com.wasteinformationserver.website;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;

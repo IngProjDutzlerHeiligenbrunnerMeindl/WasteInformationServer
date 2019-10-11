@@ -1,8 +1,6 @@
 package com.wasteinformationserver.db;
 
 import com.wasteinformationserver.basicutils.Log;
-import com.wasteinformationserver.db.Database;
-import com.wasteinformationserver.db.MySQLConnector;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

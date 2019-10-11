@@ -1,11 +1,6 @@
 package com.wasteinformationserver;
 
 import com.wasteinformationserver.mqtt.*;
-import org.eclipse.paho.client.mqttv3.MqttException;
-
-import java.net.URISyntaxException;
-import java.sql.SQLException;
-
 public class main {
     public static void main(String[] args) {
 /*
@@ -30,13 +25,11 @@ public class main {
 
         Log.message("thread started");*/
 
-       mqtt m=new mqtt();
-     //  m.notifymessage();
-        try {
-            m.getDatabasedata();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        mqtt m = new mqtt();
+        //  m.notifymessage();
+        m.getDatabasedata();
+        m.printlist();
+        // Log.message("mqtt irgentwos");
 
     }
 }

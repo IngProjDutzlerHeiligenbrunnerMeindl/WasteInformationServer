@@ -10,9 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class jdcb {
-Connection conn;
+    Connection conn;
 
-    public jdcb(String username, String password,String dbname) {
+    public jdcb(String username, String password, String dbname) {
         Database db = new MySQLConnector(
                 username,
                 password,
@@ -29,7 +29,6 @@ Connection conn;
     }
 
     public ResultSet executeQuery(String sql) {
-
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
             return stmt.executeQuery();
@@ -39,7 +38,7 @@ Connection conn;
         return null;
     }
 
-    public int executeUpdate(String sql){
+    public int executeUpdate(String sql) {
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
 

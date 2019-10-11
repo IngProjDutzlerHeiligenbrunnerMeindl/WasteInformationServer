@@ -47,13 +47,13 @@ public class mqttreceiver {
 
     }
 
-    private void notifylisteners(String message){
-        for (ActionListener ac:mylisteners) {
-            new ActionEvent(this,0,message);
+    private void notifylisteners(String message) {
+        for (ActionListener ac : mylisteners) {
+            new ActionEvent(this, 0, message);
         }
     }
 
-    public void addMessageReceivedListener(ActionListener l){
+    public void addMessageReceivedListener(ActionListener l) {
         mylisteners.add(l);
     }
 }

@@ -52,7 +52,7 @@ Database {
                 System.out.println(row);
             }
 
-        } catch(SQLException e) {
+        } catch (SQLException e) {
         }
     }
 
@@ -68,7 +68,7 @@ Database {
 
             Vector<Vector<Object>> data = new Vector<>();
 
-            while(res.next()) {
+            while (res.next()) {
                 Vector<Object> row = new Vector();
 
                 for (int i = 1; i <= columnCount; ++i) {
@@ -79,7 +79,7 @@ Database {
             }
 
             return new DefaultTableModel(data, columnNames);
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 

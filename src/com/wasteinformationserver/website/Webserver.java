@@ -21,6 +21,7 @@ public class Webserver {
         server.createContext("/senddata/loginget", new LoginRequest());
         server.createContext("/senddata/registerpost",new RegisterRequest());
         server.createContext("/senddata/checkloginstate",new CheckLoginState());
+        server.createContext("/senddata/wastedata",new DataRequest());
 
         server.setExecutor(null); // creates a default executor
         server.start();

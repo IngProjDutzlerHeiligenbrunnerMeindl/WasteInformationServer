@@ -1,5 +1,7 @@
 package com.wasteinformationserver;
 
+import com.wasteinformationserver.basicutils.Log;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
@@ -47,13 +49,13 @@ public class Date {
 
     public void printList() {
         for (int n = 0; n < list.size(); n++) {
-            System.out.println(list.get(n));
+            Log.debug(list.get(n));
         }
     }
 
     public void printListnew() {
         for (int n = 0; n < listnew.size(); n++) {
-            System.out.println(listnew.get(n));
+            Log.debug(listnew.get(n));
         }
     }
 

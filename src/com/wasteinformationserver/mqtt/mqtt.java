@@ -1,5 +1,6 @@
 package com.wasteinformationserver.mqtt;
 
+import com.wasteinformationserver.basicutils.Log;
 import com.wasteinformationserver.db.jdcb;
 
 import java.awt.event.ActionEvent;
@@ -26,11 +27,11 @@ public class mqtt {
         DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.LONG);
         String date = df.format(now.getTime());
 
-        System.out.println(date);
+        Log.debug(date);
 
         String[] parts = date.split(" ");
         String temp2=parts[0];
-        System.out.println(temp2);
+        Log.debug(temp2);
         String[] partstwo=temp2.split("\\.");
         String newDate="20"+partstwo[2]+"-"+partstwo[1]+"-"+partstwo[0];
 
@@ -38,7 +39,7 @@ public class mqtt {
 
         mqttreceiver mr = new mqttreceiver();
 
-//        System.out.println(message);
+//        Log.debug(message);
 
         mr.addMessageReceivedListener(new ActionListener() {
             @Override
@@ -61,7 +62,7 @@ public class mqtt {
         String temp;
 
 
-        System.out.println(message);
+        Log.debug(message);
         jdcb Database = new jdcb("placeuser", "eaL956R6yFItQVBl", "wasteinformation");
         ResultSet result = Database.executeQuery(message);
         try {
@@ -96,7 +97,7 @@ public class mqtt {
                 if (temp != null) {
                     transmitmessageAbfallart(temp);
                 } else {
-                    System.out.println("NO Connection");
+                    Log.debug("NO Connection");
                 }
             }
         } catch (SQLException e) {
@@ -110,7 +111,7 @@ public class mqtt {
     private void transmitmessageAbfallart(String temp) {
 
         mqtttransmitter mt = new mqtttransmitter();
-        System.out.println(temp);
+        Log.debug(temp);
         mt.sendmessage(temp);
     }
 }

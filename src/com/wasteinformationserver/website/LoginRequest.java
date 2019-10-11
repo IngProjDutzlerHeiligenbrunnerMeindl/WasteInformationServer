@@ -1,5 +1,6 @@
 package com.wasteinformationserver.website;
 
+import com.wasteinformationserver.basicutils.Log;
 import com.wasteinformationserver.db.jdcb;
 
 import java.sql.ResultSet;
@@ -21,20 +22,20 @@ public class LoginRequest extends PostRequest {
             if (s.getRow() == 1) {
                 //success
                 if (HttpTools.StringToMD5(password).equals(s.getString("password"))) {
-                    System.out.println("login success");
+                    Log.debug("login success");
                     LoginState.getObject().logIn();
                     LoginState.getObject().setAccountData(username,"","","");
                     response = "{\"accept\": true}";
                 } else {
-                    System.out.println("wrong password");
+                    Log.debug("wrong password");
                 }
             } else if (s.getRow() == 0) {
                 //user not found
-                System.out.println("user not found");
+                Log.debug("user not found");
             } else {
                 //internal error two users with same name...?
             }
-            System.out.println("rowcount: " + s.getRow());
+            Log.debug("rowcount: " + s.getRow());
         } catch (SQLException e) {
             e.printStackTrace();
         }

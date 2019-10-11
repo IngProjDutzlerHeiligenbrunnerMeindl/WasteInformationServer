@@ -1,5 +1,6 @@
 package com.wasteinformationserver.mqtt;
 
+import com.wasteinformationserver.basicutils.Log;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -47,7 +48,7 @@ public class mqttreceiver {
                 }
             });
             client.subscribe("TopicIn");
-            System.out.println("subscribed topic");
+            Log.debug("subscribed topic");
         } catch (MqttException e) {
             e.printStackTrace();
         }

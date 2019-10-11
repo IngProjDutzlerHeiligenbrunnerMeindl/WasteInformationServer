@@ -15,7 +15,7 @@ public class CheckLoginState extends PostRequest {
                 return "{\"loggedin\":false}";
             }
         }else if ((params.get("action")).equals("logout")){
-            System.out.println("logging out");
+            Log.debug("logging out");
             LoginState.getObject().logOut();
             return "{\"loggedin\":false}";
         }

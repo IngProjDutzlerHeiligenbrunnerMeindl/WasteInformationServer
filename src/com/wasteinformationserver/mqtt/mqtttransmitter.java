@@ -1,5 +1,6 @@
 package com.wasteinformationserver.mqtt;
 
+import com.wasteinformationserver.basicutils.Log;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -29,24 +30,24 @@ public class mqtttransmitter {
             MqttClient sampleClient = new MqttClient(broker, clientId, persistence);
             MqttConnectOptions connOpts = new MqttConnectOptions();
             connOpts.setCleanSession(true);
-            System.out.println("Connecting to broker: " + broker);
+            Log.debug("Connecting to broker: " + broker);
             sampleClient.connect(connOpts);
-            System.out.println("Connected");
-            System.out.println("Publishing message: " + content);
+            Log.debug("Connected");
+            Log.debug("Publishing message: " + content);
             MqttMessage message = new MqttMessage(content.getBytes());
             message.setQos(qos);
             sampleClient.publish(topic, message);
-            System.out.println("Message published");
+            Log.debug("Message published");
             sampleClient.disconnect();
-            System.out.println("Disconnected");
+            Log.debug("Disconnected");
 
 
         } catch (MqttException me) {
-            System.out.println("reason " + me.getReasonCode());
-            System.out.println("msg " + me.getMessage());
-            System.out.println("loc " + me.getLocalizedMessage());
-            System.out.println("cause " + me.getCause());
-            System.out.println("excep " + me);
+            Log.debug("reason " + me.getReasonCode());
+            Log.debug("msg " + me.getMessage());
+            Log.debug("loc " + me.getLocalizedMessage());
+            Log.debug("cause " + me.getCause());
+            Log.debug("excep " + me);
             me.printStackTrace();
         }
     }

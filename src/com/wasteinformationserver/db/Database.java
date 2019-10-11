@@ -1,5 +1,7 @@
 package com.wasteinformationserver.db;
 
+import com.wasteinformationserver.basicutils.Log;
+
 import javax.swing.table.DefaultTableModel;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -49,7 +51,7 @@ Database {
                     }
                 }
 
-                System.out.println(row);
+                Log.debug(row);
             }
 
         } catch (SQLException e) {

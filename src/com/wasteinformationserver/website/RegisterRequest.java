@@ -1,5 +1,6 @@
 package com.wasteinformationserver.website;
 
+import com.wasteinformationserver.basicutils.Log;
 import com.wasteinformationserver.db.jdcb;
 
 import java.util.HashMap;
@@ -7,7 +8,7 @@ import java.util.HashMap;
 public class RegisterRequest extends PostRequest {
     @Override
     public String request(HashMap<String, String> params) {
-        System.out.println(params.toString());
+        Log.debug(params.toString());
 
         String passhash = HttpTools.StringToMD5(params.get("password"));
 

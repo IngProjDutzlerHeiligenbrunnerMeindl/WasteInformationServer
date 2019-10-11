@@ -12,14 +12,17 @@ import java.util.ArrayList;
 
 public class mqttreceiver {
 
-    MqttClient client;
-    String message;
-
-    ArrayList<ActionListener> mylisteners = new ArrayList<>();
-    ArrayList<String> mylist=new ArrayList<>();
-    int index=0;
+    private MqttClient client;
+    public ArrayList<ActionListener> mylisteners = new ArrayList<>();
+    public String message;
 
     public mqttreceiver() {
+
+    }
+
+    public String getmessage() {
+
+         String temp;
 
         try {
             client = new MqttClient("tcp://192.168.65.15:1883", "JavaSample");
@@ -33,9 +36,9 @@ public class mqttreceiver {
 
                 @Override
                 public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
-                    System.out.println(new String(mqttMessage.getPayload()));
-                    notifylisteners(new String(mqttMessage.getPayload()));
-                    addmylist(new String(mqttMessage.getPayload()));
+                    message =new String(mqttMessage.getPayload());
+                    notifylisteners(message);
+
                 }
 
                 @Override
@@ -44,15 +47,17 @@ public class mqttreceiver {
                 }
             });
             client.subscribe("TopicIn");
+            System.out.println("subscribed topic");
         } catch (MqttException e) {
             e.printStackTrace();
         }
-
+        return message;
     }
+
 
     private void notifylisteners(String message) {
         for (ActionListener ac : mylisteners) {
-            new ActionEvent(this, 0, message);
+            ac.actionPerformed(new ActionEvent(this, 0, message));
         }
     }
 
@@ -60,8 +65,5 @@ public class mqttreceiver {
         mylisteners.add(l);
     }
 
-    private void addmylist(String temp){
-        mylist.add(index,temp);
-        index++;
-    }
 }
+

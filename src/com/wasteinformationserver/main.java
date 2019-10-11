@@ -28,7 +28,6 @@ public class main {
 
         mqtt m = new mqtt();
         m.notifymessage();
-        m.getDatabasedata();
 
     }
 }

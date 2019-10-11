@@ -16,6 +16,8 @@ public class mqttreceiver {
     String message;
 
     ArrayList<ActionListener> mylisteners = new ArrayList<>();
+    ArrayList<String> mylist=new ArrayList<>();
+    int index=0;
 
     public mqttreceiver() {
 
@@ -33,6 +35,7 @@ public class mqttreceiver {
                 public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
                     System.out.println(new String(mqttMessage.getPayload()));
                     notifylisteners(new String(mqttMessage.getPayload()));
+                    addmylist(new String(mqttMessage.getPayload()));
                 }
 
                 @Override
@@ -40,7 +43,7 @@ public class mqttreceiver {
 
                 }
             });
-            client.subscribe("test/topic");
+            client.subscribe("TopicIn");
         } catch (MqttException e) {
             e.printStackTrace();
         }
@@ -55,5 +58,10 @@ public class mqttreceiver {
 
     public void addMessageReceivedListener(ActionListener l) {
         mylisteners.add(l);
+    }
+
+    private void addmylist(String temp){
+        mylist.add(index,temp);
+        index++;
     }
 }

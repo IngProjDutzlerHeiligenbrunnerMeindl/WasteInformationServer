@@ -10,19 +10,22 @@ import java.util.ArrayList;
 
 public class mqtttransmitter {
 
-    public mqtttransmitter(ArrayList<String> mylist) {
+    private String messagedatabase;
 
+    public mqtttransmitter() {
     }
 
-    public void sendmessage(ArrayList mylist) {
-        String topic = "kk";
-        String content = "Message from MqttPublishSample";
+    public void sendmessage(String temp) {
+        String topic = "TopicOut";
+        String content = temp;
         int qos = 2;
         String broker = "tcp://192.168.65.15:1883";
         String clientId = "JavaSample";
         MemoryPersistence persistence = new MemoryPersistence();
 
+
         try {
+
             MqttClient sampleClient = new MqttClient(broker, clientId, persistence);
             MqttConnectOptions connOpts = new MqttConnectOptions();
             connOpts.setCleanSession(true);
@@ -37,6 +40,7 @@ public class mqtttransmitter {
             sampleClient.disconnect();
             System.out.println("Disconnected");
             System.exit(0);
+
         } catch (MqttException me) {
             System.out.println("reason " + me.getReasonCode());
             System.out.println("msg " + me.getMessage());

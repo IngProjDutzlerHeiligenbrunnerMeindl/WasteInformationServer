@@ -2,19 +2,18 @@ package com.wasteinformationserver.mqtt;
 
 import com.wasteinformationserver.db.jdcb;
 
-import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class mqtt {
-
-    private ArrayList<String> mylist = new ArrayList<>();
-    private int index = 0;
 
     public mqtt() {
 
@@ -33,37 +32,40 @@ public class mqtt {
     }
 
     public void getDatabasedata() {
-        int n=0;
+
+        String temptime = null;
+        String tempabfallart = null;
 
         jdcb Database = new jdcb("placeuser", "eaL956R6yFItQVBl", "wasteinformation");
         ResultSet result = Database.executeQuery("SELECT*FROM place WHERE Zone=1");
         try {
             while (result.next()) {
-                String temp = String.valueOf(result.getString("Abholtag"));
-                System.out.println(temp);
-                filllist(temp);
-                n++;
+                temptime = String.valueOf(result.getString("Abholtag"));
+                tempabfallart = String.valueOf(result.getString("Abfallart"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        transmitmessagetoESP();
-    }
-
-
-    private void transmitmessagetoESP() {
-        mqtttransmitter mt = new mqtttransmitter(mylist);
-    }
-
-    private void filllist(String temp) {
-        mylist.add(index, temp);
-    }
-
-    public void printlist() {
-        for (int n = 0; n < index; n++) {
-            System.out.println(mylist.get(index));
+        if (temptime != null && tempabfallart != null) {
+            transmitmessageAbfallart(tempabfallart);
+            //transmitmessageDate(temptime);
+        } else {
+            System.out.println("NO Connection");
         }
     }
 
+
+    private void transmitmessageAbfallart(String tempabfallart) {
+
+        mqtttransmitter mt = new mqtttransmitter();
+        mt.sendmessage(tempabfallart);
+    }
+
+    private void transmitmessageDate(String temptime) {
+        GregorianCalendar now = new GregorianCalendar();
+        DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.LONG); // 14.04.12 21:34:07 MESZ
+        System.out.println(df.format(now.getTime()));
+
+    }
 }

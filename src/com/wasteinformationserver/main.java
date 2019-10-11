@@ -1,6 +1,7 @@
 package com.wasteinformationserver;
 
 import com.wasteinformationserver.mqtt.*;
+
 public class main {
     public static void main(String[] args) {
 /*
@@ -26,10 +27,8 @@ public class main {
         Log.message("thread started");*/
 
         mqtt m = new mqtt();
-        //  m.notifymessage();
+        m.notifymessage();
         m.getDatabasedata();
-        m.printlist();
-        // Log.message("mqtt irgentwos");
 
     }
 }

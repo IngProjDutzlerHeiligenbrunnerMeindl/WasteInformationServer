@@ -4,7 +4,6 @@ import com.sun.net.httpserver.HttpServer;
 import com.wasteinformationserver.basicutils.Log;
 
 import java.io.IOException;
-
 import java.net.InetSocketAddress;
 
 
@@ -28,6 +27,4 @@ public class Webserver {
         Log.info("Server available at http://127.0.0.1:8000 now");
 
     }
-
-
 }

@@ -1,6 +1,8 @@
 package com.wasteinformationserver;
 
+import com.wasteinformationserver.basicutils.Log;
 import com.wasteinformationserver.mqtt.*;
+import com.wasteinformationserver.website.Webserver;
 
 public class main {
     public static void main(String[] args) {
@@ -10,7 +12,7 @@ public class main {
         D.printList();
         */
 
-       /* Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
                 Thread.sleep(200);
                 Log.warning("Shutting down ...");
@@ -24,10 +26,11 @@ public class main {
         Thread mythread = new Thread(() -> new Webserver().startserver());
         mythread.start();
 
-        Log.message("thread started");*/
+        Log.message("thread started");
 
-        mqtt m = new mqtt();
-        m.notifymessage();
+//        mqtt m = new mqtt();
+//        m.notifymessage();
+//        m.getDatabasedata();
 
     }
 }

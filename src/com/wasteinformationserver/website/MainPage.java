@@ -5,11 +5,10 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.wasteinformationserver.basicutils.Log;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.awt.*;
+import java.io.*;
 import java.net.URI;
+import java.net.URL;
 
 public class MainPage implements HttpHandler {
     @Override
@@ -25,9 +24,13 @@ public class MainPage implements HttpHandler {
         }
         Log.message("looking for: " + root + path);
 
-        File file = new File(root + path).getCanonicalFile();
 
-        if (!file.isFile()) {
+//        File file = new File(getClass().getResource("/wwwroot"+path).getFile()).getCanonicalFile();
+        InputStream fs = getClass().getResourceAsStream("/wwwroot"+path);
+
+//        File file = new File(root + path).getCanonicalFile();
+
+        if (fs.available() < 1) {
             // Object does not exist or is not a file: reject with 404 error.
             String response = "404 (Not Found)\n";
             t.sendResponseHeaders(404, response.length());
@@ -45,7 +48,7 @@ public class MainPage implements HttpHandler {
             t.sendResponseHeaders(200, 0);
 
             OutputStream os = t.getResponseBody();
-            FileInputStream fs = new FileInputStream(file);
+//            FileInputStream fs = new FileInputStream(file);
             final byte[] buffer = new byte[0x10000];
             int count;
             while ((count = fs.read(buffer)) >= 0) {

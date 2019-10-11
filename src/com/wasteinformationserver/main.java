@@ -6,11 +6,8 @@ import com.wasteinformationserver.website.Webserver;
 
 public class main {
     public static void main(String[] args) {
-/*
-        com.wasteinformationserver.Date D=new com.wasteinformationserver.Date();
-        D.getdata();
-        D.printList();
-        */
+
+
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
@@ -28,9 +25,8 @@ public class main {
 
         Log.message("thread started");
 
-//        mqtt m = new mqtt();
-//        m.notifymessage();
-//        m.getDatabasedata();
+        mqtt m = new mqtt();
+        m.notifymessage();
 
     }
 }

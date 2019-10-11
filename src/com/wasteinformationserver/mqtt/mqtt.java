@@ -107,9 +107,10 @@ public class mqtt {
     }
 
 
-    private void transmitmessageAbfallart(String tempabfallart) {
+    private void transmitmessageAbfallart(String temp) {
 
         mqtttransmitter mt = new mqtttransmitter();
-        mt.sendmessage(tempabfallart);
+        System.out.println(temp);
+        mt.sendmessage(temp);
     }
 }

@@ -39,7 +39,7 @@ public class mqtttransmitter {
             System.out.println("Message published");
             sampleClient.disconnect();
             System.out.println("Disconnected");
-            System.exit(0);
+
 
         } catch (MqttException me) {
             System.out.println("reason " + me.getReasonCode());

@@ -85,11 +85,11 @@ public class mqtt {
                 String[] partstwo = date.split(" ");
 
 
-                boolean abholtag;
+                int abholtag;
                 if (partstwo[0].contains(newDate)) {
-                    abholtag = true;
+                    abholtag = 1;
                 } else {
-                    abholtag = false;
+                    abholtag = 0;
                 }
                 temp = tempabfallart + "," + abholtag;
 

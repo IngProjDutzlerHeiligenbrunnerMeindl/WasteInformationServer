@@ -24,9 +24,9 @@ public class mqtttransmitter {
         String clientId = "JavaSample";
         MemoryPersistence persistence = new MemoryPersistence();
 
+        System.out.println("HI");
 
         try {
-
             MqttClient sampleClient = new MqttClient(broker, clientId, persistence);
             MqttConnectOptions connOpts = new MqttConnectOptions();
             connOpts.setCleanSession(true);
@@ -40,6 +40,7 @@ public class mqtttransmitter {
             Log.debug("Message published");
             sampleClient.disconnect();
             Log.debug("Disconnected");
+            System.out.println("HI");
 
 
         } catch (MqttException me) {

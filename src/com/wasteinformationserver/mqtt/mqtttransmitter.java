@@ -7,7 +7,6 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-import java.util.ArrayList;
 
 public class mqtttransmitter {
 
@@ -40,7 +39,6 @@ public class mqtttransmitter {
             Log.debug("Message published");
             sampleClient.disconnect();
             Log.debug("Disconnected");
-            System.out.println("HI");
 
 
         } catch (MqttException me) {

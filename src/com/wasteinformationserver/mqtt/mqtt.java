@@ -92,6 +92,7 @@ public class mqtt {
                     abholtag = 0;
                 }
                 temp = tempabfallart + "," + abholtag;
+                System.out.println(temp);
 
 
                 if (temp != null) {

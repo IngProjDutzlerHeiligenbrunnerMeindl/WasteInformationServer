@@ -8,13 +8,10 @@ import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 public class mqtt {
 
-    ArrayList<String> mylist = new ArrayList<>();
-    int index = 0;
 
     public mqtt() {
 
@@ -74,7 +71,6 @@ public class mqtt {
 
                 if (temp != null) {
                     transmitmessageAbfallart(temp);
-                    notifymessage();
                 } else {
                     Log.debug("NO Connection");
                 }
@@ -83,7 +79,6 @@ public class mqtt {
             System.out.println("Exception");
             e.printStackTrace();
         }
-
 
     }
 

@@ -10,8 +10,6 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 public class mqtttransmitter {
 
-    private String messagedatabase;
-
     public mqtttransmitter() {
     }
 
@@ -22,8 +20,6 @@ public class mqtttransmitter {
         String broker = "tcp://192.168.65.15:1883";
         String clientId = "JavaSample";
         MemoryPersistence persistence = new MemoryPersistence();
-
-        System.out.println("HI");
 
         try {
             MqttClient sampleClient = new MqttClient(broker, clientId, persistence);
@@ -50,5 +46,4 @@ public class mqtttransmitter {
             me.printStackTrace();
         }
     }
-
 }

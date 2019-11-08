@@ -9,7 +9,7 @@ public class main {
 
 
 
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+       /* Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
                 Thread.sleep(200);
                 Log.warning("Shutting down ...");
@@ -23,7 +23,7 @@ public class main {
         Thread mythread = new Thread(() -> new Webserver().startserver());
         mythread.start();
 
-        Log.message("thread started");
+        Log.message("thread started");*/
 
         mqtt m = new mqtt();
         m.notifymessage();

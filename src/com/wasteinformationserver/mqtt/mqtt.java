@@ -22,53 +22,30 @@ public class mqtt {
 
     public void notifymessage() {
 
-
-        GregorianCalendar now = new GregorianCalendar();
-        DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.LONG);
-        String date = df.format(now.getTime());
-
-        Log.debug(date);
-
-        String[] parts = date.split(" ");
-        String temp2=parts[0];
-        Log.debug(temp2);
-        String[] partstwo=temp2.split("\\.");
-        String newDate="20"+partstwo[2]+"-"+partstwo[1]+"-"+partstwo[0];
-
-
-
         mqttreceiver mr = new mqttreceiver();
-
-//        Log.debug(message);
-
         mr.addMessageReceivedListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String temp = e.getActionCommand();
+                System.out.println(temp);
 
                 String[] split = temp.split(",");
-                String message = "SELECT*FROM place WHERE Ort='" + split[0] + "' AND Abfallart='" + split[1] + "' AND Zone='" + split[2] + "' AND ABholtag='"+newDate+"'";
-
-                getDatabasedata(message);
+                getDatabasedata("SELECT pickupdates.pickupdate FROM pickupdates WHERE pickupdates.citywastezoneid=(SELECT cities.zone FROM cities WHERE cities.name='" + split[1] + "' AND cities.wastetype='" + split[2] + "' AND cities.zone=" + split[3] + ")",split[2], Integer.parseInt(split[0]));
             }
         });
-
         mr.getmessage();
-
     }
 
-    public void getDatabasedata(String message) {
+    public void getDatabasedata(String message,String wastetyp, int clientidentify) {
 
         String temp;
-
 
         Log.debug(message);
         JDCB Database = new JDCB("placeuser", "eaL956R6yFItQVBl", "wasteinformation");
         ResultSet result = Database.executeQuery(message);
         try {
             while (result.next()) {
-                String temptime = String.valueOf(result.getString("Abholtag"));
-                String tempabfallart = String.valueOf(result.getString("Abfallart"));
+                String temptime = String.valueOf(result.getString("pickupdate"));
 
                 GregorianCalendar now = new GregorianCalendar();
                 DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.LONG);
@@ -91,22 +68,25 @@ public class mqtt {
                 } else {
                     abholtag = 0;
                 }
-                temp = tempabfallart + "," + abholtag;
+                temp = clientidentify+","+ wastetyp + "," + abholtag;
                 System.out.println(temp);
 
 
                 if (temp != null) {
                     transmitmessageAbfallart(temp);
+                    notifymessage();
                 } else {
                     Log.debug("NO Connection");
                 }
             }
         } catch (SQLException e) {
+            System.out.println("Exception");
             e.printStackTrace();
         }
 
 
     }
+
 
 
     private void transmitmessageAbfallart(String temp) {

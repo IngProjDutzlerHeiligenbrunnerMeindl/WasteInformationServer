@@ -23,8 +23,6 @@ public class mqttreceiver {
 
     public String getmessage() {
 
-         String temp;
-
         try {
             client = new MqttClient("tcp://192.168.65.15:1883", "JavaSample");
             client.connect();

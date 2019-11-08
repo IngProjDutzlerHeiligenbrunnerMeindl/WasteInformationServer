@@ -2,6 +2,10 @@ package com.wasteinformationserver.website;
 
 import com.sun.net.httpserver.HttpServer;
 import com.wasteinformationserver.basicutils.Log;
+import com.wasteinformationserver.website.datarequests.CheckLoginState;
+import com.wasteinformationserver.website.datarequests.DataRequest;
+import com.wasteinformationserver.website.datarequests.LoginRequest;
+import com.wasteinformationserver.website.datarequests.RegisterRequest;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

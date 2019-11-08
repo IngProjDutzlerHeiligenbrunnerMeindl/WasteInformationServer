@@ -7,10 +7,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class jdcb {
+public class JDCB {
     Connection conn;
 
-    public jdcb(String username, String password, String dbname) {
+    public JDCB(String username, String password, String dbname) {
         Database db = new MySQLConnector(
                 username,
                 password,

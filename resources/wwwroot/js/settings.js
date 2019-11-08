@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    //check login state
+    // TODO: check login state
     console.log("page loaded");
     $.post('/senddata/checkloginstate', 'action=getloginstate', function (data) {
         console.log(data);

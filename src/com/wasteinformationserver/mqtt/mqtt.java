@@ -1,7 +1,7 @@
 package com.wasteinformationserver.mqtt;
 
 import com.wasteinformationserver.basicutils.Log;
-import com.wasteinformationserver.db.jdcb;
+import com.wasteinformationserver.db.JDCB;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -63,7 +63,7 @@ public class mqtt {
 
 
         Log.debug(message);
-        jdcb Database = new jdcb("placeuser", "eaL956R6yFItQVBl", "wasteinformation");
+        JDCB Database = new JDCB("placeuser", "eaL956R6yFItQVBl", "wasteinformation");
         ResultSet result = Database.executeQuery(message);
         try {
             while (result.next()) {

@@ -1,6 +1,7 @@
-package com.wasteinformationserver.website;
+package com.wasteinformationserver.website.datarequests;
 
 import com.wasteinformationserver.basicutils.Log;
+import com.wasteinformationserver.website.basicrequest.PostRequest;
 
 import java.util.HashMap;
 

@@ -1,7 +1,9 @@
-package com.wasteinformationserver.website;
+package com.wasteinformationserver.website.datarequests;
 
 import com.wasteinformationserver.basicutils.Log;
-import com.wasteinformationserver.db.jdcb;
+import com.wasteinformationserver.db.JDCB;
+import com.wasteinformationserver.website.HttpTools;
+import com.wasteinformationserver.website.basicrequest.PostRequest;
 
 import java.util.HashMap;
 
@@ -12,7 +14,7 @@ public class RegisterRequest extends PostRequest {
 
         String passhash = HttpTools.StringToMD5(params.get("password"));
 
-        jdcb myjd = new jdcb("users", "kOpaIJUjkgb9ur6S", "wasteinformation");
+        JDCB myjd = new JDCB("users", "kOpaIJUjkgb9ur6S", "wasteinformation");
         int s = myjd.executeUpdate("INSERT INTO `user` (`username`, `firstName`, `secondName`, `password`, `email`, `logindate`) VALUES ('"+params.get("username")+"', '"+params.get("firstname")+"', '"+params.get("lastname")+"', '"+passhash+"', '"+params.get("email")+"', current_timestamp());");
 
         // TODO: 27.09.19 detect if register process was successful and reply right json

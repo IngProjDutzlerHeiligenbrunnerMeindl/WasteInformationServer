@@ -19,14 +19,19 @@ public class DataRequest extends PostRequest {
 
                 JDCB jdcb = new JDCB("users", "kOpaIJUjkgb9ur6S", "wasteinformation");
 
-                ResultSet set = jdcb.executeQuery("select * from cities where name='"+params.get("wasteregion")+"'");
+                ResultSet set = jdcb.executeQuery("select * from cities where name='"+params.get("wasteregion")+"' AND wastetype='"+params.get("wastetype")+"' AND zone='"+params.get("wastezone")+"'");
                 try {
-                    System.out.println(set.getFetchSize());
+                    if (set.getFetchSize() == 0){
+                        //doesnt exist
+                        System.out.println("doesnt exist");
+                        jdcb.executeUpdate("INSERT INTO `cities`(`userid`, `name`, `wastetype`, `zone`) VALUES (0,'"+params.get("wasteregion")+"','"+params.get("wastetype")+"','"+params.get("wastezone")+"'");
+                    }else {
+                        //already exists
+                        System.out.println("already exists");
+                    }
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-
-//                jdcb.executeUpdate("insert into ");
 
                 // TODO: 11.10.19 store data in database
                 break;

@@ -52,7 +52,9 @@ public class Log {
 
 
     public static void log(String msg, int level) {
+        boolean iswindows = System.getProperty("os.name").contains("Windows");
         StringBuilder builder = new StringBuilder();
+        if (!iswindows){
         switch (level) {
             case INFO:
                 builder.append(ANSI_CYAN);
@@ -73,6 +75,8 @@ public class Log {
                 builder.append(ANSI_BLUE);
                 break;
         }
+
+        }
         builder.append("[");
         builder.append(calcDate(System.currentTimeMillis()));
         builder.append("]");
@@ -85,11 +89,16 @@ public class Log {
         builder.append(colors.get(level));
         builder.append("]");
 
-        builder.append(ANSI_WHITE);
+        if (!iswindows){
+            builder.append(ANSI_WHITE);
+        }
+
         builder.append(" - ");
         builder.append(msg);
 
-        builder.append(ANSI_RESET);
+        if (!iswindows){
+            builder.append(ANSI_RESET);
+        }
         System.out.println(builder.toString());
     }
 

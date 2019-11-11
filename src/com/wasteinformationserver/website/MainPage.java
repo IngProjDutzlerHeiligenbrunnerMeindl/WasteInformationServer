@@ -4,6 +4,7 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.wasteinformationserver.basicutils.Log;
+import com.wasteinformationserver.website.datarequests.LoginState;
 
 import java.awt.*;
 import java.io.*;
@@ -13,31 +14,35 @@ import java.net.URL;
 public class MainPage implements HttpHandler {
     @Override
     public void handle(HttpExchange t) throws IOException {
-        String root = "./wwwroot";
-        URI uri = t.getRequestURI();
-        String path;
+        String path = t.getRequestURI().getPath();
 
-        if (uri.getPath().equals("/")) {
-            path = "/index.html";
-        } else {
-            path = uri.getPath();
+        if (path.equals("/")){
+            path += "index.html";
         }
-        Log.message("looking for: " + root + path);
 
+        Log.message("looking for: " +  path);
 
-//        File file = new File(getClass().getResource("/wwwroot"+path).getFile()).getCanonicalFile();
+        if (path.contains(".html")){
+            if (LoginState.getObject().isLoggedIn()){
+                sendPage(path, t);
+            }else {
+                Log.warning("user not logged in --> redirecting to login page");
+                sendPage("/index.html",t);
+            }
+        }else {
+            sendPage(path, t);
+        }
+    }
+
+    private void sendPage(String path, HttpExchange t) throws IOException {
         InputStream fs = getClass().getResourceAsStream("/wwwroot"+path);
 
-//        File file = new File(root + path).getCanonicalFile();
+        if (fs== null && path.substring(path.length() - 4).equals("html")) {
+            Log.warning("wrong page sending 404");
+            sendPage("/404Error.html",t);
+        } else if(fs== null){
 
-        if (fs.available() < 1) {
-            // Object does not exist or is not a file: reject with 404 error.
-            String response = "404 (Not Found)\n";
-            t.sendResponseHeaders(404, response.length());
-            OutputStream os = t.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
-        } else {
+        }else {
             // Object exists and is a file: accept with response code 200.
             String mime = "text/html";
             if (path.substring(path.length() - 3).equals(".js")) mime = "application/javascript";
@@ -48,7 +53,7 @@ public class MainPage implements HttpHandler {
             t.sendResponseHeaders(200, 0);
 
             OutputStream os = t.getResponseBody();
-//            FileInputStream fs = new FileInputStream(file);
+
             final byte[] buffer = new byte[0x10000];
             int count;
             while ((count = fs.read(buffer)) >= 0) {

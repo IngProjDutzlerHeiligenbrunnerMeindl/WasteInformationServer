@@ -17,15 +17,6 @@ $(document).ready(function () {
         }, 'json');
     });
 
-    $('#addnewtable-btn').click(function () {
-        console.log("clicked");
-        $('.create-table').show();
-    });
-
-    $('.exit-icon').click(function () {
-        $('.create-table').hide();
-    });
-
     $('.dropdown-item').click(function () {
         $('#dropdown-wastetype').html($(this).html());
     });
@@ -57,6 +48,7 @@ $(document).ready(function () {
     });
 
 
+    //Date picker pop up actions...
     var date_input = $('input[name="date"]'); //our date input has the name "date"
     var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
     var options = {

@@ -26,32 +26,32 @@ public class Log {
 
     private static ArrayList<String> colors = new ArrayList<String>(Arrays.asList("", "DEBUG", "MESSAGE", "INFO", "WARNING", "ERROR", "CRITICAL_ERROR"));
 
-    public static void criticalerror(String msg) {
+    public static void criticalerror(Object msg) {
         log(msg, CRITICAL_ERROR);
     }
 
-    public static void error(String msg) {
+    public static void error(Object msg) {
         log(msg, ERROR);
     }
 
-    public static void warning(String msg) {
+    public static void warning(Object msg) {
         log(msg, WARNING);
     }
 
-    public static void info(String msg) {
+    public static void info(Object msg) {
         log(msg, INFO);
     }
 
-    public static void message(String msg) {
+    public static void message(Object msg) {
         log(msg, MESSAGE);
     }
 
-    public static void debug(String msg) {
+    public static void debug(Object msg) {
         log(msg, DEBUG);
     }
 
 
-    public static void log(String msg, int level) {
+    public static void log(Object msg, int level) {
         boolean iswindows = System.getProperty("os.name").contains("Windows");
         StringBuilder builder = new StringBuilder();
         if (!iswindows){
@@ -94,7 +94,7 @@ public class Log {
         }
 
         builder.append(" - ");
-        builder.append(msg);
+        builder.append(msg.toString());
 
         if (!iswindows){
             builder.append(ANSI_RESET);

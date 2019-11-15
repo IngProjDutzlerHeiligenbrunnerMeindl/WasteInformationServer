@@ -17,20 +17,17 @@ public class mqttreceiver {
     public ArrayList<ActionListener> mylisteners = new ArrayList<>();
     public String message;
 
-    public mqttreceiver() {
-
+    public mqttreceiver(MqttClient mqtt) {
+        this.client = mqtt;
     }
 
     public String getmessage() {
 
         try {
-            client = new MqttClient("tcp://192.168.65.15:1883", "JavaSample");
-            client.connect();
-
-            client.setCallback(new MqttCallback() {
+                        client.setCallback(new MqttCallback() {
                 @Override
                 public void connectionLost(Throwable throwable) {
-
+Log.error("connection lost");
                 }
 
                 @Override

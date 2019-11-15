@@ -9,32 +9,25 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 
 public class mqtttransmitter {
+    MqttClient client;
 
-    public mqtttransmitter() {
+    public mqtttransmitter(MqttClient client) {
+        this.client=client;
     }
 
     public void sendmessage(String temp) {
         String topic = "TopicOut";
         String content = temp;
         int qos = 2;
-        String broker = "tcp://192.168.65.15:1883";
-        String clientId = "JavaSample";
         MemoryPersistence persistence = new MemoryPersistence();
 
         try {
-            MqttClient sampleClient = new MqttClient(broker, clientId, persistence);
-            MqttConnectOptions connOpts = new MqttConnectOptions();
-            connOpts.setCleanSession(true);
-            Log.debug("Connecting to broker: " + broker);
-            sampleClient.connect(connOpts);
             Log.debug("Connected");
             Log.debug("Publishing message: " + content);
             MqttMessage message = new MqttMessage(content.getBytes());
             message.setQos(qos);
-            sampleClient.publish(topic, message);
+            client.publish(topic, message);
             Log.debug("Message published");
-            sampleClient.disconnect();
-            Log.debug("Disconnected");
 
 
         } catch (MqttException me) {

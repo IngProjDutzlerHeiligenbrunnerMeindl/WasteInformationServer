@@ -11,13 +11,25 @@ $(document).ready(function () {
     }, 'json');
 
     $.post('/senddata/wastedata', 'action=getAllCities', function (data) {
-        for (var i = 0; i < data.size; i++) {
+        console.log(data);
+        for (var i = 0; i < data.data.length; i++) {
             $('#location-table-data').append("<tr>" +
-                "<td>" + data[i].city + "</td>" +
-                "<td>" + data[i].zone + "</td>" +
-                "<td>" + data[i].wastetype + "</td>" +
+                "<td>" + data.data[i].cityname + "</td>" +
+                "<td>" + data.data[i].zone + "</td>" +
+                "<td>" + data.data[i].wastetype + "</td>" +
                 "</tr>");
         }
+        //todo entweda 1 od 2
+        $("#example2").DataTable();
+        $('#example1').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+        });
+
     }, 'json');
 
 
@@ -36,9 +48,9 @@ $(document).ready(function () {
         var cityname = $("#new_city_cityname").val();
         var zonename = $("#new_city_zonename").val();
         var wastetype = $("#dropdown-wastetype").html();
-        console.log("storing: "+cityname + "--" + wastetype + "in db");
+        console.log("storing: " + cityname + "--" + wastetype + "in db");
 
-        $.post('/senddata/wastedata', 'action=newCity&wastetype=' + wastetype +"&cityname="+cityname+"&wastezone="+zonename, function (data) {
+        $.post('/senddata/wastedata', 'action=newCity&wastetype=' + wastetype + "&cityname=" + cityname + "&wastezone=" + zonename, function (data) {
             console.log(data);
         }, 'json');
 
@@ -48,8 +60,6 @@ $(document).ready(function () {
         var wastetype = $("#dropdown-wastetype").html("select waste type");
 
     });
-
-
 
 
     $('.btn-addtolist').click(function () {
@@ -71,7 +81,7 @@ $(document).ready(function () {
 
         for (var i = 0; i < wastetypearr.length; i++) {
             console.log(wastetypearr[i].innerHTML);
-            $.post('/senddata/wastedata', 'action=senddata&wastetype=' + wastetypearr[i].innerHTML +"&wastetime="+wastetime[i].innerHTML+"&wasteregion="+wasteregionarr[i].innerHTML+"&wastezone="+wastezonearr[i].innerHTML, function (data) {
+            $.post('/senddata/wastedata', 'action=senddata&wastetype=' + wastetypearr[i].innerHTML + "&wastetime=" + wastetime[i].innerHTML + "&wasteregion=" + wasteregionarr[i].innerHTML + "&wastezone=" + wastezonearr[i].innerHTML, function (data) {
                 console.log(data);
             }, 'text');
         }

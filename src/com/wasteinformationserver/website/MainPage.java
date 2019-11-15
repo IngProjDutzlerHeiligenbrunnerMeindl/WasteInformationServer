@@ -4,12 +4,9 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.wasteinformationserver.basicutils.Log;
-import com.wasteinformationserver.website.datarequests.LoginState;
+import com.wasteinformationserver.website.datarequests.login.LoginState;
 
-import java.awt.*;
 import java.io.*;
-import java.net.URI;
-import java.net.URL;
 
 public class MainPage implements HttpHandler {
     @Override
@@ -29,7 +26,7 @@ public class MainPage implements HttpHandler {
                 Log.warning("user not logged in --> redirecting to login page");
                 sendPage("/index.html",t);
             }
-        }else {
+        }else { //only detect login state on html pages
             sendPage(path, t);
         }
     }

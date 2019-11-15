@@ -10,7 +10,18 @@ $(document).ready(function () {
         }
     }, 'json');
 
+    $.post('/senddata/wastedata', 'action=getAllCities', function (data) {
+        for (var i = 0; i < data.size; i++) {
+            $('#location-table-data').append("<tr>" +
+                "<td>" + data[i].city + "</td>" +
+                "<td>" + data[i].zone + "</td>" +
+                "<td>" + data[i].wastetype + "</td>" +
+                "</tr>");
+        }
+    }, 'json');
 
+
+    //btn listeners
     $('#logoutbtn').click(function () {
         $.post('/senddata/checkloginstate', 'action=logout', function (data) {
             console.log(data);
@@ -20,6 +31,26 @@ $(document).ready(function () {
     $('.dropdown-item').click(function () {
         $('#dropdown-wastetype').html($(this).html());
     });
+
+    $('#btn-savecity').click(function () {
+        var cityname = $("#new_city_cityname").val();
+        var zonename = $("#new_city_zonename").val();
+        var wastetype = $("#dropdown-wastetype").html();
+        console.log("storing: "+cityname + "--" + wastetype + "in db");
+
+        $.post('/senddata/wastedata', 'action=newCity&wastetype=' + wastetype +"&cityname="+cityname+"&wastezone="+zonename, function (data) {
+            console.log(data);
+        }, 'json');
+
+        //clear form data
+        var cityname = $("#new_city_cityname").val("");
+        var zonename = $("#new_city_zonename").val("");
+        var wastetype = $("#dropdown-wastetype").html("select waste type");
+
+    });
+
+
+
 
     $('.btn-addtolist').click(function () {
         console.log("added new row to table");

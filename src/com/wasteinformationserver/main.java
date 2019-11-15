@@ -21,7 +21,7 @@ public class main {
         }));
 
         Thread mythread = new Thread(() -> new Webserver().startserver());
-        //mythread.start();
+        mythread.start();
 
         Log.message("thread started");
 

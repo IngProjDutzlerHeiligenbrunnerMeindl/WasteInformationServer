@@ -1,4 +1,4 @@
-package com.wasteinformationserver.website.datarequests;
+package com.wasteinformationserver.website.datarequests.login;
 
 import com.wasteinformationserver.basicutils.Log;
 import com.wasteinformationserver.website.basicrequest.PostRequest;

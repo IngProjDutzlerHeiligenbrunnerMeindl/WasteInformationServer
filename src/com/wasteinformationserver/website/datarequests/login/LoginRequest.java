@@ -1,4 +1,4 @@
-package com.wasteinformationserver.website.datarequests;
+package com.wasteinformationserver.website.datarequests.login;
 
 import com.wasteinformationserver.basicutils.Log;
 import com.wasteinformationserver.db.JDCB;
@@ -12,6 +12,8 @@ import java.util.HashMap;
 public class LoginRequest extends PostRequest {
     @Override
     public String request(HashMap<String, String> params) {
+
+        Log.message("new login request");
 
         String password = params.get("password");
         String username = params.get("username");

@@ -2,9 +2,9 @@ package com.wasteinformationserver.website;
 
 import com.sun.net.httpserver.HttpServer;
 import com.wasteinformationserver.basicutils.Log;
-import com.wasteinformationserver.website.datarequests.CheckLoginState;
+import com.wasteinformationserver.website.datarequests.login.CheckLoginState;
 import com.wasteinformationserver.website.datarequests.DataRequest;
-import com.wasteinformationserver.website.datarequests.LoginRequest;
+import com.wasteinformationserver.website.datarequests.login.LoginRequest;
 import com.wasteinformationserver.website.datarequests.RegisterRequest;
 
 import java.io.IOException;
@@ -22,6 +22,7 @@ public class Webserver {
         }
 
         server.createContext("/", new MainPage());
+
         server.createContext("/senddata/loginget", new LoginRequest());
         server.createContext("/senddata/registerpost",new RegisterRequest());
         server.createContext("/senddata/checkloginstate",new CheckLoginState());

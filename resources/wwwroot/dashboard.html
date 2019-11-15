@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="lib/AdminLTE/plugins/fontawesome-free/css/all.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="lib/AdminLTE/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
     <!-- Tempusdominus Bbootstrap 4 -->
     <link rel="stylesheet" href="lib/AdminLTE/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
     <!-- iCheck -->
@@ -206,13 +208,55 @@
                         </div>
                         <!-- /.card -->
 
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-chart-pie mr-1"></i>
+                                    New City
+                                </h3>
+                                <button id="btn-savecity" type="button" class="btn btn-success"
+                                        style="float:right;">Save
+                                </button>
+                            </div><!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="form-group" style="margin-top: 15px; width: 10cm;">
+                                    <label for="new_city_cityname">City/Village name</label>
+                                    <input type="email" class="form-control" id="new_city_cityname"
+                                           aria-describedby="emailHelp" placeholder="Enter city name here">
+                                    <small class="form-text text-muted">Please try to use no special
+                                        characters</small>
+                                </div>
+                                <div class="form-group" style="width: 10cm;">
+                                    <label for="new_city_zonename">Zone Name</label>
+                                    <input type="email" class="form-control" id="new_city_zonename"
+                                           aria-describedby="emailHelp" placeholder="Enter Zone name here">
+                                    <small class="form-text text-muted">Please try to use no special
+                                        characters</small>
+                                </div>
+
+                                <div class="input-group-prepend">
+                                    <button id="dropdown-wastetype" type="button"
+                                            class="btn btn-outline-dark dropdown-toggle"
+                                            data-toggle="dropdown">
+                                        Select waste type
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">Plastic</a>
+                                        <a class="dropdown-item" href="#">Metal</a>
+                                        <a class="dropdown-item" href="#">Residual waste</a>
+                                        <a class="dropdown-item" href="#">Biowaste</a>
+                                    </div>
+                                </div>
+                            </div><!-- /.card-body -->
+                        </div>
+
 
                         <!-- Custom tabs (Charts with tabs)-->
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">
                                     <i class="fas fa-chart-pie mr-1"></i>
-                                    Create new Date
+                                    New Pick up date
                                 </h3>
                                 <button id="btn-savelist" type="button" class="btn btn-success"
                                         style="float:right;">Save
@@ -220,30 +264,17 @@
                             </div><!-- /.card-header -->
                             <div class="card-body">
                                 <form>
-                                    <h4>General options:</h4>
-                                    <div class="custom-control custom-switch">
-                                        <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                                        <label class="custom-control-label" for="customSwitch1">Notify Led-Board</label>
-                                    </div>
-                                    <div class="form-group" style="margin-top: 15px; width: 30%;">
-                                        <label for="exampleInputEmail1">Table Name</label>
-                                        <input type="email" class="form-control" id="exampleInputEmail1"
-                                               aria-describedby="emailHelp" placeholder="Enter Table Name">
-                                        <small id="emailHelp" class="form-text text-muted">Please try to use no special
-                                            characters</small>
-                                    </div>
-                                    <div class="form-group" style="width: 30%;">
-                                        <label for="exampleInputEmail1">City/Village name</label>
-                                        <input type="email" class="form-control" id="exampleInputEmail1i"
-                                               aria-describedby="emailHelp" placeholder="Enter City name here">
-                                        <small id="emailHelpi" class="form-text text-muted">Please try to use no special
-                                            characters</small>
-                                    </div>
 
                                     <h4>Add Data:</h4>
                                     <div class="input-group mt-3 mb-3" style="width: 100%;">
+
+
+
+                                        <input id="input-wasteregion" type="text" class="form-control"
+                                               placeholder="Region">
+                                        <input id="input-wastezone" type="text" class="form-control" placeholder="Zone">
                                         <div class="input-group-prepend">
-                                            <button id="dropdown-wastetype" type="button"
+                                            <button id="dropdown-wastetype-newdate" type="button"
                                                     class="btn btn-outline-dark dropdown-toggle"
                                                     data-toggle="dropdown">
                                                 Select waste type
@@ -251,17 +282,12 @@
                                             <div class="dropdown-menu">
                                                 <a class="dropdown-item" href="#">Plastic</a>
                                                 <a class="dropdown-item" href="#">Metal</a>
-                                                <a class="dropdown-item" href="#">residual waste</a>
-                                                <a class="dropdown-item" href="#">biowaste</a>
+                                                <a class="dropdown-item" href="#">Residual waste</a>
+                                                <a class="dropdown-item" href="#">Biowaste</a>
                                             </div>
                                         </div>
-
                                         <input id="input-wastetime" style="width: 50px;" class="form-control" id="date"
                                                name="date" placeholder="MM/DD/YYY" type="text"/>
-
-                                        <input id="input-wasteregion" type="text" class="form-control"
-                                               placeholder="Region">
-                                        <input id="input-wastezone" type="text" class="form-control" placeholder="Zone">
                                         <button type="button" class="btn-addtolist btn btn-success"
                                                 style="float:right;">Add to list
                                         </button>
@@ -286,10 +312,55 @@
                     </section>
 
 
+
                     <!-- /.Left col -->
                     <!-- right col (We are only adding the ID to make the widgets sortable)-->
                     <section class="col-lg-5 connectedSortable">
 
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-chart-pie mr-1"></i>
+                                    Pick up locations
+                                </h3>
+                            </div><!-- /.card-header -->
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <table id="example2" class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>City</th>
+                                        <th>Zone</th>
+                                        <th>Waste Type</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="location-table-data">
+                                    <tr>
+                                        <td>Trident</td>
+                                        <td>Internet
+                                            Explorer 4.0
+                                        </td>
+                                        <td>Win 95+</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Trident</td>
+                                        <td>Internet
+                                            Explorer 5.0
+                                        </td>
+                                        <td>Win 95+</td>
+                                    </tr>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <th>City</th>
+                                        <th>Zone</th>
+                                        <th>Waste Type</th>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
 
                         <!-- /.card -->
                     </section>
@@ -358,5 +429,22 @@
         src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
 
 <script type="text/javascript" src="js/dashboard.js"></script>
+<!-- DataTables -->
+<script src="lib/AdminLTE/plugins/datatables/jquery.dataTables.js"></script>
+<script src="lib/AdminLTE/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+<script>
+    $(function () {
+        $("#example2").DataTable();
+        $('#example1').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+        });
+    });
+</script>
+
 </body>
 </html>

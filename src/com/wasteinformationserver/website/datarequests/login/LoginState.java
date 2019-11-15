@@ -1,4 +1,4 @@
-package com.wasteinformationserver.website.datarequests;
+package com.wasteinformationserver.website.datarequests.login;
 
 public class LoginState {
     private LoginState() {}

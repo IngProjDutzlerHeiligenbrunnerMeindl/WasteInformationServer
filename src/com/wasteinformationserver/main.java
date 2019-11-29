@@ -25,8 +25,13 @@ public class main {
 
         Log.message("thread started");
 
-        mqtt m = new mqtt();
-        m.notifymessage();
+        try{
+            mqtt m = new mqtt();
+            m.notifymessage();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 
     }
 }

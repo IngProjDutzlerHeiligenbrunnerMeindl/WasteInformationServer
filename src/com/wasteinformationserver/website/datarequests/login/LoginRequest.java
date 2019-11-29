@@ -19,7 +19,7 @@ public class LoginRequest extends PostRequest {
         String username = params.get("username");
 
         ResultSet s = new JDCB("users", "kOpaIJUjkgb9ur6S", "wasteinformation").executeQuery("select * from user where username ='" + username + "'");
-
+        Log.debug("successfully logged in to db");
         String response = "{\"accept\": false}";
         try {
             s.last();

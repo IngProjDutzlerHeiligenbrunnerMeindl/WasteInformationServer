@@ -12,7 +12,6 @@
     <orderEntry type="library" name="mysql-connector-java-5.1.44-bin" level="project" />
     <orderEntry type="library" name="mysql-connector-java-5.1.44-bin" level="project" />
     <orderEntry type="library" name="org.eclipse.paho.client.mqttv3-1.2.1" level="project" />
-    <orderEntry type="library" name="gson-2.8.6-javadoc" level="project" />
     <orderEntry type="library" name="gson-2.8.6" level="project" />
     <orderEntry type="library" name="gson-2.8.6-sources" level="project" />
   </component>

@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    // TODO: check login state
     console.log("page loaded");
     $.post('/senddata/checkloginstate', 'action=getloginstate', function (data) {
         console.log(data);
@@ -10,27 +9,45 @@ $(document).ready(function () {
         }
     }, 'json');
 
-    $.post('/senddata/wastedata', 'action=getAllCities', function (data) {
-        console.log(data);
-        for (var i = 0; i < data.data.length; i++) {
-            $('#location-table-data').append("<tr>" +
-                "<td>" + data.data[i].cityname + "</td>" +
-                "<td>" + data.data[i].zone + "</td>" +
-                "<td>" + data.data[i].wastetype + "</td>" +
-                "</tr>");
-        }
-        //todo entweda 1 od 2
-        $("#example2").DataTable();
-        $('#example1').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-        });
+    var table;
 
-    }, 'json');
+    function reloadtable() {
+        $.post('/senddata/wastedata', 'action=getAllCities', function (data) {
+            console.log(data);
+            $('#location-table-data').html("");
+            for (var i = 0; i < data.data.length; i++) {
+                $('#location-table-data').append("<tr>" +
+                    "<td>" + data.data[i].cityname + "</td>" +
+                    "<td>" + data.data[i].zone + "</td>" +
+                    "<td>" + data.data[i].wastetype + "</td>" +
+                    "<td>" + "<button dataid='" + data.data[i].id + "' type='button' class='delbtn btn btn-danger'>X</button>" + "</td>" +
+                    "</tr>");
+                $(".delbtn").click(function (event) {
+                    var id = event.target.getAttribute("dataid");
+                    console.log("clicked btn data " + id);
+                    $.post('/senddata/wastedata', 'action=deletecity&id=' + id, function (data) {
+                        console.log(data);
+                        reloadtable();
+                    });
+                });
+            }
+            //todo entweda 1 od 2
+            // $("#example2").reload();
+            table = $("#example2").DataTable();
+
+            // $('#example1').DataTable({
+            //     "paging": true,
+            //     "lengthChange": false,
+            //     "searching": false,
+            //     "ordering": true,
+            //     "info": true,
+            //     "autoWidth": false,
+            // });
+
+        }, 'json');
+    }
+
+    reloadtable();
 
 
     //btn listeners
@@ -52,12 +69,39 @@ $(document).ready(function () {
 
         $.post('/senddata/wastedata', 'action=newCity&wastetype=' + wastetype + "&cityname=" + cityname + "&wastezone=" + zonename, function (data) {
             console.log(data);
+            if (data.status == "inserted") {
+                Swal.fire({
+                    type: "success",
+                    title: 'Successfully created city!',
+                    html: 'This alert closes automatically.',
+                    timer: 1000,
+                }).then((result) => {
+                    console.log('Popup closed. ')
+
+                });
+                table.destroy();
+                reloadtable();
+            } else if (data.status == "exists") {
+                Swal.fire({
+                    type: "warning",
+                    title: 'Name already exists in db',
+                    html: 'Close popup.',
+                }).then((result) => {
+                    console.log('Popup closed. ')
+
+                });
+            }
+
+
         }, 'json');
 
         //clear form data
-        var cityname = $("#new_city_cityname").val("");
-        var zonename = $("#new_city_zonename").val("");
-        var wastetype = $("#dropdown-wastetype").html("select waste type");
+        $("#new_city_cityname").val("");
+        $("#new_city_zonename").val("");
+        $("#dropdown-wastetype").html("select waste type");
+
+
+        //todo reload table.
 
     });
 

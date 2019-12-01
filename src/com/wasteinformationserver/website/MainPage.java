@@ -30,10 +30,10 @@ public class MainPage implements HttpHandler {
             path += "index.html";
         }
 
-        Log.message("looking for: " +  path);
+        Log.debug("looking for: " +  path);
 
         if (path.contains(".html")){
-            if (LoginState.getObject().isLoggedIn()){
+            if (LoginState.getObject().isLoggedIn() || path.equals("/register.html")){ //pass only register page
                 sendPage(path, t);
             }else {
                 Log.warning("user not logged in --> redirecting to login page");

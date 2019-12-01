@@ -14,7 +14,7 @@ public class LoginState {
     String lastname;
     String email;
 
-    boolean loggedin = false;
+    boolean loggedin = true; //todo set back!!!
 
     public void logIn(){
         loggedin=true;

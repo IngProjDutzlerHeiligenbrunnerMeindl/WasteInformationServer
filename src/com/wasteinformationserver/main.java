@@ -1,8 +1,11 @@
 package com.wasteinformationserver;
 
 import com.wasteinformationserver.basicutils.Log;
+import com.wasteinformationserver.db.JDCB;
 import com.wasteinformationserver.mqtt.*;
 import com.wasteinformationserver.website.Webserver;
+
+import java.io.IOException;
 
 public class main {
     public static void main(String[] args) {
@@ -20,11 +23,24 @@ public class main {
             }
         }));
 
+       //initial connect to db
+        Log.message("initial login to db");
+       new Thread(() -> {
+           try {
+               JDCB.init("users", "kOpaIJUjkgb9ur6S", "wasteinformation","192.168.65.15",3306);
+           } catch (IOException e) {
+               //e.printStackTrace();
+               Log.error("no connection to db");
+           }
+       }).start();
+
+       //startup web server
         Thread mythread = new Thread(() -> new Webserver().startserver());
         mythread.start();
 
-        Log.message("thread started");
 
+        //startup mqtt service
+        Log.message("starting mqtt service");
         try{
             mqtt m = new mqtt();
             m.notifymessage();

@@ -8,6 +8,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -51,7 +52,13 @@ public class mqtt {
     public void getDatabasedata(String message, String wastetyp, int clientidentify) {
 
         Log.debug(message);
-        JDCB Database = new JDCB("placeuser", "eaL956R6yFItQVBl", "wasteinformation");
+        JDCB Database = null;
+        try {
+            Database = JDCB.getInstance();
+        } catch (IOException e) {
+            //e.printStackTrace();
+        }
+        //new JDCB("placeuser", "eaL956R6yFItQVBl", "wasteinformation");
         ResultSet result = Database.executeQuery(message);
         try {
             if (!result.isBeforeFirst()) {

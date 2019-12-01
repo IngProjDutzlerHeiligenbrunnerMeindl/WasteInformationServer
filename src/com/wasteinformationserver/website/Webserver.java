@@ -13,7 +13,7 @@ import java.net.InetSocketAddress;
 
 public class Webserver {
     public void startserver() {
-        Log.info("starting server");
+        Log.info("starting Webserver");
         HttpServer server = null;
         try {
             server = HttpServer.create(new InetSocketAddress(8000), 0);

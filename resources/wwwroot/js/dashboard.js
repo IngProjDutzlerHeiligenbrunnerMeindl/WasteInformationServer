@@ -14,35 +14,49 @@ $(document).ready(function () {
     function reloadtable() {
         $.post('/senddata/wastedata', 'action=getAllCities', function (data) {
             console.log(data);
-            $('#location-table-data').html("");
-            for (var i = 0; i < data.data.length; i++) {
-                $('#location-table-data').append("<tr>" +
-                    "<td>" + data.data[i].cityname + "</td>" +
-                    "<td>" + data.data[i].zone + "</td>" +
-                    "<td>" + data.data[i].wastetype + "</td>" +
-                    "<td>" + "<button dataid='" + data.data[i].id + "' type='button' class='delbtn btn btn-danger'>X</button>" + "</td>" +
-                    "</tr>");
-                $(".delbtn").click(function (event) {
-                    var id = event.target.getAttribute("dataid");
-                    console.log("clicked btn data " + id);
-                    $.post('/senddata/wastedata', 'action=deletecity&id=' + id, function (data) {
-                        console.log(data);
-                        reloadtable();
+            if (data.query == "ok") {
+                $('#location-table-data').html("");
+                for (var i = 0; i < data.data.length; i++) {
+                    $('#location-table-data').append("<tr>" +
+                        "<td>" + data.data[i].cityname + "</td>" +
+                        "<td>" + data.data[i].zone + "</td>" +
+                        "<td>" + data.data[i].wastetype + "</td>" +
+                        "<td>" + "<button dataid='" + data.data[i].id + "' type='button' class='delbtn btn btn-danger'>X</button>" + "</td>" +
+                        "</tr>");
+                    $(".delbtn").click(function (event) {
+                        var id = event.target.getAttribute("dataid");
+                        console.log("clicked btn data " + id);
+                        $.post('/senddata/wastedata', 'action=deletecity&id=' + id, function (data) {
+                            console.log(data);
+                            reloadtable();
+                        });
                     });
-                });
-            }
-            //todo entweda 1 od 2
-            // $("#example2").reload();
-            table = $("#example2").DataTable();
+                }
+                //todo entweda 1 od 2
+                // $("#example2").reload();
+                table = $("#example2").DataTable();
 
-            // $('#example1').DataTable({
-            //     "paging": true,
-            //     "lengthChange": false,
-            //     "searching": false,
-            //     "ordering": true,
-            //     "info": true,
-            //     "autoWidth": false,
-            // });
+                // $('#example1').DataTable({
+                //     "paging": true,
+                //     "lengthChange": false,
+                //     "searching": false,
+                //     "ordering": true,
+                //     "info": true,
+                //     "autoWidth": false,
+                // });
+            } else if (data.query == "nodbconn") {
+                Swal.fire({
+                    type: "error",
+                    title: 'No connection to Database',
+                    html: 'Setup DB here --> <a href="index.html">click<a/>.',
+                }).then((result) => {
+                    console.log('Popup closed. ')
+
+                });
+            } else {
+                console.log("Error: " + data.query);
+            }
+
 
         }, 'json');
     }

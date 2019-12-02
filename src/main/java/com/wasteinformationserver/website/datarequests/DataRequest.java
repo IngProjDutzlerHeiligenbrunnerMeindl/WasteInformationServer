@@ -1,6 +1,5 @@
 package com.wasteinformationserver.website.datarequests;
 
-import com.google.gson.Gson;
 import com.wasteinformationserver.basicutils.Log;
 import com.wasteinformationserver.db.JDCB;
 import com.wasteinformationserver.website.basicrequest.PostRequest;
@@ -68,7 +67,6 @@ public class DataRequest extends PostRequest {
             case "getAllCities":
 
                 // TODO: 15.11.19 database call to get all data and store it as json.
-                Gson gson = new Gson();
 
                 StringBuilder builder = new StringBuilder();
 

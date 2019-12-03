@@ -24,57 +24,65 @@ public class Log {
     public static final int MESSAGE = 2;
     public static final int DEBUG = 1;
 
+    private static int Loglevel = 0;
+
     private static ArrayList<String> colors = new ArrayList<String>(Arrays.asList("", "DEBUG", "MESSAGE", "INFO", "WARNING", "ERROR", "CRITICAL_ERROR"));
 
     public static void criticalerror(Object msg) {
-        log(msg, CRITICAL_ERROR);
+        if (Loglevel <= CRITICAL_ERROR)
+            log(msg, CRITICAL_ERROR);
     }
 
     public static void error(Object msg) {
-        log(msg, ERROR);
+        if (Loglevel <= ERROR)
+            log(msg, ERROR);
     }
 
     public static void warning(Object msg) {
-        log(msg, WARNING);
+        if (Loglevel <= WARNING)
+            log(msg, WARNING);
     }
 
     public static void info(Object msg) {
-        log(msg, INFO);
+        if (Loglevel <= INFO)
+            log(msg, INFO);
     }
 
     public static void message(Object msg) {
-        log(msg, MESSAGE);
+        if (Loglevel <= MESSAGE)
+            log(msg, MESSAGE);
     }
 
     public static void debug(Object msg) {
-        log(msg, DEBUG);
+        if (Loglevel <= DEBUG)
+            log(msg, DEBUG);
     }
 
 
     public static void log(Object msg, int level) {
         boolean iswindows = System.getProperty("os.name").contains("Windows");
         StringBuilder builder = new StringBuilder();
-        if (!iswindows){
-        switch (level) {
-            case INFO:
-                builder.append(ANSI_CYAN);
-                break;
-            case WARNING:
-                builder.append(ANSI_YELLOW);
-                break;
-            case ERROR:
-                builder.append(ANSI_RED);
-                break;
-            case CRITICAL_ERROR:
-                builder.append(ANSI_RED);
-                break;
-            case MESSAGE:
-                builder.append(ANSI_WHITE);
-                break;
-            case DEBUG:
-                builder.append(ANSI_BLUE);
-                break;
-        }
+        if (!iswindows) {
+            switch (level) {
+                case INFO:
+                    builder.append(ANSI_CYAN);
+                    break;
+                case WARNING:
+                    builder.append(ANSI_YELLOW);
+                    break;
+                case ERROR:
+                    builder.append(ANSI_RED);
+                    break;
+                case CRITICAL_ERROR:
+                    builder.append(ANSI_RED);
+                    break;
+                case MESSAGE:
+                    builder.append(ANSI_WHITE);
+                    break;
+                case DEBUG:
+                    builder.append(ANSI_BLUE);
+                    break;
+            }
 
         }
         builder.append("[");
@@ -89,14 +97,14 @@ public class Log {
         builder.append(colors.get(level));
         builder.append("]");
 
-        if (!iswindows){
+        if (!iswindows) {
             builder.append(ANSI_WHITE);
         }
 
         builder.append(" - ");
         builder.append(msg.toString());
 
-        if (!iswindows){
+        if (!iswindows) {
             builder.append(ANSI_RESET);
         }
         System.out.println(builder.toString());
@@ -106,6 +114,10 @@ public class Log {
         SimpleDateFormat date_format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date resultdate = new Date(millisecs);
         return date_format.format(resultdate);
+    }
+
+    public static void setLevel(int level) {
+        Loglevel = level;
     }
 
 }

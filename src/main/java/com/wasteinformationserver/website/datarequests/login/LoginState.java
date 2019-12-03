@@ -9,12 +9,12 @@ public class LoginState {
         return mythis;
     }
 
-    String username;
-    String firstname;
-    String lastname;
-    String email;
+    private String username;
+    private String firstname;
+    private String lastname;
+    private String email;
 
-    boolean loggedin = true; //todo set back!!!
+    boolean loggedin = false;
 
     public void logIn(){
         loggedin=true;

@@ -43,6 +43,11 @@ public abstract class PostRequest implements HttpHandler {
         }
     }
 
+    /**
+     *
+     * @param params received get params from com.wasteinformationserver.website
+     * @return json reply to com.wasteinformationserver.website
+     */
     public abstract String request(HashMap<String, String> params);
 
 }

@@ -65,9 +65,6 @@ public class DataRequest extends PostRequest {
                 Log.debug(result);
                 break;
             case "getAllCities":
-
-                // TODO: 15.11.19 database call to get all data and store it as json.
-
                 StringBuilder builder = new StringBuilder();
 
                 ResultSet sett = jdcb.executeQuery("select * from cities");

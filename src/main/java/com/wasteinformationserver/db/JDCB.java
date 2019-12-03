@@ -53,7 +53,6 @@ public class JDCB {
             conn = db.getConnection();
             loggedin = true;
         } catch (SQLException e) {
-            Log.error("no connection to Database!");
             throw new IOException("No connection to database");
         }
 

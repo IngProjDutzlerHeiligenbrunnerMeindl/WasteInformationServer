@@ -2,13 +2,18 @@ plugins {
     id 'java'
 }
 
-group 'org.example'
+group 'com.wasteinformationserver'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 13
+sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+}
+
+sourceSets {
+    main.java.srcDirs = ['src/java']
+    main.resources.srcDirs = ['src/resources']
 }
 
 dependencies {

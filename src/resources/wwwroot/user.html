@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title><title>WasteInformation Server</title></title>
+    <title>WasteInformation Server</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -34,7 +34,7 @@
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
 
-    <link rel="stylesheet" type="text/css" href="css/dashboard.css">
+    <!--    <link rel="stylesheet" type="text/css" href="css/user.css">-->
     <link rel="stylesheet" type="text/css" href="css/general.css">
 
 
@@ -114,8 +114,8 @@
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Dashboard</li>
+                            <li class="breadcrumb-item"><a href="dashboard.html">Home</a></li>
+                            <li class="breadcrumb-item active">Users</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -134,7 +134,7 @@
                             <div class="inner">
                                 <h3>150</h3>
 
-                                <p>Totale Abholungen</p>
+                                <p>Logins</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-bag"></i>
@@ -147,42 +147,12 @@
                         <!-- small box -->
                         <div class="small-box bg-success">
                             <div class="inner">
-                                <h3>53<sup style="font-size: 20px">%</sup></h3>
+                                <h3>28.03.2019 18:53:05<sup style="font-size: 20px">.300</sup></h3>
 
-                                <p>Verbundene Clients</p>
+                                <p>Zuletzt eingeloggt</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-stats-bars"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-warning">
-                            <div class="inner">
-                                <h3>44</h3>
-
-                                <p>Geplante Abholungen</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-person-add"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-danger">
-                            <div class="inner">
-                                <h3>65</h3>
-
-                                <p>Abgeschlossene Abholungen</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-pie-graph"></i>
                             </div>
                             <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
@@ -195,31 +165,20 @@
                     <!-- Left col -->
                     <section class="col-lg-7 connectedSortable">
                         <!-- Custom tabs (Charts with tabs)-->
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">
-                                    <i class="fas fa-chart-pie mr-1"></i>
-                                    Alle abholdaten
-                                </h3>
-                            </div><!-- /.card-header -->
-                            <div class="card-body">
-
-                            </div><!-- /.card-body -->
-                        </div>
-                        <!-- /.card -->
 
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">
                                     <i class="fas fa-chart-pie mr-1"></i>
-                                    New City
+                                    User Data
                                 </h3>
-                                <button id="btn-savecity" type="button" class="btn btn-success"
+                                <button id="btn-saveuserdata" type="button" class="btn btn-success"
                                         style="float:right;">Save
                                 </button>
                             </div><!-- /.card-header -->
                             <div class="card-body">
                                 <div class="form-group" style="margin-top: 15px; width: 10cm;">
+                                    <!-- todo todo -->
                                     <label for="new_city_cityname">City/Village name</label>
                                     <input type="email" class="form-control" id="new_city_cityname"
                                            aria-describedby="emailHelp" placeholder="Enter city name here">
@@ -250,105 +209,12 @@
                             </div><!-- /.card-body -->
                         </div>
 
-
-                        <!-- Custom tabs (Charts with tabs)-->
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">
-                                    <i class="fas fa-chart-pie mr-1"></i>
-                                    New Pick up date
-                                </h3>
-                                <button id="btn-savelist" type="button" class="btn btn-success"
-                                        style="float:right;">Save
-                                </button>
-                            </div><!-- /.card-header -->
-                            <div class="card-body">
-                                <form>
-
-                                    <h4>Add Data:</h4>
-                                    <div class="input-group mt-3 mb-3" style="width: 100%;">
-
-
-
-                                        <input id="input-wasteregion" type="text" class="form-control"
-                                               placeholder="Region">
-                                        <input id="input-wastezone" type="text" class="form-control" placeholder="Zone">
-                                        <div class="input-group-prepend">
-                                            <button id="dropdown-wastetype-newdate" type="button"
-                                                    class="btn btn-outline-dark dropdown-toggle"
-                                                    data-toggle="dropdown">
-                                                Select waste type
-                                            </button>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#">Plastic</a>
-                                                <a class="dropdown-item" href="#">Metal</a>
-                                                <a class="dropdown-item" href="#">Residual waste</a>
-                                                <a class="dropdown-item" href="#">Biowaste</a>
-                                            </div>
-                                        </div>
-                                        <input id="input-wastetime" style="width: 50px;" class="form-control" id="date"
-                                               name="date" placeholder="MM/DD/YYY" type="text"/>
-                                        <button type="button" class="btn-addtolist btn btn-success"
-                                                style="float:right;">Add to list
-                                        </button>
-                                    </div>
-
-                                    <h4>Your Data:</h4>
-                                    <table class="table table-dark table-hover" style="width: 100%;">
-                                        <thead>
-                                        <tr>
-                                            <th>Waste type</th>
-                                            <th>Date</th>
-                                            <th>Region</th>
-                                            <th>Zone</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="addtable-body">
-                                        </tbody>
-                                    </table>
-                                </form>
-                            </div><!-- /.card-body -->
-                        </div>
                     </section>
-
 
 
                     <!-- /.Left col -->
                     <!-- right col (We are only adding the ID to make the widgets sortable)-->
                     <section class="col-lg-5 connectedSortable">
-
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">
-                                    <i class="fas fa-chart-pie mr-1"></i>
-                                    Pick up locations
-                                </h3>
-                            </div><!-- /.card-header -->
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <table id="example2" class="table table-bordered table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>City</th>
-                                        <th>Zone</th>
-                                        <th>Waste Type</th>
-                                        <th>X</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="location-table-data">
-                                    </tbody>
-                                    <tfoot>
-                                    <tr>
-                                        <th>City</th>
-                                        <th>Zone</th>
-                                        <th>Waste Type</th>
-                                        <th>X</th>
-                                    </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                            <!-- /.card-body -->
-                        </div>
 
                         <!-- /.card -->
                     </section>
@@ -416,7 +282,7 @@
 <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
 
-<script type="text/javascript" src="js/dashboard.js"></script>
+<!--<script type="text/javascript" src="js/user.js"></script>-->
 <!-- DataTables -->
 <script src="lib/AdminLTE/plugins/datatables/jquery.dataTables.js"></script>
 <script src="lib/AdminLTE/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>

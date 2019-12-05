@@ -14,7 +14,7 @@ public class LoginState {
     private String lastname;
     private String email;
 
-    boolean loggedin = false;
+    boolean loggedin = true; // TODO: 05.12.19 set back!! 
 
     public void logIn(){
         loggedin=true;

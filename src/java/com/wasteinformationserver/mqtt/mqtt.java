@@ -33,7 +33,7 @@ public class mqtt {
             client.connect(connOpts);
 
         } catch (MqttException e) {
-            e.printStackTrace();
+            Log.error("Connection to the ESB was failes");
         }
 
         mqttreceiver mr = new mqttreceiver(client);
@@ -56,7 +56,7 @@ public class mqtt {
         try {
             Database = JDCB.getInstance();
         } catch (IOException e) {
-            //e.printStackTrace();
+            Log.error("No Connection to the databank");
         }
         //new JDCB("placeuser", "eaL956R6yFItQVBl", "wasteinformation");
         ResultSet result = Database.executeQuery(message);
@@ -77,23 +77,22 @@ public class mqtt {
                     String tempyearnew = yearsplit[1];
                     String newDate = parts[2] + "." + parts[1] + ".20" + tempyearnew;
                     String[] partstwo = date.split(" ");
-                    String Datetomorrow=nexDayDate();
+                    String Datetomorrow = nexDayDate();
 
 
                     int abholtag;
-                    if (partstwo[0].contains(newDate)||partstwo[0].contains(Datetomorrow)) {
+                    if (partstwo[0].contains(newDate) || partstwo[0].contains(Datetomorrow)) {
                         abholtag = 1;
                         transmitmessageAbfallart(clientidentify + "," + wastetyp + "," + abholtag);
-                    }else {
-                        abholtag=0;
+                    } else {
+                        abholtag = 0;
                         transmitmessageAbfallart(clientidentify + "," + wastetyp + "," + abholtag);
                     }
 
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Exception");
-            e.printStackTrace();
+            Log.error("No data from databank");
         }
 
     }
@@ -116,12 +115,9 @@ public class mqtt {
         c.add(Calendar.DATE, 1);
         Date currentDatePlusOne = c.getTime();
 
-        String temp=dateFormat.format(currentDatePlusOne);
-        String split[]=temp.split("/");
-        String newDate=split[2]+"."+split[1]+"."+split[0];
+        String temp = dateFormat.format(currentDatePlusOne);
+        String split[] = temp.split("/");
+        String newDate = split[2] + "." + split[1] + "." + split[0];
         return newDate;
-
-
-
     }
 }

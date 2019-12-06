@@ -12,7 +12,7 @@ public class mqtttransmitter {
     MqttClient client;
 
     public mqtttransmitter(MqttClient client) {
-        this.client=client;
+        this.client = client;
     }
 
     public void sendmessage(String temp) {
@@ -36,7 +36,6 @@ public class mqtttransmitter {
             Log.debug("loc " + me.getLocalizedMessage());
             Log.debug("cause " + me.getCause());
             Log.debug("excep " + me);
-            me.printStackTrace();
         }
     }
 }

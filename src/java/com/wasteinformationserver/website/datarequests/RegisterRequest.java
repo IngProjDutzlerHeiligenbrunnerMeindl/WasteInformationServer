@@ -6,6 +6,7 @@ import com.wasteinformationserver.website.HttpTools;
 import com.wasteinformationserver.website.basicrequest.PostRequest;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
 
 public class RegisterRequest extends PostRequest {
@@ -22,7 +23,11 @@ public class RegisterRequest extends PostRequest {
             e.printStackTrace();
         }
         //new JDCB("users", "kOpaIJUjkgb9ur6S", "wasteinformation");
-        int s = myjd.executeUpdate("INSERT INTO `user` (`username`, `firstName`, `secondName`, `password`, `email`, `logindate`) VALUES ('"+params.get("username")+"', '"+params.get("firstname")+"', '"+params.get("lastname")+"', '"+passhash+"', '"+params.get("email")+"', current_timestamp());");
+        try {
+            int s = myjd.executeUpdate("INSERT INTO `user` (`username`, `firstName`, `secondName`, `password`, `email`, `logindate`) VALUES ('"+params.get("username")+"', '"+params.get("firstname")+"', '"+params.get("lastname")+"', '"+passhash+"', '"+params.get("email")+"', current_timestamp());");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         // TODO: 27.09.19 detect if register process was successful and reply right json
         return "{\"accept\": true}";

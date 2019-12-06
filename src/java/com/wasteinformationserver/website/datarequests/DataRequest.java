@@ -7,6 +7,7 @@ import com.wasteinformationserver.website.basicrequest.PostRequest;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 
 public class DataRequest extends PostRequest {
@@ -42,7 +43,12 @@ public class DataRequest extends PostRequest {
                 if (size == 0) {
                     //doesnt exist
                     System.out.println("doesnt exist");
-                    int status = jdcb.executeUpdate("INSERT INTO `cities`(`userid`, `name`, `wastetype`, `zone`) VALUES ('0','" + params.get("cityname") + "','" + params.get("wastetype") + "','" + params.get("wastezone") + "');");
+                    int status = 0;
+                    try {
+                        status = jdcb.executeUpdate("INSERT INTO `cities`(`userid`, `name`, `wastetype`, `zone`) VALUES ('0','" + params.get("cityname") + "','" + params.get("wastetype") + "','" + params.get("wastezone") + "');");
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                     System.out.println(status);
                     if (status == 1) {
                         sb.append("\"status\" : \"inserted\"");
@@ -95,19 +101,26 @@ public class DataRequest extends PostRequest {
                 //DELETE FROM `cities` WHERE `id`=0
 
                 StringBuilder sbb = new StringBuilder(); // TODO: 06.12.19 better naming and sb for all
-
-                Log.debug(params.get("id"));
-                int status= jdcb.executeUpdate("DELETE FROM `cities` WHERE `id`='" + params.get("id")+"'");
-                Log.debug(status);
-
                 sbb.append("{");
-
-                if (status == 1){
-                    //success
-                    sbb.append("\"status\" : \"success\"");
-                }else {
+                Log.debug(params.get("id"));
+                int status = 0;
+                try{
+                    status= jdcb.executeUpdate("DELETE FROM `cities` WHERE `id`='" + params.get("id")+"'");
+                    if (status == 1){
+                        //success
+                        sbb.append("\"status\" : \"success\"");
+                    }else {
+                        sbb.append("\"status\" : \"error\"");
+                    }
+                }catch (SQLIntegrityConstraintViolationException e){
+                    Log.warning("dependencies of deletion exist");
+                    sbb.append("\"status\" : \"dependenciesnotdeleted\"");
+                } catch (SQLException e) {
+                    Log.error("sql exception: "+e.getMessage());
                     sbb.append("\"status\" : \"error\"");
                 }
+
+                Log.debug(status);
 
                 sbb.append(",\"query\":\"ok\"");
                 sbb.append("}");

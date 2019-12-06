@@ -12,10 +12,14 @@ $(document).ready(function () {
         }
     }, 'json');
 
-    var table;
+    var citytable;
 
     function reloadtable() {
         $.post('/senddata/wastedata', 'action=getAllCities', function (data) {
+            if (citytable != null) {
+                citytable.destroy(); //delete table if already created
+            }
+
             console.log(data);
             if (data.query == "ok") {
                 $('#location-table-data').html("");
@@ -35,32 +39,33 @@ $(document).ready(function () {
                     console.log("clicked btn data " + id);
                     $.post('/senddata/wastedata', 'action=deletecity&id=' + id, function (data) {
                         console.log(data);
-                        Swal.fire({
-                            type: "success",
-                            title: 'Successfully deleted city!',
-                            html: 'This alert closes automatically.',
-                            timer: 1000,
-                        }).then((result) => {
-                            console.log('Popup closed. ')
+                        if (data.status == "success") {
+                            Swal.fire({
+                                type: "success",
+                                title: 'Successfully deleted city!',
+                                html: 'This alert closes automatically.',
+                                timer: 1000,
+                            }).then((result) => {
+                                console.log('Popup closed. ')
 
-                        });
-                        table.destroy(); //todo in reloadtable maybe
-                        reloadtable();
-                    });
+                            });
+                            reloadtable();
+                        } else if (data.status == "dependenciesnotdeleted") {
+                            Swal.fire({
+                                type: "warning",
+                                title: 'This city is a dependency of a date',
+                                html: 'Do you want do delete it anyway with all dependencies?',
+                            }).then((result) => {
+                                console.log('Popup closed. ')
+
+                            });
+                            //todo set yes no button here
+                        }
+
+                    }, "json");
                 });
 
-                //todo entweda 1 od 2
-                // $("#example2").reload();
-                table = $("#example2").DataTable();
-
-                // $('#example1').DataTable({
-                //     "paging": true,
-                //     "lengthChange": false,
-                //     "searching": false,
-                //     "ordering": true,
-                //     "info": true,
-                //     "autoWidth": false,
-                // });
+                citytable = $("#example2").DataTable();
             } else if (data.query == "nodbconn") {
                 Swal.fire({
                     type: "error",
@@ -74,11 +79,23 @@ $(document).ready(function () {
                 console.log("Error: " + data.query);
             }
 
-
         }, 'json');
     }
 
+
+    var DataTable;
+    function reloadDateTable() {
+        $.post('/senddata/wastedata', 'action=getAllDates', function (data) {
+            if (DataTable != null) {
+                DataTable.destroy(); //delete table if already created
+            }
+
+            //todo
+        },"json");
+    }
+
     reloadtable();
+    reloadDateTable();
 
 
     //btn listeners
@@ -88,7 +105,8 @@ $(document).ready(function () {
         }, 'json');
     });
 
-    $('.dropdown-item').click(function () {
+    $('.wastetype-citynew-item').click(function (event) {
+        event.preventDefault();
         $('#dropdown-wastetype').html($(this).html());
     });
 
@@ -110,7 +128,6 @@ $(document).ready(function () {
                     console.log('Popup closed. ')
 
                 });
-                table.destroy();
                 reloadtable();
             } else if (data.status == "exists") {
                 Swal.fire({
@@ -122,18 +139,12 @@ $(document).ready(function () {
 
                 });
             }
-
-
         }, 'json');
 
         //clear form data
         $("#new_city_cityname").val("");
         $("#new_city_zonename").val("");
         $("#dropdown-wastetype").html("select waste type");
-
-
-        //todo reload table.
-
     });
 
 
@@ -142,6 +153,7 @@ $(document).ready(function () {
         event.preventDefault();
         var dropdata = $("#dropdown-city-data");
         dropdata.html("");
+        console.log("loading city names")
 
         $.post('/senddata/newdate', 'action=getCitynames', function (data) {
             console.log(data);
@@ -159,7 +171,7 @@ $(document).ready(function () {
                     $("#dropdown-city").html($(this).html());
                 });
             }
-        });
+        }, "json");
     });
 
     $("#dropdown-zone").click(function (event) {
@@ -167,7 +179,7 @@ $(document).ready(function () {
         var dropdata = $("#dropdown-zone-data");
         dropdata.html("");
 
-        $.post('/senddata/newdate', 'action=getzones&cityname='+$("#dropdown-city").html(), function (data) {
+        $.post('/senddata/newdate', 'action=getzones&cityname=' + $("#dropdown-city").html(), function (data) {
             console.log(data);
             if (data.query == "ok") {
                 var prev = "";
@@ -188,24 +200,47 @@ $(document).ready(function () {
 
     $(".dropdown-item-wastetype").click(function (event) {
         event.preventDefault();
-        $("#dropdown-type-data1").html($(this).html());
+        $("#dropdown-type-data").html($(this).html());
     });
 
 
-    $('#btn-savelist').click(function () {
-        console.log("saving list");
-        var wastetypearr = $('.td-dropdown-wastetype');
-        var wastetime = $('.td-input-wastetime');
-        var wasteregionarr = $('.td-input-wasteregion');
-        var wastezonearr = $('.td-input-wastezone');
+    $('.btn-savelist').click(function () {
+        console.log("saving date");
 
-        for (var i = 0; i < wastetypearr.length; i++) {
-            console.log(wastetypearr[i].innerHTML);
-            $.post('/senddata/wastedata', 'action=senddata&wastetype=' + wastetypearr[i].innerHTML + "&wastetime=" + wastetime[i].innerHTML + "&wasteregion=" + wasteregionarr[i].innerHTML + "&wastezone=" + wastezonearr[i].innerHTML, function (data) {
-                console.log(data);
-            }, 'text');
-        }
+        var cityname = $("#dropdown-city");
+        var zone = $("#dropdown-zone");
+        var wastetype = $("#dropdown-type-data");
+        var date = $("#input-wastetime");
 
+        $.post('/senddata/newdate', 'action=newdate&cityname=' + cityname.html() + "&zone=" + zone.html() + "&wastetype=" + wastetype.html() + "&date=" + date.val(), function (data) {
+            if (data.status == "success") {
+                Swal.fire({
+                    type: "success",
+                    title: 'Successfully created Date!',
+                    html: 'This alert closes automatically.',
+                    timer: 1000,
+                }).then((result) => {
+                    console.log('Popup closed. ')
+
+                });
+
+                cityname.html("Select City");
+                zone.html("Select Zone");
+                wastetype.html("Select waste type");
+                date.val("");
+            } else if (data.status == "citydoesntexist") {
+                Swal.fire({
+                    type: "warning",
+                    title: 'city name doesnt exist',
+                    html: 'Close popup.',
+                }).then((result) => {
+                    console.log('Popup closed. ')
+
+                });
+            }
+
+            console.log(data)
+        }, "json");
     });
 
 
@@ -213,7 +248,7 @@ $(document).ready(function () {
     var date_input = $('input[name="date"]'); //our date input has the name "date"
     var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
     var options = {
-        format: 'mm/dd/yyyy',
+        format: 'yyyy-mm-dd',
         container: container,
         todayHighlight: true,
         autoclose: true,

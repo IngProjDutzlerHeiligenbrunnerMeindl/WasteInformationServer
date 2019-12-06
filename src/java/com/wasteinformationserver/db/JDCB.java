@@ -3,10 +3,7 @@ package com.wasteinformationserver.db;
 import com.wasteinformationserver.basicutils.Log;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class JDCB {
     static Connection conn;
@@ -68,14 +65,9 @@ public class JDCB {
         return null;
     }
 
-    public int executeUpdate(String sql) {
-        try {
+    public int executeUpdate(String sql) throws SQLException {
             PreparedStatement stmt = conn.prepareStatement(sql);
 
             return stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return -1;
     }
 }

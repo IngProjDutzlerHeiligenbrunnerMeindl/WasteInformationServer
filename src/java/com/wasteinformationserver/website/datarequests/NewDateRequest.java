@@ -28,13 +28,13 @@ public class NewDateRequest extends PostRequest {
                 try {
                     String prev = "";
                     while (sett.next()) {
-                        if (prev.equals(sett.getString("name"))){
+                        if (prev.equals(sett.getString("name"))) {
 
-                        }else {
-                            sb.append("{\"cityname\":\"" + sett.getString("name") + "\"}");
-                            if (!sett.isLast()) {
+                        } else {
+                            if (!sett.isFirst()) {
                                 sb.append(",");
                             }
+                            sb.append("{\"cityname\":\"" + sett.getString("name") + "\"}");
                         }
                         prev = sett.getString("name");
                     }
@@ -44,29 +44,55 @@ public class NewDateRequest extends PostRequest {
                 sb.append("]");
                 sb.append(",\"query\":\"ok\"");
                 sb.append("}");
+                Log.debug(sb.toString());
                 break;
             case "getzones":
-                ResultSet set = jdcb.executeQuery("select * from cities WHERE `name`='"+params.get("cityname")+"' ORDER BY zone ASC");
+                ResultSet set = jdcb.executeQuery("select * from cities WHERE `name`='" + params.get("cityname") + "' ORDER BY zone ASC");
                 Log.debug(set.toString());
                 sb.append("{\"data\":[");
                 try {
                     int prev = 42;
                     while (set.next()) {
-                        if (prev == set.getInt("zone")){
+                        if (prev == set.getInt("zone")) {
 
-                        }else {
+                        } else {
                             sb.append("{\"zone\":\"" + set.getInt("zone") + "\"}");
                             if (!set.isLast()) {
                                 sb.append(",");
                             }
                         }
                         prev = set.getInt("zone");
-                        System.out.println(prev);
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
                 sb.append("]");
+                sb.append(",\"query\":\"ok\"");
+                sb.append("}");
+                break;
+            case "newdate":
+                sb.append("{");
+                Log.debug(params);
+                ResultSet seti = jdcb.executeQuery("select * from cities WHERE `name`='" + params.get("cityname") + "' AND `zone`='" + params.get("zone") + "' AND `wastetype`='" + params.get("wastetype") + "'");
+                try {
+                    seti.last();
+                    if (seti.getRow() == 1) {
+                        Log.debug(seti.getInt("id"));
+
+                        int status = jdcb.executeUpdate("INSERT INTO `pickupdates`(`citywastezoneid`, `pickupdate`) VALUES ('" + seti.getInt("id") + "','" + params.get("date") + "')");
+                        if (status == 1) {
+                            sb.append("\"status\" : \"success\"");
+                        } else {
+                            sb.append("\"status\" : \"error\"");
+                        }
+                    } else {
+                        Log.warning("city doesnt exist!");
+                        sb.append("\"status\" : \"citydoesntexist\"");
+                    }
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
                 sb.append(",\"query\":\"ok\"");
                 sb.append("}");
                 break;

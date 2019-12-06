@@ -35,6 +35,7 @@ public class main {
             }
         }).start();
 
+
         //startup web server
         Thread mythread = new Thread(() -> new Webserver().startserver());
         mythread.start();
@@ -46,9 +47,7 @@ public class main {
             mqtt m = new mqtt();
             m.notifymessage();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.debug("An error was happened in the class mqtt");
         }
-
-
     }
 }

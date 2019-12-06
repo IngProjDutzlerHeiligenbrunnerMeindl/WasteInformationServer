@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title><title>WasteInformation Server</title></title>
+    <title>WasteInformation Server</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -88,11 +88,11 @@
                         </a>
                     </li>
 
-                    <li class="nav-item">
-                        <a href="#todo" class="nav-link">
+                    <li id="adminpanel" class="nav-item hideit">
+                        <a href="adminpanel.html" class="nav-link">
                             <i class="nav-icon fas fa-plus-circle"></i>
                             <p>
-                                New Entry
+                                Admin panel
                             </p>
                         </a>
                     </li>
@@ -268,28 +268,42 @@
                                     <h4>Add Data:</h4>
                                     <div class="input-group mt-3 mb-3" style="width: 100%;">
 
-
-
-                                        <input id="input-wasteregion" type="text" class="form-control"
-                                               placeholder="Region">
-                                        <input id="input-wastezone" type="text" class="form-control" placeholder="Zone">
                                         <div class="input-group-prepend">
-                                            <button id="dropdown-wastetype-newdate" type="button"
+                                            <button id="dropdown-city" type="button"
+                                                    class="btn btn-outline-dark dropdown-toggle"
+                                                    data-toggle="dropdown">
+                                                Select city
+                                            </button>
+                                            <div id="dropdown-city-data" class="dropdown-menu">
+                                            </div>
+                                        </div>
+
+                                        <div class="input-group-prepend">
+                                            <button id="dropdown-zone" type="button"
+                                                    class="btn btn-outline-dark dropdown-toggle"
+                                                    data-toggle="dropdown">
+                                                Select Zone
+                                            </button>
+                                            <div id="dropdown-zone-data" class="dropdown-menu">
+                                            </div>
+                                        </div>
+                                        <div class="input-group-prepend">
+                                            <button id="dropdown-type-data1" type="button"
                                                     class="btn btn-outline-dark dropdown-toggle"
                                                     data-toggle="dropdown">
                                                 Select waste type
                                             </button>
                                             <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#">Plastic</a>
-                                                <a class="dropdown-item" href="#">Metal</a>
-                                                <a class="dropdown-item" href="#">Residual waste</a>
-                                                <a class="dropdown-item" href="#">Biowaste</a>
+                                                <a class="dropdown-item-wastetype dropdown-item" href="#">Plastic</a>
+                                                <a class="dropdown-item-wastetype dropdown-item" href="#">Metal</a>
+                                                <a class="dropdown-item-wastetype dropdown-item" href="#">Residual waste</a>
+                                                <a class="dropdown-item-wastetype dropdown-item" href="#">Biowaste</a>
                                             </div>
                                         </div>
                                         <input id="input-wastetime" style="width: 50px;" class="form-control" id="date"
                                                name="date" placeholder="MM/DD/YYY" type="text"/>
                                         <button type="button" class="btn-addtolist btn btn-success"
-                                                style="float:right;">Add to list
+                                                style="float:right;">Save
                                         </button>
                                     </div>
 
@@ -310,7 +324,6 @@
                             </div><!-- /.card-body -->
                         </div>
                     </section>
-
 
 
                     <!-- /.Left col -->

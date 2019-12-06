@@ -13,8 +13,9 @@ public class LoginState {
     private String firstname;
     private String lastname;
     private String email;
+    private int permission;
 
-    boolean loggedin = true; // TODO: 05.12.19 set back!! 
+    boolean loggedin = false;
 
     public void logIn(){
         loggedin=true;
@@ -24,11 +25,12 @@ public class LoginState {
         loggedin=false;
     }
 
-    public void setAccountData(String username, String firstname, String lastname, String email){
+    public void setAccountData(String username, String firstname, String lastname, String email, int permission){
         this.username=username;
         this.firstname=firstname;
         this.lastname=lastname;
         this.email=email;
+        this.permission = permission;
     }
 
     public boolean isLoggedIn(){
@@ -49,5 +51,9 @@ public class LoginState {
 
     public String getEmail() {
         return email;
+    }
+
+    public int getPermission() {
+        return permission;
     }
 }

@@ -45,24 +45,24 @@ public class DataRequest extends PostRequest {
                     int status = jdcb.executeUpdate("INSERT INTO `cities`(`userid`, `name`, `wastetype`, `zone`) VALUES ('0','" + params.get("cityname") + "','" + params.get("wastetype") + "','" + params.get("wastezone") + "');");
                     System.out.println(status);
                     if (status == 1) {
-                        sb.append("\"status\" : \"inserted\"}");
+                        sb.append("\"status\" : \"inserted\"");
                     } else {
                         sb.append("\"status\" : \"inserterror\"");
                     }
 
                 } else if (size > 1) {
                     Log.warning("more than one entry in db!!!");
-                    result = "\"status\" : \"exists\"";
+                    sb.append("\"status\" : \"exists\"");
                 } else {
                     //already exists
                     System.out.println("already exists");
-                    result = "\"status\" : \"exists\"";
+                    sb.append("\"status\" : \"exists\"");
                 }
 
                 sb.append(",\"query\":\"ok\"");
                 sb.append("}");
 
-                Log.debug(result);
+                result = sb.toString();
                 break;
             case "getAllCities":
                 StringBuilder builder = new StringBuilder();
@@ -85,16 +85,33 @@ public class DataRequest extends PostRequest {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                builder.append("]}");
+                builder.append("]");
+                builder.append(",\"query\":\"ok\"");
+                builder.append("}");
                 result = builder.toString();
                 Log.debug(result);
                 break;
             case "deletecity":
                 //DELETE FROM `cities` WHERE `id`=0
 
+                StringBuilder sbb = new StringBuilder(); // TODO: 06.12.19 better naming and sb for all
+
                 Log.debug(params.get("id"));
                 int status= jdcb.executeUpdate("DELETE FROM `cities` WHERE `id`='" + params.get("id")+"'");
                 Log.debug(status);
+
+                sbb.append("{");
+
+                if (status == 1){
+                    //success
+                    sbb.append("\"status\" : \"success\"");
+                }else {
+                    sbb.append("\"status\" : \"error\"");
+                }
+
+                sbb.append(",\"query\":\"ok\"");
+                sbb.append("}");
+                result = sbb.toString();
 
                 break;
         }

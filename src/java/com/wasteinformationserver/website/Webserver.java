@@ -2,6 +2,8 @@ package com.wasteinformationserver.website;
 
 import com.sun.net.httpserver.HttpServer;
 import com.wasteinformationserver.basicutils.Log;
+import com.wasteinformationserver.website.datarequests.AdminRequests;
+import com.wasteinformationserver.website.datarequests.NewDateRequest;
 import com.wasteinformationserver.website.datarequests.login.CheckLoginState;
 import com.wasteinformationserver.website.datarequests.DataRequest;
 import com.wasteinformationserver.website.datarequests.login.LoginRequest;
@@ -27,6 +29,8 @@ public class Webserver {
         server.createContext("/senddata/registerpost",new RegisterRequest());
         server.createContext("/senddata/checkloginstate",new CheckLoginState());
         server.createContext("/senddata/wastedata",new DataRequest());
+        server.createContext("/senddata/admindata", new AdminRequests());
+        server.createContext("/senddata/newdate", new NewDateRequest());
 
         server.setExecutor(null); // creates a default executor
         server.start();

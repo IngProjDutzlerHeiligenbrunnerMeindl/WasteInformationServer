@@ -4,6 +4,9 @@ $(document).ready(function () {
         console.log(data);
         if (data.loggedin == true) {
             $("#userlabel").html(" " + data.username);
+            if (data.permission > 0) {
+                $("#adminpanel").show();
+            }
         } else {
             $("#userlabel").html(" not logged in!!");
         }
@@ -16,6 +19,8 @@ $(document).ready(function () {
             console.log(data);
             if (data.query == "ok") {
                 $('#location-table-data').html("");
+                $(".delbtn").off();
+
                 for (var i = 0; i < data.data.length; i++) {
                     $('#location-table-data').append("<tr>" +
                         "<td>" + data.data[i].cityname + "</td>" +
@@ -23,15 +28,27 @@ $(document).ready(function () {
                         "<td>" + data.data[i].wastetype + "</td>" +
                         "<td>" + "<button dataid='" + data.data[i].id + "' type='button' class='delbtn btn btn-danger'>X</button>" + "</td>" +
                         "</tr>");
-                    $(".delbtn").click(function (event) {
-                        var id = event.target.getAttribute("dataid");
-                        console.log("clicked btn data " + id);
-                        $.post('/senddata/wastedata', 'action=deletecity&id=' + id, function (data) {
-                            console.log(data);
-                            reloadtable();
-                        });
-                    });
                 }
+
+                $(".delbtn").click(function (event) {
+                    var id = event.target.getAttribute("dataid");
+                    console.log("clicked btn data " + id);
+                    $.post('/senddata/wastedata', 'action=deletecity&id=' + id, function (data) {
+                        console.log(data);
+                        Swal.fire({
+                            type: "success",
+                            title: 'Successfully deleted city!',
+                            html: 'This alert closes automatically.',
+                            timer: 1000,
+                        }).then((result) => {
+                            console.log('Popup closed. ')
+
+                        });
+                        table.destroy(); //todo in reloadtable maybe
+                        reloadtable();
+                    });
+                });
+
                 //todo entweda 1 od 2
                 // $("#example2").reload();
                 table = $("#example2").DataTable();
@@ -120,15 +137,60 @@ $(document).ready(function () {
     });
 
 
-    $('.btn-addtolist').click(function () {
-        console.log("added new row to table");
-        $('#addtable-body').append("<tr>" +
-            "<td class='td-dropdown-wastetype'>" + $('#dropdown-wastetype').html() + "</td>" +
-            "<td class='td-input-wastetime'>" + $('#input-wastetime').val() + "</td>" +
-            "<td class='td-input-wasteregion'>" + $('#input-wasteregion').val() + "</td>" +
-            "<td class='td-input-wastezone'>" + $('#input-wastezone').val() + "</td>" +
-            "</tr>");
+    /* new Date create:  */
+    $("#dropdown-city").click(function (event) {
+        event.preventDefault();
+        var dropdata = $("#dropdown-city-data");
+        dropdata.html("");
+
+        $.post('/senddata/newdate', 'action=getCitynames', function (data) {
+            console.log(data);
+            if (data.query == "ok") {
+                var prev = "";
+                for (var i = 0; i < data.data.length; i++) {
+                    var name = data.data[i].cityname;
+                    dropdata.append("<a class=\"dropdown-data-cityname dropdown-item\" href=\"#\">" + name + "</a>");
+                }
+
+                $(".dropdown-data-cityname").off();
+                $(".dropdown-data-cityname").click(function (evnt) {
+                    evnt.preventDefault();
+                    console.log($(this).html());
+                    $("#dropdown-city").html($(this).html());
+                });
+            }
+        });
     });
+
+    $("#dropdown-zone").click(function (event) {
+        event.preventDefault();
+        var dropdata = $("#dropdown-zone-data");
+        dropdata.html("");
+
+        $.post('/senddata/newdate', 'action=getzones&cityname='+$("#dropdown-city").html(), function (data) {
+            console.log(data);
+            if (data.query == "ok") {
+                var prev = "";
+                for (var i = 0; i < data.data.length; i++) {
+                    var zone = data.data[i].zone;
+                    dropdata.append("<a class=\"dropdown-data-zonename dropdown-item\" href=\"#\">" + zone + "</a>");
+                }
+
+                $(".dropdown-data-zonename").off();
+                $(".dropdown-data-zonename").click(function (evnt) {
+                    evnt.preventDefault();
+                    console.log($(this).html());
+                    $("#dropdown-zone").html($(this).html());
+                });
+            }
+        });
+    });
+
+    $(".dropdown-item-wastetype").click(function (event) {
+        event.preventDefault();
+        $("#dropdown-type-data1").html($(this).html());
+    });
+
 
     $('#btn-savelist').click(function () {
         console.log("saving list");

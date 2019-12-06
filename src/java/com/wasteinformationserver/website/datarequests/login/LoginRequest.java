@@ -38,7 +38,7 @@ public class LoginRequest extends PostRequest {
                 if (HttpTools.StringToMD5(password).equals(s.getString("password"))) {
                     Log.debug("login success");
                     LoginState.getObject().logIn();
-                    LoginState.getObject().setAccountData(username,"","","");
+                    LoginState.getObject().setAccountData(username,"","","", s.getInt("permission")); // TODO: 06.12.19
                     response = "{\"accept\": true}";
                 } else {
                     Log.debug("wrong password");

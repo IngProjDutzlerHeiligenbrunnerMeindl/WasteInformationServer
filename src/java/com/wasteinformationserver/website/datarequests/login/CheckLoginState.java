@@ -11,7 +11,7 @@ public class CheckLoginState extends PostRequest {
         Log.message("checking login state");
         if ((params.get("action")).equals("getloginstate")){
             if (LoginState.getObject().isLoggedIn()){
-                return "{\"loggedin\":true, \"username\":\""+LoginState.getObject().getUsername()+"\"}";
+                return "{\"loggedin\":true, \"username\":\""+LoginState.getObject().getUsername()+"\", \"permission\":\""+LoginState.getObject().getPermission()+"\"}";
             }else {
                 return "{\"loggedin\":false}";
             }

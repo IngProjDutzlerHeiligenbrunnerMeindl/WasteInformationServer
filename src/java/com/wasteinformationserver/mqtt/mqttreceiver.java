@@ -24,15 +24,15 @@ public class mqttreceiver {
     public String getmessage() {
 
         try {
-                        client.setCallback(new MqttCallback() {
+            client.setCallback(new MqttCallback() {
                 @Override
                 public void connectionLost(Throwable throwable) {
-Log.error("connection lost");
+                    Log.error("connection lost");
                 }
 
                 @Override
                 public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
-                    message =new String(mqttMessage.getPayload());
+                    message = new String(mqttMessage.getPayload());
                     notifylisteners(message);
 
                 }
@@ -45,7 +45,7 @@ Log.error("connection lost");
             client.subscribe("TopicIn");
             Log.debug("subscribed topic");
         } catch (MqttException e) {
-            e.printStackTrace();
+            Log.error("Connection to the ESB was failed");
         }
         return message;
     }

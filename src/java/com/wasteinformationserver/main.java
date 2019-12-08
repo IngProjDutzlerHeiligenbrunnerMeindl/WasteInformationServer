@@ -28,7 +28,8 @@ public class main {
         Log.message("initial login to db");
         new Thread(() -> {
             try {
-                JDCB.init("users", "kOpaIJUjkgb9ur6S", "wasteinformation", "192.168.65.15", 3306);
+                JDCB.init("ingproject", "Kb9Dxklumt76ieq6", "ingproject", "db.power4future.at", 3306);
+                //JDCB.init("users", "kOpaIJUjkgb9ur6S", "wasteinformation", "192.168.65.15", 3306);
             } catch (IOException e) {
                 //e.printStackTrace();
                 Log.error("no connection to db");

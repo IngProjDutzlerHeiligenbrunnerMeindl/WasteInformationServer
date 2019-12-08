@@ -11,12 +11,25 @@ repositories {
     mavenCentral()
 }
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.wasteinformationserver.main'
+    }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
 sourceSets {
     main.java.srcDirs = ['src/java']
     main.resources.srcDirs = ['src/resources']
 }
 
 dependencies {
-    compile group: 'org.eclipse.paho', name: 'org.eclipse.paho.client.mqttv3', version: '1.0.2'
+    compile group: 'org.eclipse.paho', name: 'org.eclipse.paho.client.mqttv3', version: '1.2.2'
     compile group: 'mysql',name:'mysql-connector-java',version: '8.0.18'
+}
+
+task run (type: JavaExec){
+    description = "Secure algorythm testing"
+    main = 'com.wasteinformationserver.main'
+    classpath = sourceSets.main.runtimeClasspath
 }

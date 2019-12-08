@@ -1,0 +1,15 @@
+{
+  "name": "Waste Information Server",
+  "short_name": "WasteInformationServer",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fff",
+  "description": "A web app to manage waste pickups",
+  "icons": [
+    {
+      "src": "wasteicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -8,7 +8,7 @@ public class MySQLConnector extends Database {
 
     static {
         try {
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -25,4 +25,20 @@ $(document).ready(function () {
             }
         }, 'json');
     });
+
+
+    //register pwa
+    async function registerSW() {
+        console.log("registering service worker!");
+        if ('serviceWorker' in navigator) {
+            try {
+                await navigator.serviceWorker.register('/sw.js');
+            } catch (e) {
+                console.log(`SW registration failed`);
+            }
+        }
+    }
+
+    registerSW();
 });
+

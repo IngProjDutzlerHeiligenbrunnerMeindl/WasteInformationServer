@@ -27,7 +27,8 @@ public class LoginRequest extends PostRequest {
             return "{\"status\" : \"nodbconn\"}";
         }
 
-        ResultSet s = jdcb.executeQuery("select * from user where username ='" + username + "'");;
+        ResultSet s = jdcb.executeQuery("select * from user where username ='" + username + "'");
+        ;
         //new JDCB("users", "kOpaIJUjkgb9ur6S", "wasteinformation").executeQuery("select * from user where username ='" + username + "'");
         Log.debug("successfully logged in to db");
         String response = "{\"accept\": false}";
@@ -38,7 +39,7 @@ public class LoginRequest extends PostRequest {
                 if (HttpTools.StringToMD5(password).equals(s.getString("password"))) {
                     Log.debug("login success");
                     LoginState.getObject().logIn();
-                    LoginState.getObject().setAccountData(username,"","","", s.getInt("permission")); // TODO: 06.12.19
+                    LoginState.getObject().setAccountData(username, "", "", "", s.getInt("permission")); // TODO: 06.12.19
                     response = "{\"accept\": true}";
                 } else {
                     Log.debug("wrong password");

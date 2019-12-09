@@ -1,9 +1,10 @@
 package com.wasteinformationserver.db;
 
-import com.wasteinformationserver.basicutils.Log;
-
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class JDCB {
     static Connection conn;
@@ -21,18 +22,18 @@ public class JDCB {
         usernamec = username;
         passwordc = password;
         dbnamec = dbname;
-        jdcb = new JDCB(username,password,dbname,ip,port);
+        jdcb = new JDCB(username, password, dbname, ip, port);
     }
 
     private JDCB(String username, String password, String dbname, String ip, int port) throws IOException {
-        logintodb(username,password,dbname,ip, port);
+        logintodb(username, password, dbname, ip, port);
     }
 
     public static JDCB getInstance() throws IOException {
-        if (loggedin){
+        if (loggedin) {
             return jdcb;
-        }else {
-            logintodb(usernamec,passwordc,dbnamec,ipc,portc);
+        } else {
+            logintodb(usernamec, passwordc, dbnamec, ipc, portc);
             return jdcb;
         }
 
@@ -66,8 +67,8 @@ public class JDCB {
     }
 
     public int executeUpdate(String sql) throws SQLException {
-            PreparedStatement stmt = conn.prepareStatement(sql);
+        PreparedStatement stmt = conn.prepareStatement(sql);
 
-            return stmt.executeUpdate();
+        return stmt.executeUpdate();
     }
 }

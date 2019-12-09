@@ -2,7 +2,7 @@ package com.wasteinformationserver;
 
 import com.wasteinformationserver.basicutils.Log;
 import com.wasteinformationserver.db.JDCB;
-import com.wasteinformationserver.mqtt.*;
+import com.wasteinformationserver.mqtt.mqtt;
 import com.wasteinformationserver.website.Webserver;
 
 import java.io.IOException;

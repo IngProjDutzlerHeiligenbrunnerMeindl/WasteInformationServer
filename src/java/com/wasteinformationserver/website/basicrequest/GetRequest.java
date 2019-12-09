@@ -37,7 +37,6 @@ public abstract class GetRequest implements HttpHandler {
     }
 
     /**
-     *
      * @param params received get params from com.wasteinformationserver.website
      * @return json reply to com.wasteinformationserver.website
      */

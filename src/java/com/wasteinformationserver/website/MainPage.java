@@ -19,40 +19,42 @@ import com.sun.net.httpserver.HttpHandler;
 import com.wasteinformationserver.basicutils.Log;
 import com.wasteinformationserver.website.datarequests.login.LoginState;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class MainPage implements HttpHandler {
     @Override
     public void handle(HttpExchange t) throws IOException {
         String path = t.getRequestURI().getPath();
 
-        if (path.equals("/")){
+        if (path.equals("/")) {
             path += "index.html";
         }
 
-        Log.debug("looking for: " +  path);
+        Log.debug("looking for: " + path);
 
-        if (path.contains(".html")){
-            if (LoginState.getObject().isLoggedIn() || path.equals("/register.html")){ //pass only register page
+        if (path.contains(".html")) {
+            if (LoginState.getObject().isLoggedIn() || path.equals("/register.html")) { //pass only register page
                 sendPage(path, t);
-            }else {
+            } else {
                 Log.warning("user not logged in --> redirecting to login page");
-                sendPage("/index.html",t);
+                sendPage("/index.html", t);
             }
-        }else { //only detect login state on html pages
+        } else { //only detect login state on html pages
             sendPage(path, t);
         }
     }
 
     private void sendPage(String path, HttpExchange t) throws IOException {
-        InputStream fs = getClass().getResourceAsStream("/wwwroot"+path);
+        InputStream fs = getClass().getResourceAsStream("/wwwroot" + path);
 
-        if (fs== null && path.substring(path.length() - 4).equals("html")) {
+        if (fs == null && path.substring(path.length() - 4).equals("html")) {
             Log.warning("wrong page sending 404");
-            sendPage("/404Error.html",t);
-        } else if(fs== null){
+            sendPage("/404Error.html", t);
+        } else if (fs == null) {
 
-        }else {
+        } else {
             // Object exists and is a file: accept with response code 200.
             String mime = "text/html";
             if (path.substring(path.length() - 3).equals(".js")) mime = "application/javascript";

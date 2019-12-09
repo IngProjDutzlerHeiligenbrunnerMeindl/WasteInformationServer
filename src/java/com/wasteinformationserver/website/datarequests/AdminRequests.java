@@ -1,7 +1,5 @@
 package com.wasteinformationserver.website.datarequests;
 
-import com.wasteinformationserver.basicutils.Log;
-import com.wasteinformationserver.db.JDCB;
 import com.wasteinformationserver.website.basicrequest.PostRequest;
 
 import java.io.File;
@@ -20,7 +18,7 @@ public class AdminRequests extends PostRequest {
                 break;
             case "restartserver":
                 final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
-                 File currentJar = null;
+                File currentJar = null;
                 try {
                     currentJar = new File(AdminRequests.class.getProtectionDomain().getCodeSource().getLocation().toURI());
                 } catch (URISyntaxException e) {
@@ -28,7 +26,7 @@ public class AdminRequests extends PostRequest {
                 }
 
                 /* is it a jar file? */
-                if(!currentJar.getName().endsWith(".jar"))
+                if (!currentJar.getName().endsWith(".jar"))
                     System.out.println("not jar");
 
                 /* Build command: java -jar application.jar */

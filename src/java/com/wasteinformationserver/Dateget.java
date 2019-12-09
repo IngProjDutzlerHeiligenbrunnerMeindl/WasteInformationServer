@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
 
-public class Date {
+public class Dateget {
     private int index = 0;
     ArrayList<String> list = new ArrayList<>();
     ArrayList<String> listnew = new ArrayList<>();
@@ -26,7 +26,7 @@ public class Date {
 
         URL url = null;
         try {
-            url = new URL("https://www.steyr.at/system/web/kalender.aspx?vdatum="+datum+"&bdatum=19.10.2019&typ=&typid=0&typids=225781950&detailonr=0&menuonr=225781812");
+            url = new URL("https://www.steyr.at/system/web/kalender.aspx?vdatum=" + datum + "&bdatum=19.10.2019&typ=&typid=0&typids=225781950&detailonr=0&menuonr=225781812");
             Scanner scanner = new Scanner(new InputStreamReader(url.openStream()));
 
             int n = 0;
@@ -81,22 +81,19 @@ public class Date {
                     String part1 = parts[0]; // 004
                     String part2 = parts[1]; // 034556*/
 
-                  splitter();
+                    splitter();
 
                 }
             }
         }
     }
 
-    private void splitter()
-    {
-        String temp="</ul><h2>";
+    private void splitter() {
+        String temp = "</ul><h2>";
 
-        for (int n=0; n<listnew.size();n++)
-        {
+        for (int n = 0; n < listnew.size(); n++) {
 
-            if(listnew.get(n).equals(temp))
-            {
+            if (listnew.get(n).equals(temp)) {
 
             }
         }

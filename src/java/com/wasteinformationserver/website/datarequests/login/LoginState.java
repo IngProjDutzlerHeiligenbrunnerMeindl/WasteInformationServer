@@ -1,11 +1,12 @@
 package com.wasteinformationserver.website.datarequests.login;
 
 public class LoginState {
-    private LoginState() {}
+    private LoginState() {
+    }
 
-   private static LoginState mythis=new LoginState();
+    private static LoginState mythis = new LoginState();
 
-    public static LoginState getObject(){
+    public static LoginState getObject() {
         return mythis;
     }
 
@@ -17,23 +18,23 @@ public class LoginState {
 
     boolean loggedin = true;
 
-    public void logIn(){
-        loggedin=true;
+    public void logIn() {
+        loggedin = true;
     }
 
-    public void logOut(){
-        loggedin=false;
+    public void logOut() {
+        loggedin = false;
     }
 
-    public void setAccountData(String username, String firstname, String lastname, String email, int permission){
-        this.username=username;
-        this.firstname=firstname;
-        this.lastname=lastname;
-        this.email=email;
+    public void setAccountData(String username, String firstname, String lastname, String email, int permission) {
+        this.username = username;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
         this.permission = permission;
     }
 
-    public boolean isLoggedIn(){
+    public boolean isLoggedIn() {
         return loggedin;
     }
 

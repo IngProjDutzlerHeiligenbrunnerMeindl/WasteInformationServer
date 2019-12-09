@@ -20,7 +20,7 @@ public abstract class PostRequest implements HttpHandler {
             while ((i = ios.read()) != -1) {
                 sb.append((char) i);
             }
-            String query =  sb.toString();
+            String query = sb.toString();
 
             HashMap<String, String> params = new HashMap<>();
 
@@ -44,7 +44,6 @@ public abstract class PostRequest implements HttpHandler {
     }
 
     /**
-     *
      * @param params received get params from com.wasteinformationserver.website
      * @return json reply to com.wasteinformationserver.website
      */

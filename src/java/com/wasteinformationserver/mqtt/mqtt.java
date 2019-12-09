@@ -33,7 +33,7 @@ public class mqtt {
             client.connect(connOpts);
 
         } catch (MqttException e) {
-            Log.error("Connection to the ESB was failes");
+            Log.error("Connection to the ESB was failed");
         }
 
         mqttreceiver mr = new mqttreceiver(client);
@@ -92,7 +92,7 @@ public class mqtt {
                 }
             }
         } catch (SQLException e) {
-            Log.error("No data from databank");
+            Log.error("No data from database");
         }
 
     }

@@ -12,6 +12,24 @@ $(document).ready(function () {
         }
     }, 'json');
 
+    //load total collections
+    $.post('/senddata/wastedata', 'action=getcollectionnumber', function (data) {
+        console.log(data);
+        $("#total-connection-labels").html(data.collectionnumber);
+    }, 'json');
+
+    //load future collections
+    $.post('/senddata/wastedata', 'action=getcollectioninfuture', function (data) {
+        console.log(data);
+        $("#planed-collection-label").html(data.collectionnumber);
+    }, 'json');
+
+    //load future collections
+    $.post('/senddata/wastedata', 'action=getfinishedcollections', function (data) {
+        console.log(data);
+        $("#finished-collection-label").html(data.collectionnumber);
+    }, 'json');
+
     var citytable;
 
     function reloadtable() {

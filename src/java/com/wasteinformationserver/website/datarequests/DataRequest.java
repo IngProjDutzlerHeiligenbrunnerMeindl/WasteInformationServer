@@ -8,12 +8,15 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 public class DataRequest extends PostRequest {
     @Override
     public String request(HashMap<String, String> params) {
-        String result = "";
+        StringBuilder sb = new StringBuilder();
+
         JDCB jdcb;
         try {
             jdcb = JDCB.getInstance();
@@ -23,7 +26,6 @@ public class DataRequest extends PostRequest {
         }
         switch (params.get("action")) {
             case "newCity":
-                StringBuilder sb = new StringBuilder();
                 sb.append("{");
                 Log.debug(params.toString());
 
@@ -67,23 +69,19 @@ public class DataRequest extends PostRequest {
 
                 sb.append(",\"query\":\"ok\"");
                 sb.append("}");
-
-                result = sb.toString();
                 break;
             case "getAllCities":
-                StringBuilder builder = new StringBuilder();
-
                 ResultSet sett = jdcb.executeQuery("select * from cities");
                 Log.debug(sett.toString());
-                builder.append("{\"data\":[");
+                sb.append("{\"data\":[");
                 try {
                     while (sett.next()) {
-                        builder.append("{\"cityname\":\"" + sett.getString("name") + "\"");
-                        builder.append(",\"wastetype\":\"" + sett.getString("wastetype") + "\"");
-                        builder.append(",\"id\":\"" + sett.getString("id") + "\"");
-                        builder.append(",\"zone\":\"" + sett.getString("zone") + "\"}");
+                        sb.append("{\"cityname\":\"" + sett.getString("name") + "\"");
+                        sb.append(",\"wastetype\":\"" + sett.getString("wastetype") + "\"");
+                        sb.append(",\"id\":\"" + sett.getString("id") + "\"");
+                        sb.append(",\"zone\":\"" + sett.getString("zone") + "\"}");
                         if (!sett.isLast()) {
-                            builder.append(",");
+                            sb.append(",");
                         }
 
 //                        System.out.println(sett.getString("name"));
@@ -91,43 +89,89 @@ public class DataRequest extends PostRequest {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                builder.append("]");
-                builder.append(",\"query\":\"ok\"");
-                builder.append("}");
-                result = builder.toString();
-                Log.debug(result);
+                sb.append("]");
+                sb.append(",\"query\":\"ok\"");
+                sb.append("}");
                 break;
             case "deletecity":
                 //DELETE FROM `cities` WHERE `id`=0
-
-                StringBuilder sbb = new StringBuilder(); // TODO: 06.12.19 better naming and sb for all
-                sbb.append("{");
+                sb.append("{");
                 Log.debug(params.get("id"));
                 int status = 0;
-                try{
-                    status= jdcb.executeUpdate("DELETE FROM `cities` WHERE `id`='" + params.get("id")+"'");
-                    if (status == 1){
+                try {
+                    status = jdcb.executeUpdate("DELETE FROM `cities` WHERE `id`='" + params.get("id") + "'");
+                    if (status == 1) {
                         //success
-                        sbb.append("\"status\" : \"success\"");
-                    }else {
-                        sbb.append("\"status\" : \"error\"");
+                        sb.append("\"status\" : \"success\"");
+                    } else {
+                        sb.append("\"status\" : \"error\"");
                     }
-                }catch (SQLIntegrityConstraintViolationException e){
+                } catch (SQLIntegrityConstraintViolationException e) {
                     Log.warning("dependencies of deletion exist");
-                    sbb.append("\"status\" : \"dependenciesnotdeleted\"");
+                    sb.append("\"status\" : \"dependenciesnotdeleted\"");
                 } catch (SQLException e) {
-                    Log.error("sql exception: "+e.getMessage());
-                    sbb.append("\"status\" : \"error\"");
+                    Log.error("sql exception: " + e.getMessage());
+                    sb.append("\"status\" : \"error\"");
                 }
 
                 Log.debug(status);
 
-                sbb.append(",\"query\":\"ok\"");
-                sbb.append("}");
-                result = sbb.toString();
+                sb.append(",\"query\":\"ok\"");
+                sb.append("}");
 
                 break;
+            case "getcollectionnumber": //todo maybe combine all three to one
+                sb.append("{");
+
+                try {
+                    ResultSet settt = jdcb.executeQuery("select * from pickupdates");
+                    settt.last();
+                    sb.append("\"collectionnumber\":\"" + settt.getRow() + "\"");
+                } catch (SQLException e) {
+                    Log.error("sql exception: " + e.getMessage());
+                    sb.append("\"status\" : \"error\"");
+                }
+
+                sb.append(",\"query\":\"ok\"");
+                sb.append("}");
+                break;
+            case "getcollectioninfuture":
+                sb.append("{");
+
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date = new Date();
+                    String time = sdf.format(date);
+                    ResultSet settt = jdcb.executeQuery("SELECT * FROM `pickupdates` WHERE `pickupdate` BETWEEN '"+time+"' AND '2222-12-27'");
+                    settt.last();
+                    sb.append("\"collectionnumber\":\"" + settt.getRow() + "\"");
+                } catch (SQLException e) {
+                    Log.error("sql exception: " + e.getMessage());
+                    sb.append("\"status\" : \"error\"");
+                }
+
+                sb.append(",\"query\":\"ok\"");
+                sb.append("}");
+                break;
+            case "getfinishedcollections":
+                sb.append("{");
+
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date = new Date();
+                    String time = sdf.format(date);
+                    ResultSet settt = jdcb.executeQuery("SELECT * FROM `pickupdates` WHERE `pickupdate` BETWEEN  '0000-12-27' AND '"+time+"'");
+                    settt.last();
+                    sb.append("\"collectionnumber\":\"" + settt.getRow() + "\"");
+                } catch (SQLException e) {
+                    Log.error("sql exception: " + e.getMessage());
+                    sb.append("\"status\" : \"error\"");
+                }
+
+                sb.append(",\"query\":\"ok\"");
+                sb.append("}");
+                break;
         }
-        return result;
+        return sb.toString();
     }
 }

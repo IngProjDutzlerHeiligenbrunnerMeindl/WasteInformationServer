@@ -1,7 +1,7 @@
 {
   "name": "Waste Information Server",
   "short_name": "WasteInformationServer",
-  "start_url": "/",
+  "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#fff",
   "description": "A web app to manage waste pickups",

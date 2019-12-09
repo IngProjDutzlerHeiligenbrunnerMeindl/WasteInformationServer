@@ -16,7 +16,7 @@ public class LoginState {
     private String email;
     private int permission;
 
-    boolean loggedin = true;
+    boolean loggedin = false;
 
     public void logIn() {
         loggedin = true;

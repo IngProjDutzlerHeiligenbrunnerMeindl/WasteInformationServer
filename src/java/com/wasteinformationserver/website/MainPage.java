@@ -35,7 +35,7 @@ public class MainPage implements HttpHandler {
         Log.debug("looking for: " + path);
 
         if (path.contains(".html")) {
-            if (LoginState.getObject().isLoggedIn() || path.equals("/register.html")) { //pass only register page
+            if (LoginState.getObject().isLoggedIn() || path.equals("/register.html") || path.equals("/index.html")) { //pass only register page
                 sendPage(path, t);
             } else {
                 Log.warning("user not logged in --> redirecting to login page");
@@ -49,11 +49,11 @@ public class MainPage implements HttpHandler {
     private void sendPage(String path, HttpExchange t) throws IOException {
         InputStream fs = getClass().getResourceAsStream("/wwwroot" + path);
 
-        if (fs == null && path.substring(path.length() - 4).equals("html")) {
+        if (fs == null && path.contains(".html")) {
             Log.warning("wrong page sending 404");
             sendPage("/404Error.html", t);
         } else if (fs == null) {
-
+            Log.warning("requested resource doesnt exist");
         } else {
             // Object exists and is a file: accept with response code 200.
             String mime = "text/html";

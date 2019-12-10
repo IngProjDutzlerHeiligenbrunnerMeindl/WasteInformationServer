@@ -1,5 +1,6 @@
 package com.wasteinformationserver.website.datarequests;
 
+import com.wasteinformationserver.basicutils.Info;
 import com.wasteinformationserver.basicutils.Log;
 import com.wasteinformationserver.db.JDCB;
 import com.wasteinformationserver.website.basicrequest.PostRequest;
@@ -167,6 +168,16 @@ public class DataRequest extends PostRequest {
                     Log.error("sql exception: " + e.getMessage());
                     sb.append("\"status\" : \"error\"");
                 }
+
+                sb.append(",\"query\":\"ok\"");
+                sb.append("}");
+                break;
+            case "getversionandbuildtime":
+                sb.append("{");
+
+                sb.append("\"version\" : \""+ Info.version+"\"");
+                sb.append(",\"buildtime\" : \""+ Info.builddate+"\"");
+
 
                 sb.append(",\"query\":\"ok\"");
                 sb.append("}");

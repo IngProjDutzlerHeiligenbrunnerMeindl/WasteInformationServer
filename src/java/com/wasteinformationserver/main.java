@@ -1,16 +1,17 @@
 package com.wasteinformationserver;
 
+import com.wasteinformationserver.basicutils.Info;
 import com.wasteinformationserver.basicutils.Log;
 import com.wasteinformationserver.db.JDCB;
 import com.wasteinformationserver.mqtt.mqtt;
 import com.wasteinformationserver.website.Webserver;
-
 import java.io.IOException;
 
 public class main {
     public static void main(String[] args) {
 
         Log.setLevel(Log.DEBUG);
+        Log.info("startup of WasteInformationServer");
 
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -23,6 +24,10 @@ public class main {
                 e.printStackTrace();
             }
         }));
+
+        Info.init();
+        Log.info("Server version: "+Info.version);
+        Log.debug("Build date: "+Info.builddate);
 
         //initial connect to db
         Log.message("initial login to db");

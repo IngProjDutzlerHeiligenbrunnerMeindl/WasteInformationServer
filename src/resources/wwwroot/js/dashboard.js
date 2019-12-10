@@ -30,6 +30,13 @@ $(document).ready(function () {
         $("#finished-collection-label").html(data.collectionnumber);
     }, 'json');
 
+    //load version footer
+    //
+    $.post('/senddata/wastedata', 'action=getversionandbuildtime', function (data) {
+        $("#version-footer-label").html("<b>Version</b> "+data.version+" <b>Build</b> "+data.buildtime);
+    }, 'json');
+
+
     var citytable;
 
     function reloadtable() {

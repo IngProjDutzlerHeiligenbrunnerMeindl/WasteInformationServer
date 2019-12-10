@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'com.wasteinformationserver'
-version '1.0-SNAPSHOT'
+version '0.1-Beta'
 
 sourceCompatibility = 1.8
 
@@ -32,4 +32,18 @@ task run (type: JavaExec){
     description = "Secure algorythm testing"
     main = 'com.wasteinformationserver.main'
     classpath = sourceSets.main.runtimeClasspath
+}
+
+task createProperties(dependsOn: processResources) {
+    doLast {
+        new File("$projectDir/src/resources/version.properties").withWriter { w ->
+            Properties p = new Properties()
+            p['version'] = project.version.toString()
+            p.store w, null
+        }
+    }
+}
+
+classes {
+    dependsOn createProperties
 }

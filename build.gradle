@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 plugins {
     id 'java'
 }
@@ -39,6 +41,7 @@ task createProperties(dependsOn: processResources) {
         new File("$projectDir/src/resources/version.properties").withWriter { w ->
             Properties p = new Properties()
             p['version'] = project.version.toString()
+            p['buildtime'] = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date())
             p.store w, null
         }
     }

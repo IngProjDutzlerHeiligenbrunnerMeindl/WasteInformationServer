@@ -26,8 +26,8 @@ public class main {
         }));
 
         Info.init();
-        Log.info("Server version: "+Info.version);
-        Log.debug("Build date: "+Info.builddate);
+        Log.info("Server version: "+Info.getVersion());
+        Log.debug("Build date: "+Info.getBuilddate());
 
         //initial connect to db
         Log.message("initial login to db");

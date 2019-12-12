@@ -175,8 +175,8 @@ public class DataRequest extends PostRequest {
             case "getversionandbuildtime":
                 sb.append("{");
 
-                sb.append("\"version\" : \""+ Info.version+"\"");
-                sb.append(",\"buildtime\" : \""+ Info.builddate+"\"");
+                sb.append("\"version\" : \""+ Info.getVersion()+"\"");
+                sb.append(",\"buildtime\" : \""+ Info.getBuilddate()+"\"");
 
 
                 sb.append(",\"query\":\"ok\"");

@@ -159,42 +159,17 @@ public class DataRequest extends PostRequest {
                 sb.append(",\"query\":\"ok\"");
                 sb.append("}");
                 break;
-            case "getcollectionnumber": //todo maybe combine all three to one
+            case "getversionandbuildtime":
                 sb.append("{");
 
-                try {
-                    set = jdcb.executeQuery("select * from pickupdates");
-                    set.last();
-                    sb.append("\"collectionnumber\":\"" + set.getRow() + "\"");
-                } catch (SQLException e) {
-                    Log.error("sql exception: " + e.getMessage());
-                    sb.append("\"status\" : \"error\"");
-                }
+                sb.append("\"version\" : \""+ Info.getVersion()+"\"");
+                sb.append(",\"buildtime\" : \""+ Info.getBuilddate()+"\"");
+
 
                 sb.append(",\"query\":\"ok\"");
                 sb.append("}");
                 break;
-            case "getcollectioninfuture":
-                sb.append("{");
-
-                try {
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    Date date = new Date();
-                    date = new Date(date.getTime()+1 * 24 * 60 * 60 * 1000);
-
-                    String time = sdf.format(date);
-                    set = jdcb.executeQuery("SELECT * FROM `pickupdates` WHERE `pickupdate` BETWEEN '"+time+"' AND '2222-12-27'");
-                    set.last();
-                    sb.append("\"collectionnumber\":\"" + set.getRow() + "\"");
-                } catch (SQLException e) {
-                    Log.error("sql exception: " + e.getMessage());
-                    sb.append("\"status\" : \"error\"");
-                }
-
-                sb.append(",\"query\":\"ok\"");
-                sb.append("}");
-                break;
-            case "getfinishedcollections":
+            case "getStartHeaderData":
                 sb.append("{");
 
                 try {
@@ -203,21 +178,28 @@ public class DataRequest extends PostRequest {
                     String time = sdf.format(date);
                     set = jdcb.executeQuery("SELECT * FROM `pickupdates` WHERE `pickupdate` BETWEEN  '0000-12-27' AND '"+time+"'");
                     set.last();
-                    sb.append("\"collectionnumber\":\"" + set.getRow() + "\"");
+                    sb.append("\"finshedcollections\":\"" + set.getRow() + "\"");
+
+                    sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    date = new Date();
+                    date = new Date(date.getTime()+1 * 24 * 60 * 60 * 1000);
+
+                    time = sdf.format(date);
+                    set = jdcb.executeQuery("SELECT * FROM `pickupdates` WHERE `pickupdate` BETWEEN '"+time+"' AND '2222-12-27'");
+                    set.last();
+                    sb.append(",\"futurecollections\":\"" + set.getRow() + "\"");
+
+                    set = jdcb.executeQuery("select * from pickupdates");
+                    set.last();
+                    sb.append(",\"collectionnumber\":\"" + set.getRow() + "\"");
+
+                    set = jdcb.executeQuery("select * from `cities`");
+                    set.last();
+                    sb.append(",\"citynumber\":\"" + set.getRow() + "\"");
                 } catch (SQLException e) {
                     Log.error("sql exception: " + e.getMessage());
                     sb.append("\"status\" : \"error\"");
                 }
-
-                sb.append(",\"query\":\"ok\"");
-                sb.append("}");
-                break;
-            case "getversionandbuildtime":
-                sb.append("{");
-
-                sb.append("\"version\" : \""+ Info.getVersion()+"\"");
-                sb.append(",\"buildtime\" : \""+ Info.getBuilddate()+"\"");
-
 
                 sb.append(",\"query\":\"ok\"");
                 sb.append("}");

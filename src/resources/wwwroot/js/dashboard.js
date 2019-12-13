@@ -13,21 +13,15 @@ $(document).ready(function () {
     }, 'json');
 
     //load total collections
-    $.post('/senddata/wastedata', 'action=getcollectionnumber', function (data) {
+    $.post('/senddata/wastedata', 'action=getStartHeaderData', function (data) {
         console.log(data);
         $("#total-connection-labels").html(data.collectionnumber);
-    }, 'json');
 
-    //load future collections
-    $.post('/senddata/wastedata', 'action=getcollectioninfuture', function (data) {
-        console.log(data);
-        $("#planed-collection-label").html(data.collectionnumber);
-    }, 'json');
+        $("#planed-collection-label").html(data.futurecollections);
 
-    //load future collections
-    $.post('/senddata/wastedata', 'action=getfinishedcollections', function (data) {
-        console.log(data);
-        $("#finished-collection-label").html(data.collectionnumber);
+        $("#finished-collection-label").html(data.finshedcollections);
+
+        $("#total-city-number-label").html(data.citynumber);
     }, 'json');
 
     //load version footer
@@ -161,8 +155,8 @@ $(document).ready(function () {
                     }, "json");
                 });
             }
-            citytable = $("#table-pickupdates").DataTable({
-                "order": [[ 3, "desc" ]]
+            datetable = $("#table-pickupdates").DataTable({
+                "order": [[ 3, "asc" ]]
             } );
 
             //todo picupdates-tablebody

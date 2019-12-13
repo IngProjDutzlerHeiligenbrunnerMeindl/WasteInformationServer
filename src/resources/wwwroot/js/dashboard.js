@@ -13,21 +13,15 @@ $(document).ready(function () {
     }, 'json');
 
     //load total collections
-    $.post('/senddata/wastedata', 'action=getcollectionnumber', function (data) {
+    $.post('/senddata/wastedata', 'action=getStartHeaderData', function (data) {
         console.log(data);
         $("#total-connection-labels").html(data.collectionnumber);
-    }, 'json');
 
-    //load future collections
-    $.post('/senddata/wastedata', 'action=getcollectioninfuture', function (data) {
-        console.log(data);
-        $("#planed-collection-label").html(data.collectionnumber);
-    }, 'json');
+        $("#planed-collection-label").html(data.futurecollections);
 
-    //load future collections
-    $.post('/senddata/wastedata', 'action=getfinishedcollections', function (data) {
-        console.log(data);
-        $("#finished-collection-label").html(data.collectionnumber);
+        $("#finished-collection-label").html(data.finshedcollections);
+
+        $("#total-city-number-label").html(data.citynumber);
     }, 'json');
 
     //load version footer
@@ -38,6 +32,7 @@ $(document).ready(function () {
 
 
     var citytable;
+    var datetable;
 
     function reloadtable() {
         $.post('/senddata/wastedata', 'action=getAllCities', function (data) {
@@ -108,14 +103,63 @@ $(document).ready(function () {
     }
 
 
-    var DataTable;
     function reloadDateTable() {
         $.post('/senddata/wastedata', 'action=getAllDates', function (data) {
-            if (DataTable != null) {
-                DataTable.destroy(); //delete table if already created
+            if (datetable != null) {
+                datetable.destroy(); //delete table if already created
             }
+            console.log(data);
 
-            //todo
+            if (data.query == "ok") {
+                $('#picupdates-tablebody').html("");
+                 $(".delbtndate").off();
+
+                for (var i = 0; i < data.data.length; i++) {
+                    $('#picupdates-tablebody').append("<tr>" +
+                        "<td>" + data.data[i].cityname + "</td>" +
+                        "<td>" + data.data[i].zone + "</td>" +
+                        "<td>" + data.data[i].wastetype + "</td>" +
+                        "<td>" + data.data[i].date + "</td>" +
+                        "<td>" + "<button dataid='" + data.data[i].id + "' type='button' class='delbtndate btn btn-danger'>X</button>" + "</td>" +
+                        "</tr>");
+                }
+
+                $(".delbtndate").click(function (event) {
+                    var id = event.target.getAttribute("dataid");
+                    console.log("clicked btn data " + id);
+                    $.post('/senddata/wastedata', 'action=deletedate&id=' + id, function (data) {
+                        console.log(data);
+                        if (data.status == "success") {
+                            Swal.fire({
+                                type: "success",
+                                title: 'Successfully deleted city!',
+                                html: 'This alert closes automatically.',
+                                timer: 1000,
+                            }).then((result) => {
+                                console.log('Popup closed. ')
+
+                            });
+                            reloadDateTable();
+                        } else if (data.status == "dependenciesnotdeleted") {
+                            Swal.fire({
+                                type: "warning",
+                                title: 'This city is a dependency of a date',
+                                html: 'Do you want do delete it anyway with all dependencies?',
+                            }).then((result) => {
+                                console.log('Popup closed. ')
+
+                            });
+                            //todo set yes no button here
+                        }
+
+                    }, "json");
+                });
+            }
+            datetable = $("#table-pickupdates").DataTable({
+                "order": [[ 3, "asc" ]]
+            } );
+
+            //todo picupdates-tablebody
         },"json");
     }
 
@@ -223,9 +267,31 @@ $(document).ready(function () {
         });
     });
 
-    $(".dropdown-item-wastetype").click(function (event) {
+    $("#dropdown-type-data").click(function (event) {
         event.preventDefault();
-        $("#dropdown-type-data").html($(this).html());
+
+        var dropdata = $("#dropdown-type-drops");
+        dropdata.html("");
+        console.log("clickeeeed");
+
+        $.post('/senddata/newdate', 'action=gettypes&cityname=' + $("#dropdown-city").html()+'&zonename='+$("#dropdown-zone").html(), function (data) {
+            console.log(data);
+            if (data.query == "ok") {
+                for (var i = 0; i < data.data.length; i++) {
+                    var type = data.data[i].wastetype;
+                    dropdata.append("<a class=\"dropdown-data-typename dropdown-item\" href=\"#\">" + type + "</a>");
+                }
+
+                $(".dropdown-data-typename").off();
+                $(".dropdown-data-typename").click(function (evnt) {
+                    evnt.preventDefault();
+                    $("#dropdown-type-data").html($(this).html());
+                });
+            }
+        });
+
+
+
     });
 
 
@@ -253,6 +319,7 @@ $(document).ready(function () {
                 zone.html("Select Zone");
                 wastetype.html("Select waste type");
                 date.val("");
+                reloadDateTable();
             } else if (data.status == "citydoesntexist") {
                 Swal.fire({
                     type: "warning",

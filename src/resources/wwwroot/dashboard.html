@@ -145,14 +145,14 @@
                     <!-- ./col -->
                     <div class="col-lg-3 col-6">
                         <!-- small box -->
-                        <div class="small-box bg-success">
+                        <div class="small-box bg-gray">
                             <div class="inner">
-                                <h3>53<sup style="font-size: 20px">%</sup></h3>
+                                <h3 id="total-city-number-label">42</h3>
 
-                                <p>Verbundene Clients</p>
+                                <p>total collect zones</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-stats-bars"></i>
+                                <i class="ion ion-android-globe" style="color: lightgrey"></i>
                             </div>
                             <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
@@ -167,7 +167,7 @@
                                 <p>Planned Collections</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-person-add"></i>
+                                <i class="ion ion-calendar"></i>
                             </div>
                             <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
@@ -175,14 +175,14 @@
                     <!-- ./col -->
                     <div class="col-lg-3 col-6">
                         <!-- small box -->
-                        <div class="small-box bg-danger">
+                        <div class="small-box bg-success">
                             <div class="inner">
                                 <h3 id="finished-collection-label">65</h3>
 
                                 <p>Finished Collections</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-pie-graph"></i>
+                                <i class="ion ion-android-checkmark-circle"></i>
                             </div>
                             <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
@@ -311,11 +311,7 @@
                                                     data-toggle="dropdown">
                                                 Select waste type
                                             </button>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item-wastetype dropdown-item" href="#">Plastic</a>
-                                                <a class="dropdown-item-wastetype dropdown-item" href="#">Metal</a>
-                                                <a class="dropdown-item-wastetype dropdown-item" href="#">Residual waste</a>
-                                                <a class="dropdown-item-wastetype dropdown-item" href="#">Biowaste</a>
+                                            <div id="dropdown-type-drops" class="dropdown-menu">
                                             </div>
                                         </div>
                                         <input id="input-wastetime" style="width: 50px;" class="form-control" id="date"

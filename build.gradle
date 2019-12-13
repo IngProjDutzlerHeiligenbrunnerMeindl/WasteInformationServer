@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.wasteinformationserver'
-version '0.1-Beta'
+version '0.2-Beta'
 
 sourceCompatibility = 1.8
 

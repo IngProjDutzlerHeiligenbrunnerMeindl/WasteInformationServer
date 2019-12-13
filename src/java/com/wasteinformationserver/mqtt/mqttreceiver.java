@@ -41,7 +41,7 @@ public class mqttreceiver {
             client.subscribe("TopicIn");
             Log.debug("subscribed topic");
         } catch (MqttException e) {
-            Log.error("Connection to the ESB was failed");
+            Log.error("Connection to the ESB failed");
         }
         return message;
     }

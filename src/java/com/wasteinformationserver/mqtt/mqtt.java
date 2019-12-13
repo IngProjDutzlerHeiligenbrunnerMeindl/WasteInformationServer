@@ -31,7 +31,6 @@ public class mqtt {
             MqttConnectOptions connOpts = new MqttConnectOptions();
             connOpts.setCleanSession(true);
             client.connect(connOpts);
-
         } catch (MqttException e) {
             Log.error("Connection to the ESB was failed");
         }
@@ -40,9 +39,7 @@ public class mqtt {
         mr.addMessageReceivedListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String temp = e.getActionCommand();
-
-                String[] split = temp.split(",");
+                String[] split = e.getActionCommand().split(",");
                 String wastetyp = getTyp(Integer.parseInt(split[2]));
                 getDatabasedata("SELECT pickupdates.pickupdate FROM pickupdates WHERE pickupdates.citywastezoneid=(SELECT cities.zone FROM cities WHERE cities.name='" + split[1] + "' AND cities.wastetype='" + wastetyp + "' AND cities.zone=" + split[3] + ")", wastetyp, Integer.parseInt(split[0]));
             }
@@ -55,6 +52,7 @@ public class mqtt {
         Log.debug(message);
         Log.debug(wastetyp);
         Log.debug(clientidentify);
+
         JDCB Database = null;
         try {
             Database = JDCB.getInstance();
@@ -62,27 +60,18 @@ public class mqtt {
             Log.error("No Connection to the databank");
         }
         int wastenumber = getIntTyp(wastetyp);
-        //new JDCB("placeuser", "eaL956R6yFItQVBl", "wasteinformation");
+
         ResultSet result = Database.executeQuery(message);
         try {
             while (result.next()) {
-                String temptime = String.valueOf(result.getString("pickupdate"));
-
-
-                String newDate = getDate(temptime);
-                GregorianCalendar now = new GregorianCalendar();
-                DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.LONG);
-                String date = df.format(now.getTime());
-                String[] partstwo = date.split(",");
+                String newDate = getDateDatabase(String.valueOf(result.getString("pickupdate")));
+                String currentDate = getcurrentDate();
                 String Datetomorrow = nexDayDate();
 
-                int abholtag;
-                if (partstwo[0].equals(newDate) || partstwo[0].equals(Datetomorrow)) {
-                    abholtag = 1;
-                    transmitmessageAbfallart(clientidentify + "," + wastenumber + "," + abholtag);
+                if (currentDate.equals(newDate) || currentDate.equals(Datetomorrow)) {
+                    transmitmessageAbfallart(clientidentify + "," + wastenumber + "," + 1);
                 } else {
-                    abholtag = 0;
-                    transmitmessageAbfallart(clientidentify + "," + wastenumber + "," + abholtag);
+                    transmitmessageAbfallart(clientidentify + "," + wastenumber + "," + 0);
                 }
             }
         } catch (SQLException e) {
@@ -110,8 +99,7 @@ public class mqtt {
 
         String temp = dateFormat.format(currentDatePlusOne);
         String split[] = temp.split("/");
-        String newDate = split[2] + "." + split[1] + "." + split[0];
-        return newDate;
+        return split[2] + "." + split[1] + "." + split[0];
     }
 
     private String getTyp(int number) {
@@ -141,13 +129,19 @@ public class mqtt {
         return number;
     }
 
-    private String getDate(String temptime) {
-        GregorianCalendar now = new GregorianCalendar();
-        DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.LONG);
+    private String getDateDatabase(String temptime) {
         String[] parts = temptime.split("-");
         String tempyear = parts[0];
         String[] yearsplit = tempyear.split("0");
         String tempyearnew = yearsplit[1];
         return parts[2] + "." + parts[1] + "." + tempyearnew;
+    }
+
+    private String getcurrentDate() {
+        GregorianCalendar now = new GregorianCalendar();
+        DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.LONG);
+        String date = df.format(now.getTime());
+        String[] partstwo = date.split(",");
+        return partstwo[0];
     }
 }

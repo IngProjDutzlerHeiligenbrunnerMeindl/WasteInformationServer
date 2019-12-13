@@ -54,7 +54,7 @@ public class main {
             mqtt m = new mqtt();
             m.notifymessage();
         } catch (Exception e) {
-            Log.debug("An error was happened in the class mqtt");
+            Log.error("An error occured in the class mqtt");
         }
     }
 }

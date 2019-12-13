@@ -14,6 +14,7 @@ public class NewDateRequest extends PostRequest {
     public String request(HashMap<String, String> params) {
         StringBuilder sb = new StringBuilder();
         JDCB jdcb;
+        ResultSet set;
         try {
             jdcb = JDCB.getInstance();
         } catch (IOException e) {
@@ -22,21 +23,21 @@ public class NewDateRequest extends PostRequest {
         }
         switch (params.get("action")) {
             case "getCitynames":
-                ResultSet sett = jdcb.executeQuery("select * from cities");
-                Log.debug(sett.toString());
+                set = jdcb.executeQuery("select * from cities");
+                Log.debug(set.toString());
                 sb.append("{\"data\":[");
                 try {
                     String prev = "";
-                    while (sett.next()) {
-                        if (prev.equals(sett.getString("name"))) {
+                    while (set.next()) {
+                        if (prev.equals(set.getString("name"))) {
 
                         } else {
-                            if (!sett.isFirst()) {
+                            if (!set.isFirst()) {
                                 sb.append(",");
                             }
-                            sb.append("{\"cityname\":\"" + sett.getString("name") + "\"}");
+                            sb.append("{\"cityname\":\"" + set.getString("name") + "\"}");
                         }
-                        prev = sett.getString("name");
+                        prev = set.getString("name");
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -47,7 +48,7 @@ public class NewDateRequest extends PostRequest {
                 Log.debug(sb.toString());
                 break;
             case "getzones":
-                ResultSet set = jdcb.executeQuery("select * from cities WHERE `name`='" + params.get("cityname") + "' ORDER BY zone ASC");
+                set = jdcb.executeQuery("select * from cities WHERE `name`='" + params.get("cityname") + "' ORDER BY zone ASC");
                 Log.debug(set.toString());
                 sb.append("{\"data\":[");
                 try {
@@ -70,16 +71,40 @@ public class NewDateRequest extends PostRequest {
                 sb.append(",\"query\":\"ok\"");
                 sb.append("}");
                 break;
+            case "gettypes":
+                set = jdcb.executeQuery("select * from cities WHERE `name`='" + params.get("cityname") + "' AND `zone`='"+params.get("zonename")+"' ORDER BY zone ASC");
+                Log.debug(set.toString());
+                sb.append("{\"data\":[");
+                try {
+                    String prev = "42";
+                    while (set.next()) {
+                        if (prev == set.getString("wastetype")) {
+
+                        } else {
+                            sb.append("{\"wastetype\":\"" + set.getString("wastetype") + "\"}");
+                            if (!set.isLast()) {
+                                sb.append(",");
+                            }
+                        }
+                        prev = set.getString("wastetype");
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                sb.append("]");
+                sb.append(",\"query\":\"ok\"");
+                sb.append("}");
+                break;
             case "newdate":
                 sb.append("{");
                 Log.debug(params);
-                ResultSet seti = jdcb.executeQuery("select * from cities WHERE `name`='" + params.get("cityname") + "' AND `zone`='" + params.get("zone") + "' AND `wastetype`='" + params.get("wastetype") + "'");
+                set = jdcb.executeQuery("select * from cities WHERE `name`='" + params.get("cityname") + "' AND `zone`='" + params.get("zone") + "' AND `wastetype`='" + params.get("wastetype") + "'");
                 try {
-                    seti.last();
-                    if (seti.getRow() == 1) {
-                        Log.debug(seti.getInt("id"));
+                    set.last();
+                    if (set.getRow() == 1) {
+                        Log.debug(set.getInt("id"));
 
-                        int status = jdcb.executeUpdate("INSERT INTO `pickupdates`(`citywastezoneid`, `pickupdate`) VALUES ('" + seti.getInt("id") + "','" + params.get("date") + "')");
+                        int status = jdcb.executeUpdate("INSERT INTO `pickupdates`(`citywastezoneid`, `pickupdate`) VALUES ('" + set.getInt("id") + "','" + params.get("date") + "')");
                         if (status == 1) {
                             sb.append("\"status\" : \"success\"");
                         } else {

@@ -17,6 +17,8 @@ public class DataRequest extends PostRequest {
     @Override
     public String request(HashMap<String, String> params) {
         StringBuilder sb = new StringBuilder();
+        ResultSet set = null;
+        int status = -1;
 
         JDCB jdcb;
         try {
@@ -33,7 +35,7 @@ public class DataRequest extends PostRequest {
 //                check if wastezone and wasteregion already exists
 
                 Log.debug(params.get("cityname") + params.get("wastetype") + params.get("wastezone"));
-                ResultSet set = jdcb.executeQuery("select * from `cities` where `name`='" + params.get("cityname") + "' AND `wastetype`='" + params.get("wastetype") + "' AND `zone`='" + params.get("wastezone") + "'");
+                set = jdcb.executeQuery("select * from `cities` where `name`='" + params.get("cityname") + "' AND `wastetype`='" + params.get("wastetype") + "' AND `zone`='" + params.get("wastezone") + "'");
                 int size = 0;
                 try {
                     if (set != null) {
@@ -45,8 +47,6 @@ public class DataRequest extends PostRequest {
                 }
                 if (size == 0) {
                     //doesnt exist
-                    System.out.println("doesnt exist");
-                    int status = 0;
                     try {
                         status = jdcb.executeUpdate("INSERT INTO `cities`(`userid`, `name`, `wastetype`, `zone`) VALUES ('0','" + params.get("cityname") + "','" + params.get("wastetype") + "','" + params.get("wastezone") + "');");
                     } catch (SQLException e) {
@@ -72,16 +72,16 @@ public class DataRequest extends PostRequest {
                 sb.append("}");
                 break;
             case "getAllCities":
-                ResultSet sett = jdcb.executeQuery("select * from cities");
-                Log.debug(sett.toString());
+                set = jdcb.executeQuery("select * from cities");
+                Log.debug(set.toString());
                 sb.append("{\"data\":[");
                 try {
-                    while (sett.next()) {
-                        sb.append("{\"cityname\":\"" + sett.getString("name") + "\"");
-                        sb.append(",\"wastetype\":\"" + sett.getString("wastetype") + "\"");
-                        sb.append(",\"id\":\"" + sett.getString("id") + "\"");
-                        sb.append(",\"zone\":\"" + sett.getString("zone") + "\"}");
-                        if (!sett.isLast()) {
+                    while (set.next()) {
+                        sb.append("{\"cityname\":\"" + set.getString("name") + "\"");
+                        sb.append(",\"wastetype\":\"" + set.getString("wastetype") + "\"");
+                        sb.append(",\"id\":\"" + set.getString("id") + "\"");
+                        sb.append(",\"zone\":\"" + set.getString("zone") + "\"}");
+                        if (!set.isLast()) {
                             sb.append(",");
                         }
 
@@ -97,8 +97,6 @@ public class DataRequest extends PostRequest {
             case "deletecity":
                 //DELETE FROM `cities` WHERE `id`=0
                 sb.append("{");
-                Log.debug(params.get("id"));
-                int status = 0;
                 try {
                     status = jdcb.executeUpdate("DELETE FROM `cities` WHERE `id`='" + params.get("id") + "'");
                     if (status == 1) {
@@ -121,13 +119,56 @@ public class DataRequest extends PostRequest {
                 sb.append("}");
 
                 break;
+            case "getAllDates":
+                set = jdcb.executeQuery("SELECT pickupdates.id,pickupdates.pickupdate,cities.userid,cities.name,cities.wastetype,cities.zone " +
+                        "FROM `pickupdates` INNER JOIN `cities` ON pickupdates.citywastezoneid = cities.id");
+                sb.append("{\"data\":[");
+                try {
+                    while (set.next()) {
+                        sb.append("{\"date\":\"" + set.getString("pickupdate") + "\"");
+                        sb.append(",\"cityname\":\"" + set.getString("name") + "\"");
+                        sb.append(",\"wastetype\":\"" + set.getString("wastetype") + "\"");
+                        sb.append(",\"id\":\"" + set.getString("id") + "\"");
+                        sb.append(",\"zone\":\"" + set.getString("zone") + "\"}");
+                        if (!set.isLast()) {
+                            sb.append(",");
+                        }
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                sb.append("]");
+                sb.append(",\"query\":\"ok\"");
+                sb.append("}");
+                break;
+            case "deletedate":
+                sb.append("{");
+                try {
+                    status = jdcb.executeUpdate("DELETE FROM `pickupdates` WHERE `id`='" + params.get("id") + "'");
+                    if (status == 1) {
+                        //success
+                        sb.append("\"status\" : \"success\"");
+                    } else {
+                        sb.append("\"status\" : \"error\"");
+                    }
+                } catch (SQLIntegrityConstraintViolationException e) {
+                    Log.warning("dependencies of deletion exist");
+                    sb.append("\"status\" : \"dependenciesnotdeleted\"");
+                } catch (SQLException e) {
+                    Log.error("sql exception: " + e.getMessage());
+                    sb.append("\"status\" : \"error\"");
+                }
+
+                sb.append(",\"query\":\"ok\"");
+                sb.append("}");
+                break;
             case "getcollectionnumber": //todo maybe combine all three to one
                 sb.append("{");
 
                 try {
-                    ResultSet settt = jdcb.executeQuery("select * from pickupdates");
-                    settt.last();
-                    sb.append("\"collectionnumber\":\"" + settt.getRow() + "\"");
+                    set = jdcb.executeQuery("select * from pickupdates");
+                    set.last();
+                    sb.append("\"collectionnumber\":\"" + set.getRow() + "\"");
                 } catch (SQLException e) {
                     Log.error("sql exception: " + e.getMessage());
                     sb.append("\"status\" : \"error\"");
@@ -142,10 +183,12 @@ public class DataRequest extends PostRequest {
                 try {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                     Date date = new Date();
+                    date = new Date(date.getTime()+1 * 24 * 60 * 60 * 1000);
+
                     String time = sdf.format(date);
-                    ResultSet settt = jdcb.executeQuery("SELECT * FROM `pickupdates` WHERE `pickupdate` BETWEEN '"+time+"' AND '2222-12-27'");
-                    settt.last();
-                    sb.append("\"collectionnumber\":\"" + settt.getRow() + "\"");
+                    set = jdcb.executeQuery("SELECT * FROM `pickupdates` WHERE `pickupdate` BETWEEN '"+time+"' AND '2222-12-27'");
+                    set.last();
+                    sb.append("\"collectionnumber\":\"" + set.getRow() + "\"");
                 } catch (SQLException e) {
                     Log.error("sql exception: " + e.getMessage());
                     sb.append("\"status\" : \"error\"");
@@ -161,9 +204,9 @@ public class DataRequest extends PostRequest {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                     Date date = new Date();
                     String time = sdf.format(date);
-                    ResultSet settt = jdcb.executeQuery("SELECT * FROM `pickupdates` WHERE `pickupdate` BETWEEN  '0000-12-27' AND '"+time+"'");
-                    settt.last();
-                    sb.append("\"collectionnumber\":\"" + settt.getRow() + "\"");
+                    set = jdcb.executeQuery("SELECT * FROM `pickupdates` WHERE `pickupdate` BETWEEN  '0000-12-27' AND '"+time+"'");
+                    set.last();
+                    sb.append("\"collectionnumber\":\"" + set.getRow() + "\"");
                 } catch (SQLException e) {
                     Log.error("sql exception: " + e.getMessage());
                     sb.append("\"status\" : \"error\"");

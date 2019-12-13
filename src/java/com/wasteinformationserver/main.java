@@ -11,7 +11,7 @@ import java.io.IOException;
 public class main {
     public static void main(String[] args) {
 
-        Log.setLevel(Log.DEBUG);
+        Log.setLevel(Log.INFO);
         Log.info("startup of WasteInformationServer");
 
 

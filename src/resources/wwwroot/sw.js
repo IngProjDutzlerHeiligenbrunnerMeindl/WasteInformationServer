@@ -10,7 +10,7 @@ const staticAssets = [
     '/lib/jquery.min.js',
     '/lib/popper.min.js',
     '/rsc/login2.jpg',
-    '/wasteicon.png'
+    '/favicon.png'
 ];
 
 self.addEventListener('install', async e => {

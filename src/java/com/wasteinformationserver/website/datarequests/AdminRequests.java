@@ -1,5 +1,6 @@
 package com.wasteinformationserver.website.datarequests;
 
+import com.wasteinformationserver.basicutils.Log;
 import com.wasteinformationserver.website.basicrequest.PostRequest;
 
 import java.io.File;
@@ -27,7 +28,7 @@ public class AdminRequests extends PostRequest {
 
                 /* is it a jar file? */
                 if (!currentJar.getName().endsWith(".jar"))
-                    System.out.println("not jar");
+                    Log.warning("not jar --> cant restart");
 
                 /* Build command: java -jar application.jar */
                 final ArrayList<String> command = new ArrayList<String>();

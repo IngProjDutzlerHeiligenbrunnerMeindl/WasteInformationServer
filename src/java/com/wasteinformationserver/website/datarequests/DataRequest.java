@@ -52,7 +52,7 @@ public class DataRequest extends PostRequest {
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
-                    System.out.println(status);
+
                     if (status == 1) {
                         sb.append("\"status\" : \"inserted\"");
                     } else {
@@ -64,7 +64,6 @@ public class DataRequest extends PostRequest {
                     sb.append("\"status\" : \"exists\"");
                 } else {
                     //already exists
-                    System.out.println("already exists");
                     sb.append("\"status\" : \"exists\"");
                 }
 
@@ -84,8 +83,6 @@ public class DataRequest extends PostRequest {
                         if (!set.isLast()) {
                             sb.append(",");
                         }
-
-//                        System.out.println(sett.getString("name"));
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();

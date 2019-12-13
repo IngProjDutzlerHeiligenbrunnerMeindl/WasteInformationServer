@@ -7,7 +7,7 @@
   "description": "A web app to manage waste pickups",
   "icons": [
     {
-      "src": "wasteicon.png",
+      "src": "favicon.png",
       "sizes": "512x512",
       "type": "image/png"
     }

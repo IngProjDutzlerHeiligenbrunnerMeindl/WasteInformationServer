@@ -5,6 +5,7 @@ import com.wasteinformationserver.basicutils.Log;
 import com.wasteinformationserver.db.JDCB;
 import com.wasteinformationserver.mqtt.mqtt;
 import com.wasteinformationserver.website.Webserver;
+
 import java.io.IOException;
 
 public class main {
@@ -26,8 +27,8 @@ public class main {
         }));
 
         Info.init();
-        Log.info("Server version: "+Info.getVersion());
-        Log.debug("Build date: "+Info.getBuilddate());
+        Log.info("Server version: " + Info.getVersion());
+        Log.debug("Build date: " + Info.getBuilddate());
 
         //initial connect to db
         Log.message("initial login to db");

@@ -44,7 +44,6 @@ public class mqtt {
 
                 String[] split = temp.split(",");
                 String wastetyp = getTyp(Integer.parseInt(split[2]));
-                System.out.println(wastetyp);
                 getDatabasedata("SELECT pickupdates.pickupdate FROM pickupdates WHERE pickupdates.citywastezoneid=(SELECT cities.zone FROM cities WHERE cities.name='" + split[1] + "' AND cities.wastetype='" + wastetyp + "' AND cities.zone=" + split[3] + ")", wastetyp, Integer.parseInt(split[0]));
             }
         });
@@ -53,7 +52,6 @@ public class mqtt {
 
     public void getDatabasedata(String message, String wastetyp, int clientidentify) {
 
-        System.out.println("message");
         Log.debug(message);
         Log.debug(wastetyp);
         Log.debug(clientidentify);
@@ -64,35 +62,29 @@ public class mqtt {
             Log.error("No Connection to the databank");
         }
         int wastenumber = getIntTyp(wastetyp);
-        System.out.println("wastenumber" + wastenumber);
         //new JDCB("placeuser", "eaL956R6yFItQVBl", "wasteinformation");
         ResultSet result = Database.executeQuery(message);
         try {
             while (result.next()) {
-                    String temptime = String.valueOf(result.getString("pickupdate"));
-
-                    GregorianCalendar now = new GregorianCalendar();
-                    DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.LONG);
-                    String date = df.format(now.getTime());
-                    String[] parts = temptime.split("-");
-                    String tempyear = parts[0];
-                    String[] yearsplit = tempyear.split("0");
-                    String tempyearnew = yearsplit[1];
-                    String newDate = parts[2] + "." + parts[1] + ".20" + tempyearnew;
-                    String[] partstwo = date.split(" ");
-                    String Datetomorrow = nexDayDate();
+                String temptime = String.valueOf(result.getString("pickupdate"));
 
 
-                    int abholtag;
-                    if (partstwo[0].equals(newDate) || partstwo[0].equals(Datetomorrow)) {
-                        abholtag = 1;
-                        transmitmessageAbfallart(clientidentify + "," + wastenumber + "," + abholtag);
-                    } else {
-                        abholtag = 0;
-                        transmitmessageAbfallart(clientidentify + "," + wastenumber + "," + abholtag);
-                    }
+                String newDate = getDate(temptime);
+                GregorianCalendar now = new GregorianCalendar();
+                DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.LONG);
+                String date = df.format(now.getTime());
+                String[] partstwo = date.split(",");
+                String Datetomorrow = nexDayDate();
+
+                int abholtag;
+                if (partstwo[0].equals(newDate) || partstwo[0].equals(Datetomorrow)) {
+                    abholtag = 1;
+                    transmitmessageAbfallart(clientidentify + "," + wastenumber + "," + abholtag);
+                } else {
+                    abholtag = 0;
+                    transmitmessageAbfallart(clientidentify + "," + wastenumber + "," + abholtag);
                 }
-
+            }
         } catch (SQLException e) {
             Log.error("No data from database");
         }
@@ -147,5 +139,15 @@ public class mqtt {
             number = 4;
         }
         return number;
+    }
+
+    private String getDate(String temptime) {
+        GregorianCalendar now = new GregorianCalendar();
+        DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.LONG);
+        String[] parts = temptime.split("-");
+        String tempyear = parts[0];
+        String[] yearsplit = tempyear.split("0");
+        String tempyearnew = yearsplit[1];
+        return parts[2] + "." + parts[1] + "." + tempyearnew;
     }
 }

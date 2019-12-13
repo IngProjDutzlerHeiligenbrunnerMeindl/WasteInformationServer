@@ -5,6 +5,7 @@ import com.wasteinformationserver.basicutils.Log;
 import com.wasteinformationserver.db.JDCB;
 import com.wasteinformationserver.mqtt.mqtt;
 import com.wasteinformationserver.website.Webserver;
+
 import java.io.IOException;
 
 public class main {
@@ -26,15 +27,15 @@ public class main {
         }));
 
         Info.init();
-        Log.info("Server version: "+Info.getVersion());
-        Log.debug("Build date: "+Info.getBuilddate());
+        Log.info("Server version: " + Info.getVersion());
+        Log.debug("Build date: " + Info.getBuilddate());
 
         //initial connect to db
         Log.message("initial login to db");
         new Thread(() -> {
             try {
-                JDCB.init("ingproject", "Kb9Dxklumt76ieq6", "ingproject", "db.power4future.at", 3306);
-                //JDCB.init("users", "kOpaIJUjkgb9ur6S", "wasteinformation", "192.168.65.15", 3306);
+                //JDCB.init("users", "admin0", "wasteinformation", "192.168.65.15", 1883);
+                JDCB.init("users", "kOpaIJUjkgb9ur6S", "wasteinformation", "192.168.65.15", 3306);
             } catch (IOException e) {
                 //e.printStackTrace();
                 Log.error("no connection to db");

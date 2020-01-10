@@ -65,64 +65,50 @@
                 </div>
             </div>
 
-            <!-- Sidebar -->
-            <div class="sidebar">
-                <!-- Sidebar user panel (optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="image">
-                        <!-- <img src="lib/AdminLTE/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image"> -->
-                        <i class="nav-icon fas fa-user img-circle elevation-2" style="color:white"></i>
-                    </div>
-                    <!-- <i class="nav-icon fas fa-tachometer-alt"></i> -->
-                    <div class="info">
-                        <a href="user.html" class="d-block" id="userlabel">Username to set!</a>
-                    </div>
-                </div>
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
 
-                <!-- Sidebar Menu -->
-                <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                        data-accordion="false">
+                    <li class="nav-item">
+                        <a href="#todo" class="nav-link">
+                            <i class="nav-icon fas fa-cog"></i>
+                            <p>
+                                Settings
+                            </p>
+                        </a>
+                    </li>
 
-                        <li class="nav-item">
-                            <a href="#todo" class="nav-link">
-                                <i class="nav-icon fas fa-cog"></i>
-                                <p>
-                                    Settings
-                                </p>
-                            </a>
-                        </li>
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link" id="logoutbtn">
+                            <i class="nav-icon fas fa-sign-out-alt"></i>
+                            <p>
+                                Logout
+                            </p>
+                        </a>
+                    </li>
 
-                        <li class="nav-item">
-                            <a href="index.html" class="nav-link" id="logoutbtn">
-                                <i class="nav-icon fas fa-sign-out-alt"></i>
-                                <p>
-                                    Logout
-                                </p>
-                            </a>
-                        </li>
+                    <li id="adminpanel" class="nav-item hideit">
+                        <a href="adminpanel.html" class="nav-link">
+                            <i class="nav-icon fas fa-plus-circle"></i>
+                            <p>
+                                Admin panel
+                            </p>
+                        </a>
+                    </li>
 
-                        <li id="adminpanel" class="nav-item hideit">
-                            <a href="adminpanel.html" class="nav-link">
-                                <i class="nav-icon fas fa-plus-circle"></i>
-                                <p>
-                                    Admin panel
-                                </p>
-                            </a>
-                        </li>
-
-                        <li id="devicepanel" class="nav-item">
-                            <a href="device.html" class="nav-link">
-                                <i class="nav-icon fas fa-plus-circle"></i>
-                                <p>
-                                    Devices
-                                </p>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-                <!-- /.sidebar-menu -->
-            </div>
+                    <li id="devicepanel" class="nav-item">
+                        <a href="device.html" class="nav-link">
+                            <i class="nav-icon fas fa-plus-circle"></i>
+                            <p>
+                                Devices
+                            </p>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /.sidebar-menu -->
+        </div>
         <!-- /.sidebar -->
     </aside>
 
@@ -193,42 +179,32 @@
                             <div class="card-header">
                                 <h3 class="card-title">
                                     <i class="fas fa-chart-pie mr-1"></i>
-                                    User Data
+                                    All Devices
                                 </h3>
-                                <button id="btn-newdevice" type="button" class="btn btn-success"
-                                        style="float:right;">Save
-                                </button>
                             </div><!-- /.card-header -->
                             <div class="card-body">
-                                <div class="form-group" style="margin-top: 15px; width: 10cm;">
-                                    <!-- todo todo -->
-                                    <label for="new_city_cityname">City/Village name</label>
-                                    <input type="email" class="form-control" id="new_city_cityname"
-                                           aria-describedby="emailHelp" placeholder="Enter city name here">
-                                    <small class="form-text text-muted">Please try to use no special
-                                        characters</small>
-                                </div>
-                                <div class="form-group" style="width: 10cm;">
-                                    <label for="new_city_zonename">Zone Name</label>
-                                    <input type="email" class="form-control" id="new_city_zonename"
-                                           aria-describedby="emailHelp" placeholder="Enter Zone name here">
-                                    <small class="form-text text-muted">Please try to use no special
-                                        characters</small>
-                                </div>
-
-                                <div class="input-group-prepend">
-                                    <button id="dropdown-wastetype" type="button"
-                                            class="btn btn-outline-dark dropdown-toggle"
-                                            data-toggle="dropdown">
-                                        Select waste type
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="#">Plastic</a>
-                                        <a class="dropdown-item" href="#">Metal</a>
-                                        <a class="dropdown-item" href="#">Residual waste</a>
-                                        <a class="dropdown-item" href="#">Biowaste</a>
-                                    </div>
-                                </div>
+                                <table id="table-pickupdates" class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>City</th>
+                                        <th>Zone</th>
+                                        <th>Waste Type</th>
+                                        <th>Date</th>
+                                        <th>X</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="picupdates-tablebody">
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <th>City</th>
+                                        <th>Zone</th>
+                                        <th>Waste Type</th>
+                                        <th>Date</th>
+                                        <th>X</th>
+                                    </tr>
+                                    </tfoot>
+                                </table>
                             </div><!-- /.card-body -->
                         </div>
 

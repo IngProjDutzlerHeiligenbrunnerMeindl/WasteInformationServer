@@ -3,7 +3,7 @@ package com.wasteinformationserver;
 import com.wasteinformationserver.basicutils.Info;
 import com.wasteinformationserver.basicutils.Log;
 import com.wasteinformationserver.db.JDCB;
-import com.wasteinformationserver.mqtt.mqtt;
+import com.wasteinformationserver.mqtt.MqttService;
 import com.wasteinformationserver.website.Webserver;
 
 import java.io.IOException;
@@ -35,8 +35,8 @@ public class main {
         Log.message("initial login to db");
         new Thread(() -> {
             try {
-                //JDCB.init("users", "admin0", "wasteinformation", "192.168.65.15", 1883);
-                JDCB.init("users", "kOpaIJUjkgb9ur6S", "wasteinformation", "192.168.65.15", 3306);
+                JDCB.init("ingproject", "Kb9Dxklumt76ieq6", "ingproject", "db.power4future.at", 3306);
+                //JDCB.init("users", "kOpaIJUjkgb9ur6S", "wasteinformation", "192.168.65.15", 3306);
             } catch (IOException e) {
                 //e.printStackTrace();
                 Log.error("no connection to db");
@@ -52,8 +52,8 @@ public class main {
         //startup mqtt service
         Log.message("starting mqtt service");
         try {
-            mqtt m = new mqtt();
-            m.notifymessage();
+            MqttService m = new MqttService();
+            m.startupService();
         } catch (Exception e) {
             Log.error("An error occured in the class mqtt");
         }

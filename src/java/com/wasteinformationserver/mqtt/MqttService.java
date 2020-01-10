@@ -2,9 +2,7 @@ package com.wasteinformationserver.mqtt;
 
 import com.wasteinformationserver.basicutils.Log;
 import com.wasteinformationserver.db.JDCB;
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,35 +15,47 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class mqtt {
+public class MqttService {
     MqttClient client = null;
 
-    public mqtt() {
+    public MqttService() {
 
     }
 
-    public void notifymessage() {
+    public void startupService() {
 
         try {
             client = new MqttClient("tcp://192.168.65.15:1883", "JavaSample42");
             MqttConnectOptions connOpts = new MqttConnectOptions();
             connOpts.setCleanSession(true);
             client.connect(connOpts);
-        } catch (MqttException e) {
-            Log.error("Connection to the ESB was failed");
-        }
 
-        mqttreceiver mr = new mqttreceiver(client);
-        mr.addMessageReceivedListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Log.debug("received message");
-                String[] split = e.getActionCommand().split(",");
-                String wastetyp = getTyp(Integer.parseInt(split[2]));
-                getDatabasedata("SELECT pickupdates.pickupdate FROM pickupdates WHERE pickupdates.citywastezoneid=(SELECT cities.zone FROM cities WHERE cities.name='" + split[1] + "' AND cities.wastetype='" + wastetyp + "' AND cities.zone=" + split[3] + ")", wastetyp, Integer.parseInt(split[0]));
-            }
-        });
-        mr.getmessage();
+            client.setCallback(new MqttCallback() {
+                @Override
+                public void connectionLost(Throwable throwable) {
+                    Log.error("connection lost");
+                }
+
+                @Override
+                public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
+                    String message = new String(mqttMessage.getPayload());
+                    Log.info("received Request from PCB");
+
+                    Log.debug("received message");
+                    String[] split = message.split(",");
+                    String wastetyp = getTyp(Integer.parseInt(split[2]));
+                    getDatabasedata("SELECT pickupdates.pickupdate FROM pickupdates WHERE pickupdates.citywastezoneid=(SELECT cities.zone FROM cities WHERE cities.name='" + split[1] + "' AND cities.wastetype='" + wastetyp + "' AND cities.zone=" + split[3] + ")", wastetyp, Integer.parseInt(split[0]));
+                }
+
+                @Override
+                public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
+
+                }
+            });
+            client.subscribe("TopicIn");
+        } catch (MqttException e) {
+            Log.error("Connection to the Broker failed");
+        }
     }
 
     public void getDatabasedata(String message, String wastetyp, int clientidentify) {
@@ -87,15 +97,19 @@ public class mqtt {
     }
 
 
-    private void transmitmessageAbfallart(String temp) {
+    private void transmitmessageAbfallart(String temp)  {
         Log.debug("sending message >>>"+temp);
-        mqtttransmitter mt = new mqtttransmitter(client);
-        Log.debug(temp);
-        mt.sendmessage(temp);
+        MqttMessage message = new MqttMessage(temp.getBytes());
+        message.setQos(2);
+        try {
+            client.publish("TopicOut", message);
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
     }
 
     private String nexDayDate() {
-
+        // TODO: 10.01.20 doesnt work 
         final DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         Date currentDate = new Date();
 

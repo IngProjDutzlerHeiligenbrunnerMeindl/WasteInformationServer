@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>WasteInformation Server</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="lib/AdminLTE/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="lib/AdminLTE/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
+    <!-- Tempusdominus Bbootstrap 4 -->
+    <link rel="stylesheet" href="lib/AdminLTE/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="lib/AdminLTE/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="lib/AdminLTE/plugins/jqvmap/jqvmap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="lib/AdminLTE/dist/css/adminlte.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="lib/AdminLTE/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="lib/AdminLTE/plugins/daterangepicker/daterangepicker.css">
+    <!-- summernote -->
+    <link rel="stylesheet" href="lib/AdminLTE/plugins/summernote/summernote-bs4.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+    <!-- Bootstrap Date-Picker Plugin -->
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+
+    <!--    <link rel="stylesheet" type="text/css" href="css/user.css">-->
+    <link rel="stylesheet" type="text/css" href="css/general.css">
+
+
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="dashboard.html" class="brand-link">
+            <img src="lib/AdminLTE/dist/img/AdminLTELogo.png" alt="AdminLTE Logo"
+                 class="brand-image img-circle elevation-3"
+                 style="opacity: .8">
+            <span class="brand-text font-weight-light">Waste Control</span>
+        </a>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Sidebar user panel (optional) -->
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    <!-- <img src="lib/AdminLTE/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image"> -->
+                    <i class="nav-icon fas fa-user img-circle elevation-2" style="color:white"></i>
+                </div>
+                <!-- <i class="nav-icon fas fa-tachometer-alt"></i> -->
+                <div class="info">
+                    <a href="user.html" class="d-block" id="userlabel">Username to set!</a>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Sidebar user panel (optional) -->
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <div class="image">
+                        <!-- <img src="lib/AdminLTE/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image"> -->
+                        <i class="nav-icon fas fa-user img-circle elevation-2" style="color:white"></i>
+                    </div>
+                    <!-- <i class="nav-icon fas fa-tachometer-alt"></i> -->
+                    <div class="info">
+                        <a href="user.html" class="d-block" id="userlabel">Username to set!</a>
+                    </div>
+                </div>
+
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                        data-accordion="false">
+
+                        <li class="nav-item">
+                            <a href="#todo" class="nav-link">
+                                <i class="nav-icon fas fa-cog"></i>
+                                <p>
+                                    Settings
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="index.html" class="nav-link" id="logoutbtn">
+                                <i class="nav-icon fas fa-sign-out-alt"></i>
+                                <p>
+                                    Logout
+                                </p>
+                            </a>
+                        </li>
+
+                        <li id="adminpanel" class="nav-item hideit">
+                            <a href="adminpanel.html" class="nav-link">
+                                <i class="nav-icon fas fa-plus-circle"></i>
+                                <p>
+                                    Admin panel
+                                </p>
+                            </a>
+                        </li>
+
+                        <li id="devicepanel" class="nav-item">
+                            <a href="device.html" class="nav-link">
+                                <i class="nav-icon fas fa-plus-circle"></i>
+                                <p>
+                                    Devices
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- /.sidebar-menu -->
+            </div>
+        <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">Dashboard</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="dashboard.html">Home</a></li>
+                            <li class="breadcrumb-item active">Users</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <!-- Small boxes (Stat box) -->
+                <div class="row">
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-info">
+                            <div class="inner">
+                                <h3>150</h3>
+
+                                <p>Todo</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-bag"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-success">
+                            <div class="inner">
+                                <h3>42</h3>
+
+                                <p>Devices</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                </div>
+                <!-- /.row -->
+                <!-- Main row -->
+                <div class="row">
+                    <!-- Left col -->
+                    <section class="col-lg-7 connectedSortable">
+                        <!-- Custom tabs (Charts with tabs)-->
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-chart-pie mr-1"></i>
+                                    User Data
+                                </h3>
+                                <button id="btn-newdevice" type="button" class="btn btn-success"
+                                        style="float:right;">Save
+                                </button>
+                            </div><!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="form-group" style="margin-top: 15px; width: 10cm;">
+                                    <!-- todo todo -->
+                                    <label for="new_city_cityname">City/Village name</label>
+                                    <input type="email" class="form-control" id="new_city_cityname"
+                                           aria-describedby="emailHelp" placeholder="Enter city name here">
+                                    <small class="form-text text-muted">Please try to use no special
+                                        characters</small>
+                                </div>
+                                <div class="form-group" style="width: 10cm;">
+                                    <label for="new_city_zonename">Zone Name</label>
+                                    <input type="email" class="form-control" id="new_city_zonename"
+                                           aria-describedby="emailHelp" placeholder="Enter Zone name here">
+                                    <small class="form-text text-muted">Please try to use no special
+                                        characters</small>
+                                </div>
+
+                                <div class="input-group-prepend">
+                                    <button id="dropdown-wastetype" type="button"
+                                            class="btn btn-outline-dark dropdown-toggle"
+                                            data-toggle="dropdown">
+                                        Select waste type
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">Plastic</a>
+                                        <a class="dropdown-item" href="#">Metal</a>
+                                        <a class="dropdown-item" href="#">Residual waste</a>
+                                        <a class="dropdown-item" href="#">Biowaste</a>
+                                    </div>
+                                </div>
+                            </div><!-- /.card-body -->
+                        </div>
+
+                    </section>
+
+
+                    <!-- /.Left col -->
+                    <!-- right col (We are only adding the ID to make the widgets sortable)-->
+                    <section class="col-lg-5 connectedSortable">
+
+                        <!-- /.card -->
+                    </section>
+                    <!-- right col -->
+                </div>
+                <!-- /.row (main row) -->
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <footer class="main-footer">
+        <strong>By Gregor Dutzler & Lukas Heiligenbrunner & Emil Meindl</strong>
+        <div class="float-right d-none d-sm-inline-block">
+            <b>Version</b> 3.0.0
+            <b>Build</b> 2019-8-8 9:30
+        </div>
+
+
+    </footer>
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="lib/AdminLTE/plugins/jquery/jquery.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="lib/AdminLTE/plugins/jquery-ui/jquery-ui.min.js"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+    $.widget.bridge('uibutton', $.ui.button)
+</script>
+<!-- Bootstrap 4 -->
+<script src="lib/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- ChartJS -->
+<script src="lib/AdminLTE/plugins/chart.js/Chart.min.js"></script>
+<!-- Sparkline -->
+<script src="lib/AdminLTE/plugins/sparklines/sparkline.js"></script>
+<!-- JQVMap -->
+<script src="lib/AdminLTE/plugins/jqvmap/jquery.vmap.min.js"></script>
+<script src="lib/AdminLTE/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+<!-- jQuery Knob Chart -->
+<script src="lib/AdminLTE/plugins/jquery-knob/jquery.knob.min.js"></script>
+<!-- daterangepicker -->
+<script src="lib/AdminLTE/plugins/moment/moment.min.js"></script>
+<script src="lib/AdminLTE/plugins/daterangepicker/daterangepicker.js"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="lib/AdminLTE/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<!-- Summernote -->
+<script src="lib/AdminLTE/plugins/summernote/summernote-bs4.min.js"></script>
+<!-- overlayScrollbars -->
+<script src="lib/AdminLTE/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<!-- AdminLTE App -->
+<script src="lib/AdminLTE/dist/js/adminlte.js"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="lib/AdminLTE/dist/js/pages/dashboard.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="lib/AdminLTE/dist/js/demo.js"></script>
+
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+
+<!--<script type="text/javascript" src="js/user.js"></script>-->
+<!-- DataTables -->
+<script src="lib/AdminLTE/plugins/datatables/jquery.dataTables.js"></script>
+<script src="lib/AdminLTE/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+
+<script src="lib/AdminLTE/plugins/sweetalert2/sweetalert2.all.js"></script>
+
+<script src="js/device.js"></script>
+</body>
+</html>

@@ -14,6 +14,7 @@ public class main {
         Log.setLevel(Log.INFO);
         Log.info("startup of WasteInformationServer");
 
+        Log.info("mem: "+Runtime.getRuntime().totalMemory());
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
@@ -56,5 +57,7 @@ public class main {
         } catch (Exception e) {
             Log.error("An error occured in the class mqtt");
         }
+
+        Log.info("mem: "+Runtime.getRuntime().totalMemory());
     }
 }

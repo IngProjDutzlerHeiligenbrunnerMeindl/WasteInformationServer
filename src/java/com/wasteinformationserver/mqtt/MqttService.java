@@ -4,28 +4,25 @@ import com.wasteinformationserver.basicutils.Log;
 import com.wasteinformationserver.db.JDCB;
 import org.eclipse.paho.client.mqttv3.*;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 public class MqttService {
-    MqttClient client = null;
+    private MqttClient client = null;
+    private String serveruri;
 
-    public MqttService() {
-
+    public MqttService(String serverurl, String port) {
+        serveruri= "tcp://"+serverurl+":"+port;
     }
 
     public void startupService() {
 
         try {
-            client = new MqttClient("tcp://192.168.65.15:1883", "JavaSample42");
+            client = new MqttClient(serveruri, "JavaSample42");
             MqttConnectOptions connOpts = new MqttConnectOptions();
             connOpts.setCleanSession(true);
             client.connect(connOpts);
@@ -44,7 +41,7 @@ public class MqttService {
                     Log.debug("received message");
                     String[] split = message.split(",");
                     String wastetyp = getTyp(Integer.parseInt(split[2]));
-                    getDatabasedata("SELECT pickupdates.pickupdate FROM pickupdates WHERE pickupdates.citywastezoneid=(SELECT cities.zone FROM cities WHERE cities.name='" + split[1] + "' AND cities.wastetype='" + wastetyp + "' AND cities.zone=" + split[3] + ")", wastetyp, Integer.parseInt(split[0]));
+                    getDatabasedata("SELECT pickupdates.pickupdate FROM pickupdates WHERE pickupdates.citywastezoneid=(SELECT cities.id FROM cities WHERE cities.name='" + split[1] + "' AND cities.wastetype='" + wastetyp + "' AND cities.zone=" + split[3] + ")", wastetyp, Integer.parseInt(split[0]));
                 }
 
                 @Override
@@ -75,29 +72,40 @@ public class MqttService {
         ResultSet result = Database.executeQuery(message);
         try {
             result.last();
-            if (result.getFetchSize() == 0){
+            if (result.getRow() == 0){
                 //if not found in db --> send zero
-                transmitmessageAbfallart(clientidentify + "," + wastenumber + "," + 0);
-            }
-            result.first();
-            while (result.next()) {
-                String newDate = getDateDatabase(String.valueOf(result.getString("pickupdate")));
-                String currentDate = getcurrentDate();
-                String Datetomorrow = nexDayDate();
+                Log.debug("not found in db");
+                tramsmitMessage(clientidentify + "," + wastenumber + "," + 0);
+            }else{
+                Log.debug(result.getString("pickupdate"));
 
-                if (currentDate.equals(newDate) || currentDate.equals(Datetomorrow)) {
-                    transmitmessageAbfallart(clientidentify + "," + wastenumber + "," + 1);
-                } else {
-                    transmitmessageAbfallart(clientidentify + "," + wastenumber + "," + 0);
-                }
+                result.first();
+                do {
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    long timestamp = formatter.parse(result.getString("pickupdate")).getTime();
+                    long timestampnow = formatter.parse(formatter.format(new Date())).getTime(); // todo more fancy
+                    Log.debug("timestamp is :" + timestamp);
+
+                    if(timestamp == timestampnow|| timestamp == timestampnow +86400000){
+                        // valid time
+                        tramsmitMessage(clientidentify + "," + wastenumber + "," + 1);
+                        Log.debug("valid time");
+                        return;
+                    }else{
+
+                    }
+                }while(result.next());
+                tramsmitMessage(clientidentify + "," + wastenumber + "," + 0); //transmit zero if not returned before
             }
         } catch (SQLException e) {
-            Log.error("No data from database");
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
     }
 
 
-    private void transmitmessageAbfallart(String temp)  {
+    private void tramsmitMessage(String temp)  {
         Log.debug("sending message >>>"+temp);
         MqttMessage message = new MqttMessage(temp.getBytes());
         message.setQos(2);
@@ -106,21 +114,6 @@ public class MqttService {
         } catch (MqttException e) {
             e.printStackTrace();
         }
-    }
-
-    private String nexDayDate() {
-        // TODO: 10.01.20 doesnt work 
-        final DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-        Date currentDate = new Date();
-
-        Calendar c = Calendar.getInstance();
-        c.setTime(currentDate);
-        c.add(Calendar.DATE, 1);
-        Date currentDatePlusOne = c.getTime();
-
-        String temp = dateFormat.format(currentDatePlusOne);
-        String split[] = temp.split("/");
-        return split[2] + "." + split[1] + "." + split[0];
     }
 
     private String getTyp(int number) {
@@ -148,21 +141,5 @@ public class MqttService {
             number = 4;
         }
         return number;
-    }
-
-    private String getDateDatabase(String temptime) {
-        String[] parts = temptime.split("-");
-        String tempyear = parts[0];
-        String[] yearsplit = tempyear.split("0");
-        String tempyearnew = yearsplit[1];
-        return parts[2] + "." + parts[1] + "." + tempyearnew;
-    }
-
-    private String getcurrentDate() {
-        GregorianCalendar now = new GregorianCalendar();
-        DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.LONG);
-        String date = df.format(now.getTime());
-        String[] partstwo = date.split(",");
-        return partstwo[0];
     }
 }

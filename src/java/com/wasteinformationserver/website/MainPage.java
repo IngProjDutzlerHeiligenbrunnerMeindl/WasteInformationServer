@@ -53,7 +53,7 @@ public class MainPage implements HttpHandler {
             Log.warning("wrong page sending 404");
             sendPage("/404Error.html", t);
         } else if (fs == null) {
-            Log.warning("requested resource doesnt exist");
+            Log.warning("requested resource doesnt exist --> "+path);
         } else {
             // Object exists and is a file: accept with response code 200.
             String mime = "text/html";

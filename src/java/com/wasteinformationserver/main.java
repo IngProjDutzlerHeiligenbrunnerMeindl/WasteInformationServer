@@ -11,7 +11,7 @@ import java.io.IOException;
 public class main {
     public static void main(String[] args) {
 
-        Log.setLevel(Log.INFO);
+        Log.setLevel(Log.DEBUG);
         Log.info("startup of WasteInformationServer");
 
         Log.info("mem: "+Runtime.getRuntime().totalMemory());
@@ -52,7 +52,7 @@ public class main {
         //startup mqtt service
         Log.message("starting mqtt service");
         try {
-            MqttService m = new MqttService();
+            MqttService m = new MqttService("mqtt.heili.eu","1883");
             m.startupService();
         } catch (Exception e) {
             Log.error("An error occured in the class mqtt");

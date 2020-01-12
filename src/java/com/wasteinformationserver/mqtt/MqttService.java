@@ -34,14 +34,15 @@ public class MqttService {
                 }
 
                 @Override
-                public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
+                public void messageArrived(String s, MqttMessage mqttMessage) {
                     String message = new String(mqttMessage.getPayload());
                     Log.info("received Request from PCB");
 
                     Log.debug("received message");
                     String[] split = message.split(",");
                     String wastetyp = getTyp(Integer.parseInt(split[2]));
-                    getDatabasedata("SELECT pickupdates.pickupdate FROM pickupdates WHERE pickupdates.citywastezoneid=(SELECT cities.id FROM cities WHERE cities.name='" + split[1] + "' AND cities.wastetype='" + wastetyp + "' AND cities.zone=" + split[3] + ")", wastetyp, Integer.parseInt(split[0]));
+                    // TODO: 12.01.20 check if id is in db -- save when not
+                    checkDatabase(wastetyp, Integer.parseInt(split[0]), split[1], Integer.parseInt(split[3]));
                 }
 
                 @Override
@@ -55,9 +56,7 @@ public class MqttService {
         }
     }
 
-    public void getDatabasedata(String message, String wastetyp, int clientidentify) {
-
-        Log.debug(message);
+    public void checkDatabase(String wastetyp, int clientidentify, String cityname, int zone) {
         Log.debug(wastetyp);
         Log.debug(clientidentify);
 
@@ -69,7 +68,7 @@ public class MqttService {
         }
         int wastenumber = getIntTyp(wastetyp);
 
-        ResultSet result = Database.executeQuery(message);
+        ResultSet result = Database.executeQuery("SELECT pickupdates.pickupdate FROM pickupdates WHERE pickupdates.citywastezoneid=(SELECT cities.id FROM cities WHERE cities.name='" + cityname + "' AND cities.wastetype='" + wastetyp + "' AND cities.zone=" + zone + ")");
         try {
             result.last();
             if (result.getRow() == 0){
@@ -86,13 +85,11 @@ public class MqttService {
                     long timestampnow = formatter.parse(formatter.format(new Date())).getTime(); // todo more fancy
                     Log.debug("timestamp is :" + timestamp);
 
-                    if(timestamp == timestampnow|| timestamp == timestampnow +86400000){
+                    if (timestamp == timestampnow || timestamp == timestampnow + 86400000) { // 86400000 == one day
                         // valid time
                         tramsmitMessage(clientidentify + "," + wastenumber + "," + 1);
                         Log.debug("valid time");
                         return;
-                    }else{
-
                     }
                 }while(result.next());
                 tramsmitMessage(clientidentify + "," + wastenumber + "," + 0); //transmit zero if not returned before
@@ -131,14 +128,19 @@ public class MqttService {
 
     private int getIntTyp(String temp) {
         int number = 0;
-        if (temp.equals("Plastic")) {
-            number = 1;
-        } else if (temp.equals("Metal")) {
-            number = 2;
-        } else if (temp.equals("Residual waste")) {
-            number = 3;
-        } else if (temp.equals("Biowaste")) {
-            number = 4;
+        switch (temp) {
+            case "Plastic":
+                number = 1;
+                break;
+            case "Metal":
+                number = 2;
+                break;
+            case "Residual waste":
+                number = 3;
+                break;
+            case "Biowaste":
+                number = 4;
+                break;
         }
         return number;
     }

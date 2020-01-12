@@ -14,9 +14,15 @@ import java.util.Date;
 public class MqttService {
     private MqttClient client = null;
     private String serveruri;
+    JDCB db;
 
     public MqttService(String serverurl, String port) {
-        serveruri= "tcp://"+serverurl+":"+port;
+        serveruri = "tcp://" + serverurl + ":" + port;
+        try {
+            db = JDCB.getInstance();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void startupService() {
@@ -31,6 +37,7 @@ public class MqttService {
                 @Override
                 public void connectionLost(Throwable throwable) {
                     Log.error("connection lost");
+                    // TODO: 12.01.20 reconnect
                 }
 
                 @Override
@@ -38,11 +45,27 @@ public class MqttService {
                     String message = new String(mqttMessage.getPayload());
                     Log.info("received Request from PCB");
 
-                    Log.debug("received message");
-                    String[] split = message.split(",");
-                    String wastetyp = getTyp(Integer.parseInt(split[2]));
-                    // TODO: 12.01.20 check if id is in db -- save when not
-                    checkDatabase(wastetyp, Integer.parseInt(split[0]), split[1], Integer.parseInt(split[3]));
+                    ResultSet res = db.executeQuery("SELECT * from devices WHERE DeviceID=" + message);
+                    try {
+                        res.last();
+                        if (res.getRow() != 0) {
+                            //existing device
+                            res.first();
+                            int cityid = res.getInt("CityID");
+                            if (cityid == -1) {
+                                //device not configured yet
+                                tramsmitMessage(message + ",-1");
+                            } else {
+                                checkDatabase(Integer.parseInt(message));
+                            }
+                        } else {
+                            //new device
+                            db.executeUpdate("INSERT INTO devices (DeviceID) VALUES (" + message + ")");
+                            tramsmitMessage(message + ",-1");
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 @Override
@@ -56,26 +79,15 @@ public class MqttService {
         }
     }
 
-    public void checkDatabase(String wastetyp, int clientidentify, String cityname, int zone) {
-        Log.debug(wastetyp);
-        Log.debug(clientidentify);
-
-        JDCB Database = null;
-        try {
-            Database = JDCB.getInstance();
-        } catch (IOException e) {
-            Log.error("No Connection to the databank");
-        }
-        int wastenumber = getIntTyp(wastetyp);
-
-        ResultSet result = Database.executeQuery("SELECT pickupdates.pickupdate FROM pickupdates WHERE pickupdates.citywastezoneid=(SELECT cities.id FROM cities WHERE cities.name='" + cityname + "' AND cities.wastetype='" + wastetyp + "' AND cities.zone=" + zone + ")");
+    public void checkDatabase(int deviceid) {
+        ResultSet result = db.executeQuery("SELECT pickupdates.pickupdate FROM pickupdates WHERE pickupdates.citywastezoneid=" + deviceid);
         try {
             result.last();
-            if (result.getRow() == 0){
+            if (result.getRow() == 0) {
                 //if not found in db --> send zero
                 Log.debug("not found in db");
-                tramsmitMessage(clientidentify + "," + wastenumber + "," + 0);
-            }else{
+                tramsmitMessage(deviceid + "," + "Plastic" + "," + 0);
+            } else {
                 Log.debug(result.getString("pickupdate"));
 
                 result.first();
@@ -87,16 +99,14 @@ public class MqttService {
 
                     if (timestamp == timestampnow || timestamp == timestampnow + 86400000) { // 86400000 == one day
                         // valid time
-                        tramsmitMessage(clientidentify + "," + wastenumber + "," + 1);
+                        tramsmitMessage(deviceid + "," + "Plastic" + "," + 1);
                         Log.debug("valid time");
                         return;
                     }
-                }while(result.next());
-                tramsmitMessage(clientidentify + "," + wastenumber + "," + 0); //transmit zero if not returned before
+                } while (result.next());
+                tramsmitMessage(deviceid + "," + "Plastic" + "," + 0); //transmit zero if not returned before
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
+        } catch (SQLException | ParseException e) {
             e.printStackTrace();
         }
     }

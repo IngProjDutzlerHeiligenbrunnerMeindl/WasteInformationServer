@@ -14,7 +14,7 @@ public class main {
         Log.setLevel(Log.DEBUG);
         Log.info("startup of WasteInformationServer");
 
-        Log.info("mem: "+Runtime.getRuntime().totalMemory());
+        Log.info("mem: " + Runtime.getRuntime().totalMemory());
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
@@ -33,15 +33,13 @@ public class main {
 
         //initial connect to db
         Log.message("initial login to db");
-        new Thread(() -> {
-            try {
-                JDCB.init("ingproject", "Kb9Dxklumt76ieq6", "ingproject", "db.power4future.at", 3306);
-                //JDCB.init("users", "kOpaIJUjkgb9ur6S", "wasteinformation", "192.168.65.15", 3306);
-            } catch (IOException e) {
-                //e.printStackTrace();
-                Log.error("no connection to db");
-            }
-        }).start();
+        try {
+            JDCB.init("ingproject", "Kb9Dxklumt76ieq6", "ingproject", "db.power4future.at", 3306);
+            //JDCB.init("users", "kOpaIJUjkgb9ur6S", "wasteinformation", "192.168.65.15", 3306);
+        } catch (IOException e) {
+            //e.printStackTrace();
+            Log.error("no connection to db");
+        }
 
 
         //startup web server
@@ -52,12 +50,12 @@ public class main {
         //startup mqtt service
         Log.message("starting mqtt service");
         try {
-            MqttService m = new MqttService("mqtt.heili.eu","1883");
+            MqttService m = new MqttService("mqtt.heili.eu", "1883");
             m.startupService();
         } catch (Exception e) {
             Log.error("An error occured in the class mqtt");
         }
 
-        Log.info("mem: "+Runtime.getRuntime().totalMemory());
+        Log.info("mem: " + Runtime.getRuntime().totalMemory());
     }
 }

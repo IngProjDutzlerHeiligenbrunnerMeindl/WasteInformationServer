@@ -19,7 +19,7 @@ public class MySQLConnector extends Database {
     }
 
     public Connection getConnection() throws SQLException {
-        DriverManager.setLoginTimeout(1); // TODO: 30.11.19 set higher maybe
+        DriverManager.setLoginTimeout(1);
         return DriverManager.getConnection(
                 "jdbc:mysql://" + host + ":" + port + "/" + dbName + "?useSSL=false",
                 user,

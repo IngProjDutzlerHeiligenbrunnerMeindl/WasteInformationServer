@@ -43,7 +43,7 @@ public class MqttService {
                 @Override
                 public void messageArrived(String s, MqttMessage mqttMessage) {
                     String message = new String(mqttMessage.getPayload());
-                    Log.info("received Request from PCB");
+                    Log.message("received Request from PCB");
 
                     ResultSet res = db.executeQuery("SELECT * from devices WHERE DeviceID=" + message);
                     try {
@@ -61,6 +61,7 @@ public class MqttService {
                         } else {
                             //new device
                             db.executeUpdate("INSERT INTO devices (DeviceID) VALUES (" + message + ")");
+                            Log.info("new device registered to server");
                             tramsmitMessage(message + ",-1");
                         }
                     } catch (SQLException e) {
@@ -99,6 +100,7 @@ public class MqttService {
 
                     if (timestamp == timestampnow || timestamp == timestampnow + 86400000) { // 86400000 == one day
                         // valid time
+                        // TODO: 12.01.20 read right waste type from db and replace below 
                         tramsmitMessage(deviceid + "," + "Plastic" + "," + 1);
                         Log.debug("valid time");
                         return;

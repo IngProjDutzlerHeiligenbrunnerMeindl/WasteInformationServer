@@ -1,17 +1,4 @@
 $(document).ready(function () {
-    console.log("page loaded");
-    $.post('/senddata/checkloginstate', 'action=getloginstate', function (data) {
-        console.log(data);
-        if (data.loggedin == true) {
-            $("#userlabel").html(" " + data.username);
-            if (data.permission > 0) {
-                $("#adminpanel").show();
-            }
-        } else {
-            $("#userlabel").html(" not logged in!!");
-        }
-    }, 'json');
-
     //load total collections
     $.post('/senddata/wastedata', 'action=getStartHeaderData', function (data) {
         console.log(data);
@@ -27,7 +14,7 @@ $(document).ready(function () {
     //load version footer
     //
     $.post('/senddata/wastedata', 'action=getversionandbuildtime', function (data) {
-        $("#version-footer-label").html("<b>Version</b> "+data.version+" <b>Build</b> "+data.buildtime);
+        $("#version-footer-label").html("<b>Version</b> " + data.version + " <b>Build</b> " + data.buildtime);
     }, 'json');
 
 
@@ -112,7 +99,7 @@ $(document).ready(function () {
 
             if (data.query == "ok") {
                 $('#picupdates-tablebody').html("");
-                 $(".delbtndate").off();
+                $(".delbtndate").off();
 
                 for (var i = 0; i < data.data.length; i++) {
                     $('#picupdates-tablebody').append("<tr>" +
@@ -156,11 +143,11 @@ $(document).ready(function () {
                 });
             }
             datetable = $("#table-pickupdates").DataTable({
-                "order": [[ 3, "asc" ]]
-            } );
+                "order": [[3, "asc"]]
+            });
 
             //todo picupdates-tablebody
-        },"json");
+        }, "json");
     }
 
     reloadtable();
@@ -274,7 +261,7 @@ $(document).ready(function () {
         dropdata.html("");
         console.log("clickeeeed");
 
-        $.post('/senddata/newdate', 'action=gettypes&cityname=' + $("#dropdown-city").html()+'&zonename='+$("#dropdown-zone").html(), function (data) {
+        $.post('/senddata/newdate', 'action=gettypes&cityname=' + $("#dropdown-city").html() + '&zonename=' + $("#dropdown-zone").html(), function (data) {
             console.log(data);
             if (data.query == "ok") {
                 for (var i = 0; i < data.data.length; i++) {
@@ -289,7 +276,6 @@ $(document).ready(function () {
                 });
             }
         });
-
 
 
     });

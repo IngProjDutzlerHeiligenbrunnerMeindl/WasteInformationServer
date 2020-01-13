@@ -100,7 +100,7 @@ public class MqttService {
 
                     if (timestamp == timestampnow || timestamp == timestampnow + 86400000) { // 86400000 == one day
                         // valid time
-                        // TODO: 12.01.20 read right waste type from db and replace below 
+                        // TODO: 12.01.20 read right waste type from db and replace below
                         tramsmitMessage(deviceid + "," + "Plastic" + "," + 1);
                         Log.debug("valid time");
                         return;

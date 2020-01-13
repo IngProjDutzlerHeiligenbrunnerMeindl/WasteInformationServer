@@ -1,3 +1,6 @@
+/**
+ * dead code...
+ */
 package com.wasteinformationserver;
 
 import com.wasteinformationserver.basicutils.Log;

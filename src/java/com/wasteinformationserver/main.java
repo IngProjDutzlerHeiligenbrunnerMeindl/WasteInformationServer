@@ -10,11 +10,10 @@ import java.io.IOException;
 
 public class main {
     public static void main(String[] args) {
-
         Log.setLevel(Log.DEBUG);
-        Log.info("startup of WasteInformationServer");
+        Info.init();
 
-        Log.info("mem: " + Runtime.getRuntime().totalMemory());
+        Log.info("startup of WasteInformationServer");
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
@@ -27,7 +26,6 @@ public class main {
             }
         }));
 
-        Info.init();
         Log.info("Server version: " + Info.getVersion());
         Log.debug("Build date: " + Info.getBuilddate());
 
@@ -55,7 +53,5 @@ public class main {
         } catch (Exception e) {
             Log.error("An error occured in the class mqtt");
         }
-
-        Log.info("mem: " + Runtime.getRuntime().totalMemory());
     }
 }

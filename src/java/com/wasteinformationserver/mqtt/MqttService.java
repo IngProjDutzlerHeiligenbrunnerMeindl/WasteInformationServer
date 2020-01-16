@@ -111,7 +111,7 @@ public class MqttService {
                 do {
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                     long timestamp = formatter.parse(result.getString("pickupdate")).getTime();
-                    long timestampnow = formatter.parse(formatter.format(new Date())).getTime(); // todo more fancy
+                    long timestampnow = formatter.parse(formatter.format(new Date())).getTime();
                     Log.debug("timestamp is :" + timestamp);
 
                     if (timestamp == timestampnow || timestamp == timestampnow + 86400000) { // 86400000 == one day

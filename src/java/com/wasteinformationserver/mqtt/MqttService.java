@@ -101,12 +101,12 @@ public class MqttService {
                     if (timestamp == timestampnow || timestamp == timestampnow + 86400000) { // 86400000 == one day
                         // valid time
                         // TODO: 12.01.20 read right waste type from db and replace below
-                        tramsmitMessage(deviceid + "," + "Plastic" + "," + 1);
+                        tramsmitMessage(deviceid + "," + getIntTyp("Plastic") + "," + 1);
                         Log.debug("valid time");
                         return;
                     }
                 } while (result.next());
-                tramsmitMessage(deviceid + "," + "Plastic" + "," + 0); //transmit zero if not returned before
+                tramsmitMessage(deviceid + "," + getIntTyp("Plastic") + "," + 0); //transmit zero if not returned before
             }
         } catch (SQLException | ParseException e) {
             e.printStackTrace();

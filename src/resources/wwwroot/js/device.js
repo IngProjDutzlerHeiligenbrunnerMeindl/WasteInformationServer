@@ -22,6 +22,11 @@ $(document).ready(function () {
         }
         $(".configuredevicebutton").click(function (event) {
             var id = event.target.getAttribute("deviceid");
+            var cityname;
+            var zone;
+            var wastetype;
+            var devicename;
+            var devicelocation;
 
             $.post('/senddata/Devicedata', 'action=getCitynames', function (data) {
                 Swal.mixin({
@@ -46,50 +51,67 @@ $(document).ready(function () {
                     if (result.value) {
                         console.log(result.value);
                         const answers = JSON.stringify(result.value);
+                        cityname = result.value[2];
+                        devicename = result.value[0];
+                        devicelocation = result.value[1];
 
-                        Swal.mixin({
-                            input: 'text',
-                            confirmButtonText: 'Next &rarr;',
-                            showCancelButton: true,
-                            progressSteps: ['1']
-                        }).queue([
-                            {
-                                title: 'City',
-                                text: 'Select your City',
-                                input: 'select',
-                                inputOptions: {
-                                    'SRB': 'Serbia',      // How do I dynamically set value?
-                                    'UKR': 'Ukraine',
-                                    'HRV': 'Croatia'
+                        console.log("cityname=" + cityname);
+                        $.post('/senddata/Devicedata', 'action=getzones&cityname=' + cityname, function (data) {
+                            Swal.mixin({
+                                input: 'text',
+                                confirmButtonText: 'Next &rarr;',
+                                showCancelButton: true,
+                                progressSteps: ['1']
+                            }).queue([
+                                {
+                                    title: 'City',
+                                    text: 'Select your City',
+                                    input: 'select',
+                                    inputOptions: data
                                 }
-                            }
-                        ]).then((result) => {
-                            if (result.value) {
-                                console.log(result.value);
+                            ]).then((result) => {
+                                if (result.value) {
+                                    console.log(result.value);
+                                    zone = result.value[0];
+                                    $.post('/senddata/Devicedata', 'action=gettypes&cityname=' + cityname + '&zonename=' + zone, function (data) {
+                                        Swal.mixin({
+                                            input: 'text',
+                                            confirmButtonText: 'Next &rarr;',
+                                            showCancelButton: true,
+                                            progressSteps: ['1']
+                                        }).queue([
+                                            {
+                                                title: 'City',
+                                                text: 'Select your City',
+                                                input: 'select',
+                                                inputOptions: data
+                                            }
+                                        ]).then((result) => {
+                                            if (result.value) {
+                                                console.log(result.value);
+                                                wastetype = result.value[0];
 
-                                Swal.mixin({
-                                    input: 'text',
-                                    confirmButtonText: 'Next &rarr;',
-                                    showCancelButton: true,
-                                    progressSteps: ['1']
-                                }).queue([
-                                    {
-                                        title: 'City',
-                                        text: 'Select your City',
-                                        input: 'select',
-                                        inputOptions: {
-                                            'SRB': 'Serbia',      // How do I dynamically set value?
-                                            'UKR': 'Ukraine',
-                                            'HRV': 'Croatia'
-                                        }
-                                    }
-                                ]).then((result) => {
-                                    if (result.value) {
-                                        console.log(result.value);
-                                    }
-                                });
-                            }
+                                                $.post('/senddata/Devicedata', 'action=savetodb&deviceid=' + id + '&cityname=' + cityname + '&zonename=' + zone + '&wastetype=' + wastetype + '&devicename=' + devicename + '&devicelocation=' + devicelocation, function (data) {
+                                                    if (data.success) {
+                                                        Swal.fire({
+                                                            type: "success",
+                                                            title: 'Successfully configured!',
+                                                            html: 'This alert closes automatically.',
+                                                            timer: 1000,
+                                                        }).then((result) => {
+                                                            console.log('Popup closed. ')
+
+                                                        });
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    });
+
+                                }
+                            });
                         });
+
                     }
                 });
             });
@@ -97,28 +119,6 @@ $(document).ready(function () {
 
             console.log("click..." + id);
         });
-        /*
-        ,{
-                    title: 'Zone',
-                    text: 'Select the Waste Zone',
-                    input: 'select',
-                    inputOptions: {
-                        'SRB': 'Serbia',      // How do I dynamically set value?
-                        'UKR': 'Ukraine',
-                        'HRV': 'Croatia'
-                    }
-                },{
-                    title: 'Type',
-                    text: 'Select the Waste type',
-                    input: 'select',
-                    inputOptions: {
-                        'SRB': 'Serbia',      // How do I dynamically set value?
-                        'UKR': 'Ukraine',
-                        'HRV': 'Croatia'
-                    }
-                }
-         */
-
         var test = $('#table-devices').DataTable();
     }, 'json');
 

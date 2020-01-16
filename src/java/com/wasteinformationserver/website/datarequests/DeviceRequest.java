@@ -75,14 +75,14 @@ public class DeviceRequest extends PostRequest {
             case "getzones":
                 set = jdcb.executeQuery("select * from cities WHERE `name`='" + params.get("cityname") + "' ORDER BY zone ASC");
                 Log.debug(set.toString());
-                sb.append("{\"data\":[");
+                sb.append("{");
                 try {
                     int prev = 42;
                     while (set.next()) {
                         if (prev == set.getInt("zone")) {
 
                         } else {
-                            sb.append("{\"zone\":\"" + set.getInt("zone") + "\"}");
+                            sb.append("\"" + set.getInt("zone") + "\":\"" + set.getInt("zone") + "\"");
                             if (!set.isLast()) {
                                 sb.append(",");
                             }
@@ -92,21 +92,19 @@ public class DeviceRequest extends PostRequest {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                sb.append("]");
-                sb.append(",\"query\":\"ok\"");
                 sb.append("}");
                 break;
             case "gettypes":
                 set = jdcb.executeQuery("select * from cities WHERE `name`='" + params.get("cityname") + "' AND `zone`='" + params.get("zonename") + "' ORDER BY zone ASC");
                 Log.debug(set.toString());
-                sb.append("{\"data\":[");
+                sb.append("{");
                 try {
                     String prev = "42";
                     while (set.next()) {
                         if (prev == set.getString("wastetype")) {
 
                         } else {
-                            sb.append("{\"wastetype\":\"" + set.getString("wastetype") + "\"}");
+                            sb.append("\"" + set.getString("wastetype") + "\":\"" + set.getString("wastetype") + "\"");
                             if (!set.isLast()) {
                                 sb.append(",");
                             }
@@ -116,9 +114,24 @@ public class DeviceRequest extends PostRequest {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                sb.append("]");
-                sb.append(",\"query\":\"ok\"");
                 sb.append("}");
+                break;
+            case "savetodb":
+                set = jdcb.executeQuery("select * from cities WHERE `name`='" + params.get("cityname") + "' AND `zone`='" + params.get("zonename") + "' AND `wastetype`='" + params.get("wastetype") + "'");
+                try {
+                    set.last();
+                    if (set.getRow() != 1) {
+                        //error
+                    } else {
+                        int id = set.getInt("id");
+                        jdcb.executeUpdate("UPDATE devices SET `CityID`='" + id + "',`DeviceName`='" + params.get("devicename") + "',`DeviceLocation`='" + params.get("devicelocation") + "' WHERE `DeviceID`='" + params.get("deviceid") + "'");
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+
+                //'action=savetodb&cityname=' + cityname + '&zonename=' + zone+'&wastetype='+wastetype+'&devicename='+devicename+'&devicelocation='+devicelocation
                 break;
         }
         return sb.toString();

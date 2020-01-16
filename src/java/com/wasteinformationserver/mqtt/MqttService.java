@@ -56,7 +56,7 @@ public class MqttService {
                                 //device not configured yet
                                 tramsmitMessage(message + ",-1");
                             } else {
-                                checkDatabase(Integer.parseInt(message));
+                                checkDatabase(cityid, Integer.parseInt(message));
                             }
                         } else {
                             //new device
@@ -80,14 +80,30 @@ public class MqttService {
         }
     }
 
-    public void checkDatabase(int deviceid) {
-        ResultSet result = db.executeQuery("SELECT pickupdates.pickupdate FROM pickupdates WHERE pickupdates.citywastezoneid=" + deviceid);
+    public void checkDatabase(int citywastezoneid, int deviceid) {
+        int wastetype = -1;
+        ResultSet set2 = db.executeQuery("SELECT * FROM cities WHERE `id`='" + citywastezoneid + "'");
+        try {
+            set2.last();
+            if (set2.getRow() != 1) {
+                //error
+            } else {
+                String typ = set2.getString("wastetype");
+                wastetype = getIntTyp(typ);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        ResultSet result = db.executeQuery("SELECT pickupdates.pickupdate FROM pickupdates WHERE pickupdates.citywastezoneid=" + citywastezoneid);
         try {
             result.last();
             if (result.getRow() == 0) {
                 //if not found in db --> send zero
                 Log.debug("not found in db");
-                tramsmitMessage(deviceid + "," + "Plastic" + "," + 0);
+
+                tramsmitMessage(deviceid + "," + wastetype + "," + 0);
             } else {
                 Log.debug(result.getString("pickupdate"));
 
@@ -100,13 +116,12 @@ public class MqttService {
 
                     if (timestamp == timestampnow || timestamp == timestampnow + 86400000) { // 86400000 == one day
                         // valid time
-                        // TODO: 12.01.20 read right waste type from db and replace below
-                        tramsmitMessage(deviceid + "," + getIntTyp("Plastic") + "," + 1);
+                        tramsmitMessage(deviceid + "," + wastetype + "," + 1);
                         Log.debug("valid time");
                         return;
                     }
                 } while (result.next());
-                tramsmitMessage(deviceid + "," + getIntTyp("Plastic") + "," + 0); //transmit zero if not returned before
+                tramsmitMessage(deviceid + "," + wastetype + "," + 0); //transmit zero if not returned before
             }
         } catch (SQLException | ParseException e) {
             e.printStackTrace();

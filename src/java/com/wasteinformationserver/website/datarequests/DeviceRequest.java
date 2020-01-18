@@ -162,20 +162,7 @@ public class DeviceRequest extends PostRequest {
                 break;
             case "addtodb":
                 // TODO: 18.01.20
-
-                setunconfigured = jdbc.executeQuery("select * from cities WHERE `name`='" + params.get("cityname") + "' AND `zone`='" + params.get("zonename") + "' AND `wastetype`='" + params.get("wastetype") + "'");
-                try {
-                    setunconfigured.last();
-                    if (setunconfigured.getRow() != 1) {
-                        // TODO: 17.01.20 error handling
-                    } else {
-                        int id = setunconfigured.getInt("id");
-                        jdbc.executeUpdate("UPDATE devices SET `CityID`='" + id + "',`DeviceName`='" + params.get("devicename") + "',`DeviceLocation`='" + params.get("devicelocation") + "' WHERE `DeviceID`='" + params.get("deviceid") + "'");
-                        sb.append("{\"success\":\"true\"}");
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                //ResultSet seti = jdbc.executeUpdate("UPDATE devices SET `CityID`='" + id + "',`DeviceName`='" + params.get("devicename") + "',`DeviceLocation`='" + params.get("devicelocation") + "' WHERE `DeviceID`='" + params.get("deviceid") + "'"); ");
                 break;
         }
         return sb.toString();

@@ -28,16 +28,106 @@ $(document).ready(function () {
                     var cityzone = data.data[i].zone;
                     var wastetype = data.data[i].wastetype;
 
-                    //todo load right names from db
-                    $("#devices-tablebody").append("<tr><td>" + id + "</td><td>" + devicename + "</td><td>" + devicelocation + "</td><td>" + cityname + "/" + wastetype + "/" + cityzone + "</td><td><button dataid='" + id + "' type='button' class='delbtn btn btn-danger'>X</button></td></tr>");
+                    $("#devices-tablebody").append("<tr><td>" + id + "</td><td>" + devicename + "</td><td>" + devicelocation + "</td><td>" + cityname + "/" + wastetype + "/" + cityzone + "</td><td><button dataid='" + id + "' type='button' class='delbtn btn btn-danger'>X</button><button dataid='" + id + "' type='button' class='addbtn btn btn-success'>ADD</button></td></tr>");
 
                 }
             }
 
             addDeleteButton();
+            addAddButton();
             addConfigDialog();
             devicetable = $('#table-devices').DataTable();
         }, 'json');
+    }
+
+    function addAddButton() {
+        $('.addbtn').click(function (event) {
+            var id = event.target.getAttribute("deviceid");
+            var cityname;
+            var zone;
+            var wastetype;
+            var devicename;
+            var devicelocation;
+
+            $.post('/senddata/Devicedata', 'action=getCitynames', function (data) {
+                Swal.mixin({
+                    input: 'text',
+                    confirmButtonText: 'Next &rarr;',
+                    showCancelButton: true,
+                    progressSteps: ['1']
+                }).queue([{
+                    title: 'City',
+                    text: 'Select your City',
+                    input: 'select',
+                    inputOptions: data
+                }
+                ]).then((result) => {
+                    if (result.value) {
+                        console.log(result.value);
+                        const answers = JSON.stringify(result.value);
+                        cityname = result.value[0];
+
+                        console.log("cityname=" + cityname);
+                        $.post('/senddata/Devicedata', 'action=getzones&cityname=' + cityname, function (data) {
+                            Swal.mixin({
+                                input: 'text',
+                                confirmButtonText: 'Next &rarr;',
+                                showCancelButton: true,
+                                progressSteps: ['1']
+                            }).queue([
+                                {
+                                    title: 'City',
+                                    text: 'Select your City',
+                                    input: 'select',
+                                    inputOptions: data
+                                }
+                            ]).then((result) => {
+                                if (result.value) {
+                                    console.log(result.value);
+                                    zone = result.value[0];
+                                    $.post('/senddata/Devicedata', 'action=gettypes&cityname=' + cityname + '&zonename=' + zone, function (data) {
+                                        Swal.mixin({
+                                            input: 'text',
+                                            confirmButtonText: 'Next &rarr;',
+                                            showCancelButton: true,
+                                            progressSteps: ['1']
+                                        }).queue([
+                                            {
+                                                title: 'City',
+                                                text: 'Select your City',
+                                                input: 'select',
+                                                inputOptions: data
+                                            }
+                                        ]).then((result) => {
+                                            if (result.value) {
+                                                console.log(result.value);
+                                                wastetype = result.value[0];
+
+
+                                                //todo add to db
+                                                $.post('/senddata/Devicedata', 'action=addtodb&deviceid=' + id + '&cityname=' + cityname + '&zonename=' + zone + '&wastetype=' + wastetype, function (data) {
+                                                    if (data.success) {
+                                                        Swal.fire({
+                                                            type: "success",
+                                                            title: 'Successfully configured!',
+                                                            html: 'This alert closes automatically.',
+                                                            timer: 1000,
+                                                        }).then((result) => {
+                                                            console.log('Popup closed. ');
+                                                            reloadDevices();
+                                                        });
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    });
+                                }
+                            });
+                        });
+                    }
+                });
+            });
+        });
     }
 
     function addDeleteButton() {

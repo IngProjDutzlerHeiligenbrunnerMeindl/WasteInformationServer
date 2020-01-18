@@ -30,7 +30,6 @@ public class DeviceRequest extends PostRequest {
                 try {
                     setconfigured.last();
                     int configsize = setconfigured.getRow();
-                    System.out.println(configsize);
                     setconfigured.first();
                     setconfigured.previous();
 
@@ -40,30 +39,29 @@ public class DeviceRequest extends PostRequest {
 
                         sb.append("{\"deviceid\":\"" + deviceid + "\",\"cityid\":\"" + cityid + "\"}");
 
-                        if (!(setunconfigured.isLast() && configsize==0)) {
+                        if (!(setunconfigured.isLast() && configsize == 0)) {
                             sb.append(",");
                         }
                     }
 
-                        while (setconfigured.next()) {
-                            int deviceid = setconfigured.getInt("DeviceID");
-                            int cityid = setconfigured.getInt("CityID");
+                    while (setconfigured.next()) {
+                        int deviceid = setconfigured.getInt("DeviceID");
+                        int cityid = setconfigured.getInt("CityID");
 
-                            String devicename = setconfigured.getString("DeviceName");
-                            String devicelocation = setconfigured.getString("DeviceLocation");
+                        String devicename = setconfigured.getString("DeviceName");
+                        String devicelocation = setconfigured.getString("DeviceLocation");
 
-                            String cityname = setconfigured.getString("name");
-                            String wastetype = setconfigured.getString("wastetype");
-                            String zone = setconfigured.getString("zone");
+                        String cityname = setconfigured.getString("name");
+                        String wastetype = setconfigured.getString("wastetype");
+                        String zone = setconfigured.getString("zone");
 
-                            sb.append("{\"deviceid\":\"" + deviceid + "\",\"cityid\":\"" + cityid + "\",\"devicename\":\"" + devicename + "\",\"devicelocation\":\"" + devicelocation + "\",\"cityname\":\"" + cityname + "\",\"wastetype\":\"" + wastetype + "\",\"zone\":\"" + zone + "\"}");
+                        sb.append("{\"deviceid\":\"" + deviceid + "\",\"cityid\":\"" + cityid + "\",\"devicename\":\"" + devicename + "\",\"devicelocation\":\"" + devicelocation + "\",\"cityname\":\"" + cityname + "\",\"wastetype\":\"" + wastetype + "\",\"zone\":\"" + zone + "\"}");
 
-                            if (!setconfigured.isLast()) {
-                                sb.append(",");
-                            }
+                        if (!setconfigured.isLast()) {
+                            sb.append(",");
                         }
+                    }
                     sb.append("]}");
-                    System.out.println(sb.toString());
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -158,6 +156,26 @@ public class DeviceRequest extends PostRequest {
                     e.printStackTrace();
                 }
                 sb.append("{\"status\":\"success\"}");
+                break;
+            case "getDeviceNumber":
+                // TODO: 18.01.20
+                break;
+            case "addtodb":
+                // TODO: 18.01.20
+
+                setunconfigured = jdbc.executeQuery("select * from cities WHERE `name`='" + params.get("cityname") + "' AND `zone`='" + params.get("zonename") + "' AND `wastetype`='" + params.get("wastetype") + "'");
+                try {
+                    setunconfigured.last();
+                    if (setunconfigured.getRow() != 1) {
+                        // TODO: 17.01.20 error handling
+                    } else {
+                        int id = setunconfigured.getInt("id");
+                        jdbc.executeUpdate("UPDATE devices SET `CityID`='" + id + "',`DeviceName`='" + params.get("devicename") + "',`DeviceLocation`='" + params.get("devicelocation") + "' WHERE `DeviceID`='" + params.get("deviceid") + "'");
+                        sb.append("{\"success\":\"true\"}");
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
                 break;
         }
         return sb.toString();

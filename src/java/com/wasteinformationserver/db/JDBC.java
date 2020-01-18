@@ -5,10 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class JDCB {
+public class JDBC {
     static Connection conn;
 
-    static JDCB jdcb;
+    static JDBC JDBC;
     static boolean loggedin = false;
 
     static String usernamec;
@@ -21,19 +21,19 @@ public class JDCB {
         usernamec = username;
         passwordc = password;
         dbnamec = dbname;
-        jdcb = new JDCB(username, password, dbname, ip, port);
+        JDBC = new JDBC(username, password, dbname, ip, port);
     }
 
-    private JDCB(String username, String password, String dbname, String ip, int port) throws IOException {
+    private JDBC(String username, String password, String dbname, String ip, int port) throws IOException {
         logintodb(username, password, dbname, ip, port);
     }
 
-    public static JDCB getInstance() throws IOException {
+    public static JDBC getInstance() throws IOException {
         if (loggedin) {
-            return jdcb;
+            return JDBC;
         } else {
             logintodb(usernamec, passwordc, dbnamec, ipc, portc);
-            return jdcb;
+            return JDBC;
         }
 
     }

@@ -1,7 +1,7 @@
 package com.wasteinformationserver.website.datarequests.login;
 
 import com.wasteinformationserver.basicutils.Log;
-import com.wasteinformationserver.db.JDCB;
+import com.wasteinformationserver.db.JDBC;
 import com.wasteinformationserver.website.HttpTools;
 import com.wasteinformationserver.website.basicrequest.PostRequest;
 
@@ -19,16 +19,16 @@ public class LoginRequest extends PostRequest {
         String password = params.get("password");
         String username = params.get("username");
 
-        JDCB jdcb;
+        JDBC jdbc;
         try {
-            jdcb = JDCB.getInstance();
+            jdbc = JDBC.getInstance();
         } catch (IOException e) {
             Log.error("no connection to db");
             return "{\"status\" : \"nodbconn\"}";
         }
 
-        ResultSet s = jdcb.executeQuery("select * from user where username ='" + username + "'");
-        ;
+        ResultSet s = jdbc.executeQuery("select * from user where username ='" + username + "'");
+
         //new JDCB("users", "kOpaIJUjkgb9ur6S", "wasteinformation").executeQuery("select * from user where username ='" + username + "'");
         Log.debug("successfully logged in to db");
         String response = "{\"accept\": false}";

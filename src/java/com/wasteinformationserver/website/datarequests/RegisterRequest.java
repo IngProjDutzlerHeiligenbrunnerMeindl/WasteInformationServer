@@ -1,7 +1,7 @@
 package com.wasteinformationserver.website.datarequests;
 
 import com.wasteinformationserver.basicutils.Log;
-import com.wasteinformationserver.db.JDCB;
+import com.wasteinformationserver.db.JDBC;
 import com.wasteinformationserver.website.HttpTools;
 import com.wasteinformationserver.website.basicrequest.PostRequest;
 
@@ -16,9 +16,9 @@ public class RegisterRequest extends PostRequest {
 
         String passhash = HttpTools.StringToMD5(params.get("password"));
 
-        JDCB myjd = null;
+        JDBC myjd = null;
         try {
-            myjd = JDCB.getInstance();
+            myjd = JDBC.getInstance();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -2,7 +2,7 @@ package com.wasteinformationserver.website.datarequests;
 
 import com.wasteinformationserver.basicutils.Info;
 import com.wasteinformationserver.basicutils.Log;
-import com.wasteinformationserver.db.JDCB;
+import com.wasteinformationserver.db.JDBC;
 import com.wasteinformationserver.website.basicrequest.PostRequest;
 
 import java.io.IOException;
@@ -20,9 +20,9 @@ public class DataRequest extends PostRequest {
         ResultSet set = null;
         int status = -1;
 
-        JDCB jdcb;
+        JDBC jdbc;
         try {
-            jdcb = JDCB.getInstance();
+            jdbc = JDBC.getInstance();
         } catch (IOException e) {
             Log.error("no connection to db");
             return "{\"query\" : \"nodbconn\"}";
@@ -35,7 +35,7 @@ public class DataRequest extends PostRequest {
 //                check if wastezone and wasteregion already exists
 
                 Log.debug(params.get("cityname") + params.get("wastetype") + params.get("wastezone"));
-                set = jdcb.executeQuery("select * from `cities` where `name`='" + params.get("cityname") + "' AND `wastetype`='" + params.get("wastetype") + "' AND `zone`='" + params.get("wastezone") + "'");
+                set = jdbc.executeQuery("select * from `cities` where `name`='" + params.get("cityname") + "' AND `wastetype`='" + params.get("wastetype") + "' AND `zone`='" + params.get("wastezone") + "'");
                 int size = 0;
                 try {
                     if (set != null) {
@@ -48,7 +48,7 @@ public class DataRequest extends PostRequest {
                 if (size == 0) {
                     //doesnt exist
                     try {
-                        status = jdcb.executeUpdate("INSERT INTO `cities`(`userid`, `name`, `wastetype`, `zone`) VALUES ('0','" + params.get("cityname") + "','" + params.get("wastetype") + "','" + params.get("wastezone") + "');");
+                        status = jdbc.executeUpdate("INSERT INTO `cities`(`userid`, `name`, `wastetype`, `zone`) VALUES ('0','" + params.get("cityname") + "','" + params.get("wastetype") + "','" + params.get("wastezone") + "');");
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -71,7 +71,7 @@ public class DataRequest extends PostRequest {
                 sb.append("}");
                 break;
             case "getAllCities":
-                set = jdcb.executeQuery("select * from cities");
+                set = jdbc.executeQuery("select * from cities");
                 Log.debug(set.toString());
                 sb.append("{\"data\":[");
                 try {
@@ -95,7 +95,7 @@ public class DataRequest extends PostRequest {
                 //DELETE FROM `cities` WHERE `id`=0
                 sb.append("{");
                 try {
-                    status = jdcb.executeUpdate("DELETE FROM `cities` WHERE `id`='" + params.get("id") + "'");
+                    status = jdbc.executeUpdate("DELETE FROM `cities` WHERE `id`='" + params.get("id") + "'");
                     if (status == 1) {
                         //success
                         sb.append("\"status\" : \"success\"");
@@ -117,7 +117,7 @@ public class DataRequest extends PostRequest {
 
                 break;
             case "getAllDates":
-                set = jdcb.executeQuery("SELECT pickupdates.id,pickupdates.pickupdate,cities.userid,cities.name,cities.wastetype,cities.zone " +
+                set = jdbc.executeQuery("SELECT pickupdates.id,pickupdates.pickupdate,cities.userid,cities.name,cities.wastetype,cities.zone " +
                         "FROM `pickupdates` INNER JOIN `cities` ON pickupdates.citywastezoneid = cities.id");
                 sb.append("{\"data\":[");
                 try {
@@ -141,7 +141,7 @@ public class DataRequest extends PostRequest {
             case "deletedate":
                 sb.append("{");
                 try {
-                    status = jdcb.executeUpdate("DELETE FROM `pickupdates` WHERE `id`='" + params.get("id") + "'");
+                    status = jdbc.executeUpdate("DELETE FROM `pickupdates` WHERE `id`='" + params.get("id") + "'");
                     if (status == 1) {
                         //success
                         sb.append("\"status\" : \"success\"");
@@ -176,7 +176,7 @@ public class DataRequest extends PostRequest {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                     Date date = new Date();
                     String time = sdf.format(date);
-                    set = jdcb.executeQuery("SELECT * FROM `pickupdates` WHERE `pickupdate` BETWEEN  '0000-12-27' AND '"+time+"'");
+                    set = jdbc.executeQuery("SELECT * FROM `pickupdates` WHERE `pickupdate` BETWEEN  '0000-12-27' AND '"+time+"'");
                     set.last();
                     sb.append("\"finshedcollections\":\"" + set.getRow() + "\"");
 
@@ -185,15 +185,15 @@ public class DataRequest extends PostRequest {
                     date = new Date(date.getTime()+1 * 24 * 60 * 60 * 1000);
 
                     time = sdf.format(date);
-                    set = jdcb.executeQuery("SELECT * FROM `pickupdates` WHERE `pickupdate` BETWEEN '"+time+"' AND '2222-12-27'");
+                    set = jdbc.executeQuery("SELECT * FROM `pickupdates` WHERE `pickupdate` BETWEEN '"+time+"' AND '2222-12-27'");
                     set.last();
                     sb.append(",\"futurecollections\":\"" + set.getRow() + "\"");
 
-                    set = jdcb.executeQuery("select * from pickupdates");
+                    set = jdbc.executeQuery("select * from pickupdates");
                     set.last();
                     sb.append(",\"collectionnumber\":\"" + set.getRow() + "\"");
 
-                    set = jdcb.executeQuery("select * from `cities`");
+                    set = jdbc.executeQuery("select * from `cities`");
                     set.last();
                     sb.append(",\"citynumber\":\"" + set.getRow() + "\"");
                 } catch (SQLException e) {

@@ -2,7 +2,7 @@ package com.wasteinformationserver;
 
 import com.wasteinformationserver.basicutils.Info;
 import com.wasteinformationserver.basicutils.Log;
-import com.wasteinformationserver.db.JDCB;
+import com.wasteinformationserver.db.JDBC;
 import com.wasteinformationserver.mqtt.MqttService;
 import com.wasteinformationserver.website.Webserver;
 
@@ -32,8 +32,8 @@ public class main {
         //initial connect to db
         Log.message("initial login to db");
         try {
-            JDCB.init("ingproject", "Kb9Dxklumt76ieq6", "ingproject", "db.power4future.at", 3306);
-            //JDCB.init("users", "kOpaIJUjkgb9ur6S", "wasteinformation", "192.168.65.15", 3306);
+            //JDBC.init("ingproject", "Kb9Dxklumt76ieq6", "ingproject", "db.power4future.at", 3306);
+            JDBC.init("users", "kOpaIJUjkgb9ur6S", "wasteinformation", "192.168.65.15", 3306);
         } catch (IOException e) {
             //e.printStackTrace();
             Log.error("no connection to db");

@@ -1,7 +1,7 @@
 package com.wasteinformationserver.mqtt;
 
 import com.wasteinformationserver.basicutils.Log;
-import com.wasteinformationserver.db.JDCB;
+import com.wasteinformationserver.db.JDBC;
 import org.eclipse.paho.client.mqttv3.*;
 
 import java.io.IOException;
@@ -14,12 +14,12 @@ import java.util.Date;
 public class MqttService {
     private MqttClient client = null;
     private String serveruri;
-    JDCB db;
+    JDBC db;
 
     public MqttService(String serverurl, String port) {
         serveruri = "tcp://" + serverurl + ":" + port;
         try {
-            db = JDCB.getInstance();
+            db = JDBC.getInstance();
         } catch (IOException e) {
             e.printStackTrace();
         }

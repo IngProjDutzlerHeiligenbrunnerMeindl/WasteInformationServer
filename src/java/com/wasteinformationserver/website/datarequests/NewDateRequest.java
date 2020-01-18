@@ -1,7 +1,7 @@
 package com.wasteinformationserver.website.datarequests;
 
 import com.wasteinformationserver.basicutils.Log;
-import com.wasteinformationserver.db.JDCB;
+import com.wasteinformationserver.db.JDBC;
 import com.wasteinformationserver.website.basicrequest.PostRequest;
 
 import java.io.IOException;
@@ -13,17 +13,17 @@ public class NewDateRequest extends PostRequest {
     @Override
     public String request(HashMap<String, String> params) {
         StringBuilder sb = new StringBuilder();
-        JDCB jdcb;
+        JDBC jdbc;
         ResultSet set;
         try {
-            jdcb = JDCB.getInstance();
+            jdbc = JDBC.getInstance();
         } catch (IOException e) {
             Log.error("no connection to db");
             return "{\"query\" : \"nodbconn\"}";
         }
         switch (params.get("action")) {
             case "getCitynames":
-                set = jdcb.executeQuery("select * from cities");
+                set = jdbc.executeQuery("select * from cities");
                 Log.debug(set.toString());
                 sb.append("{\"data\":[");
                 try {
@@ -48,7 +48,7 @@ public class NewDateRequest extends PostRequest {
                 Log.debug(sb.toString());
                 break;
             case "getzones":
-                set = jdcb.executeQuery("select * from cities WHERE `name`='" + params.get("cityname") + "' ORDER BY zone ASC");
+                set = jdbc.executeQuery("select * from cities WHERE `name`='" + params.get("cityname") + "' ORDER BY zone ASC");
                 Log.debug(set.toString());
                 sb.append("{\"data\":[");
                 try {
@@ -72,7 +72,7 @@ public class NewDateRequest extends PostRequest {
                 sb.append("}");
                 break;
             case "gettypes":
-                set = jdcb.executeQuery("select * from cities WHERE `name`='" + params.get("cityname") + "' AND `zone`='"+params.get("zonename")+"' ORDER BY zone ASC");
+                set = jdbc.executeQuery("select * from cities WHERE `name`='" + params.get("cityname") + "' AND `zone`='"+params.get("zonename")+"' ORDER BY zone ASC");
                 Log.debug(set.toString());
                 sb.append("{\"data\":[");
                 try {
@@ -98,13 +98,13 @@ public class NewDateRequest extends PostRequest {
             case "newdate":
                 sb.append("{");
                 Log.debug(params);
-                set = jdcb.executeQuery("select * from cities WHERE `name`='" + params.get("cityname") + "' AND `zone`='" + params.get("zone") + "' AND `wastetype`='" + params.get("wastetype") + "'");
+                set = jdbc.executeQuery("select * from cities WHERE `name`='" + params.get("cityname") + "' AND `zone`='" + params.get("zone") + "' AND `wastetype`='" + params.get("wastetype") + "'");
                 try {
                     set.last();
                     if (set.getRow() == 1) {
                         Log.debug(set.getInt("id"));
 
-                        int status = jdcb.executeUpdate("INSERT INTO `pickupdates`(`citywastezoneid`, `pickupdate`) VALUES ('" + set.getInt("id") + "','" + params.get("date") + "')");
+                        int status = jdbc.executeUpdate("INSERT INTO `pickupdates`(`citywastezoneid`, `pickupdate`) VALUES ('" + set.getInt("id") + "','" + params.get("date") + "')");
                         if (status == 1) {
                             sb.append("\"status\" : \"success\"");
                         } else {

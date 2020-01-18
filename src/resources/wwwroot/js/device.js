@@ -1,25 +1,79 @@
 $(document).ready(function () {
 
+    var devicetable = null;
+    reloadDevices();
 
-    $.post('/senddata/Devicedata', 'action=getdevices', function (data) {
-
-        console.log(data);
-        for (var i = 0; i < data.data.length; i++) {
-            var id = data.data[i].deviceid;
-            var cityid = data.data[i].cityid;
-
-            if (cityid == -1) {
-                $("#devices-tablebody").append("<tr><td>" + id + "</td><td>new Device</td><td><button deviceid=\"" + id + "\"type=\"button\" class=\"btn btn-primary configuredevicebutton\">Configure</button></td><td></td><td></td></tr>");
-            } else {
-                var devicename = data.data[i].devicename;
-                var devicelocation = data.data[i].devicelocation;
-
-                $("#devices-tablebody").append("<tr><td>" + id + "</td><td>" + devicename + "</td><td>" + devicelocation + "</td><td>" + cityid + "</td><td>DEL</td></tr>");
+    function reloadDevices() {
+        $.post('/senddata/Devicedata', 'action=getdevices', function (data) {
+            if (devicetable != null) {
+                devicetable.destroy();
             }
-            console.log();
-            //devices-tablebody
+            console.log(data);
 
-        }
+            $('#devices-tablebody').html("");
+            $(".delbtn").off();
+
+            for (var i = 0; i < data.data.length; i++) {
+                var id = data.data[i].deviceid;
+                var cityid = data.data[i].cityid;
+
+
+                if (cityid == -1) {
+                    $("#devices-tablebody").append("<tr><td>" + id + "</td><td>new Device</td><td><button deviceid=\"" + id + "\"type=\"button\" class=\"btn btn-primary configuredevicebutton\">Configure</button></td><td></td><td><button dataid='" + id + "' type='button' class='delbtn btn btn-danger'>X</button></td></tr>");
+                } else {
+                    var devicename = data.data[i].devicename;
+                    var devicelocation = data.data[i].devicelocation;
+
+                    var cityname = data.data[i].cityname;
+                    var cityzone = data.data[i].zone;
+                    var wastetype = data.data[i].wastetype;
+
+                    //todo load right names from db
+                    $("#devices-tablebody").append("<tr><td>" + id + "</td><td>" + devicename + "</td><td>" + devicelocation + "</td><td>" + cityname + "/" + wastetype + "/" + cityzone + "</td><td><button dataid='" + id + "' type='button' class='delbtn btn btn-danger'>X</button></td></tr>");
+
+                }
+            }
+
+            addDeleteButton();
+            addConfigDialog();
+            devicetable = $('#table-devices').DataTable();
+        }, 'json');
+    }
+
+    function addDeleteButton() {
+        $(".delbtn").click(function (event) {
+            var id = event.target.getAttribute("dataid");
+            console.log("clicked btn data " + id);
+            $.post('/senddata/Devicedata', 'action=deleteDevice&id=' + id, function (data) {
+                console.log(data);
+                if (data.status == "success") {
+                    Swal.fire({
+                        type: "success",
+                        title: 'Successfully deleted city!',
+                        html: 'This alert closes automatically.',
+                        timer: 1000,
+                    }).then((result) => {
+                        console.log('Popup closed. ')
+
+                    });
+                    reloadDevices();
+                } else if (data.status == "dependenciesnotdeleted") {
+                    Swal.fire({
+                        type: "warning",
+                        title: 'This city is a dependency of a date',
+                        html: 'Do you want do delete it anyway with all dependencies?',
+                    }).then((result) => {
+                        console.log('Popup closed. ')
+
+                    });
+                    //todo set yes no button here
+                }
+
+            }, "json");
+        });
+    }
+
+    function addConfigDialog() {
         $(".configuredevicebutton").click(function (event) {
             var id = event.target.getAttribute("deviceid");
             var cityname;
@@ -99,19 +153,17 @@ $(document).ready(function () {
                                                             html: 'This alert closes automatically.',
                                                             timer: 1000,
                                                         }).then((result) => {
-                                                            console.log('Popup closed. ')
-
+                                                            console.log('Popup closed. ');
+                                                            reloadDevices();
                                                         });
                                                     }
                                                 });
                                             }
                                         });
                                     });
-
                                 }
                             });
                         });
-
                     }
                 });
             });
@@ -119,9 +171,7 @@ $(document).ready(function () {
 
             console.log("click..." + id);
         });
-        var test = $('#table-devices').DataTable();
-    }, 'json');
-
+    }
 
 });
 

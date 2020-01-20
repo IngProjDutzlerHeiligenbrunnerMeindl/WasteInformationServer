@@ -8,7 +8,7 @@ import com.wasteinformationserver.website.Webserver;
 
 import java.io.IOException;
 
-public class main {
+public class Main {
     public static void main(String[] args) {
         Log.setLevel(Log.DEBUG);
         Info.init();
@@ -32,8 +32,8 @@ public class main {
         //initial connect to db
         Log.message("initial login to db");
         try {
-            //JDBC.init("ingproject", "Kb9Dxklumt76ieq6", "ingproject", "db.power4future.at", 3306);
-            JDBC.init("users", "kOpaIJUjkgb9ur6S", "wasteinformation", "192.168.65.15", 3306);
+            JDBC.init("ingproject", "Kb9Dxklumt76ieq6", "ingproject", "db.power4future.at", 3306);
+            //JDBC.init("users", "kOpaIJUjkgb9ur6S", "wasteinformation", "192.168.65.15", 3306);
         } catch (IOException e) {
             //e.printStackTrace();
             Log.error("no connection to db");

@@ -57,8 +57,9 @@ public class MainPage implements HttpHandler {
         } else {
             // Object exists and is a file: accept with response code 200.
             String mime = "text/html";
-            if (path.substring(path.length() - 3).equals(".js")) mime = "application/javascript";
-            if (path.substring(path.length() - 3).equals("css")) mime = "text/css";
+            final String s = path.substring(path.length() - 3);
+            if (s.equals(".js")) mime = "application/javascript";
+            if (s.equals("css")) mime = "text/css";
 
             Headers h = t.getResponseHeaders();
             h.set("Content-Type", mime);

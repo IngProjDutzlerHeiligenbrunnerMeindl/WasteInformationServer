@@ -32,7 +32,7 @@ dependencies {
 
 task run (type: JavaExec){
     description = "Secure algorythm testing"
-    main = 'com.wasteinformationserver.main'
+    main = 'com.wasteinformationserver.Main'
     classpath = sourceSets.main.runtimeClasspath
 }
 

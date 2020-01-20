@@ -15,7 +15,7 @@ public class DeviceRequest extends PostRequest {
 
         JDBC jdbc = null;
         try {
-            jdbc = jdbc.getInstance();
+            jdbc = JDBC.getInstance();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -37,7 +37,7 @@ public class DeviceRequest extends PostRequest {
                         int deviceid = setunconfigured.getInt("DeviceID");
                         int cityid = setunconfigured.getInt("CityID");
 
-                        sb.append("{\"deviceid\":\"" + deviceid + "\",\"cityid\":\"" + cityid + "\"}");
+                        sb.append("{\"deviceid\":\"").append(deviceid).append("\",\"cityid\":\"").append(cityid).append("\"}");
 
                         if (!(setunconfigured.isLast() && configsize == 0)) {
                             sb.append(",");
@@ -55,7 +55,7 @@ public class DeviceRequest extends PostRequest {
                         String wastetype = setconfigured.getString("wastetype");
                         String zone = setconfigured.getString("zone");
 
-                        sb.append("{\"deviceid\":\"" + deviceid + "\",\"cityid\":\"" + cityid + "\",\"devicename\":\"" + devicename + "\",\"devicelocation\":\"" + devicelocation + "\",\"cityname\":\"" + cityname + "\",\"wastetype\":\"" + wastetype + "\",\"zone\":\"" + zone + "\"}");
+                        sb.append("{\"deviceid\":\"").append(deviceid).append("\",\"cityid\":\"").append(cityid).append("\",\"devicename\":\"").append(devicename).append("\",\"devicelocation\":\"").append(devicelocation).append("\",\"cityname\":\"").append(cityname).append("\",\"wastetype\":\"").append(wastetype).append("\",\"zone\":\"").append(zone).append("\"}");
 
                         if (!setconfigured.isLast()) {
                             sb.append(",");
@@ -74,13 +74,11 @@ public class DeviceRequest extends PostRequest {
                 try {
                     String prev = "";
                     while (setunconfigured.next()) {
-                        if (prev.equals(setunconfigured.getString("name"))) {
-
-                        } else {
+                        if (!prev.equals(setunconfigured.getString("name"))) {
                             if (!setunconfigured.isFirst()) {
                                 sb.append(",");
                             }
-                            sb.append("\"" + setunconfigured.getString("name") + "\":\"" + setunconfigured.getString("name") + "\"");
+                            sb.append("\"").append(setunconfigured.getString("name")).append("\":\"").append(setunconfigured.getString("name")).append("\"");
                         }
                         prev = setunconfigured.getString("name");
                     }
@@ -97,10 +95,8 @@ public class DeviceRequest extends PostRequest {
                 try {
                     int prev = 42;
                     while (setunconfigured.next()) {
-                        if (prev == setunconfigured.getInt("zone")) {
-
-                        } else {
-                            sb.append("\"" + setunconfigured.getInt("zone") + "\":\"" + setunconfigured.getInt("zone") + "\"");
+                        if (prev != setunconfigured.getInt("zone")) {
+                            sb.append("\"").append(setunconfigured.getInt("zone")).append("\":\"").append(setunconfigured.getInt("zone")).append("\"");
                             if (!setunconfigured.isLast()) {
                                 sb.append(",");
                             }
@@ -119,9 +115,7 @@ public class DeviceRequest extends PostRequest {
                 try {
                     String prev = "42";
                     while (setunconfigured.next()) {
-                        if (prev == setunconfigured.getString("wastetype")) {
-
-                        } else {
+                        if (!prev.equals(setunconfigured.getString("wastetype"))) {
                             sb.append("\"" + setunconfigured.getString("wastetype") + "\":\"" + setunconfigured.getString("wastetype") + "\"");
                             if (!setunconfigured.isLast()) {
                                 sb.append(",");
@@ -151,7 +145,7 @@ public class DeviceRequest extends PostRequest {
                 break;
             case "deleteDevice":
                 try {
-                    int res = jdbc.executeUpdate("DELETE FROM devices WHERE `DeviceID`='" + params.get("id") + "'");
+                    jdbc.executeUpdate("DELETE FROM devices WHERE `DeviceID`='" + params.get("id") + "'");
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }

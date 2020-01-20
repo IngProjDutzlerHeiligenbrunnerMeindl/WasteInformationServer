@@ -21,7 +21,7 @@ public class MqttService {
         try {
             db = JDBC.getInstance();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.error("no connetion to db");
         }
     }
 

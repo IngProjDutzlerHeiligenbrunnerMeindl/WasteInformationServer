@@ -52,14 +52,22 @@ public class MqttService {
                             //existing device
                             res.first();
 
-                            // TODO: 23.01.20  --> check device_city db and foreach all cities 
-                            int cityid = res.getInt("CityID");
-                            if (cityid == -1) {
-                                //device not configured yet
+                            ResultSet devicecities = db.executeQuery("SELECT * from device_city WHERE DeviceID='" + deviceid + "'");
+                            devicecities.last();
+                            if (devicecities.getRow() == 0) {
+                                //not configured
                                 tramsmitMessage(deviceid + ",-1");
                             } else {
-                                checkDatabase(cityid, Integer.parseInt(deviceid));
+                                devicecities.first();
+                                devicecities.previous();
+                                // TODO: 23.01.20 Test this stuff 
+                                while (devicecities.next()) {
+                                    int cityid = devicecities.getInt("CityID");
+                                    checkDatabase(cityid, Integer.parseInt(deviceid));
+                                }
                             }
+
+
                         } else {
                             //new device
                             db.executeUpdate("INSERT INTO devices (DeviceID) VALUES (" + deviceid + ")");
@@ -131,8 +139,8 @@ public class MqttService {
     }
 
 
-    private void tramsmitMessage(String temp)  {
-        Log.debug("sending message >>>"+temp);
+    private void tramsmitMessage(String temp) {
+        Log.debug("sending message >>>" + temp);
         MqttMessage message = new MqttMessage(temp.getBytes());
         message.setQos(2);
         try {

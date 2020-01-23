@@ -132,7 +132,6 @@ public class DeviceRequest extends PostRequest {
                         // TODO: 17.01.20 error handling
                     } else {
                         int cityid = cityset.getInt("id");
-                        System.out.println(cityid);
 
                         jdbc.executeUpdate("INSERT INTO `device_city` (`DeviceID`, `CityID`) VALUES ('" + params.get("deviceid") + "', '" + cityid + "');");
                         jdbc.executeUpdate("UPDATE devices SET `CityID`='0',`DeviceName`='" + params.get("devicename") + "',`DeviceLocation`='" + params.get("devicelocation") + "' WHERE `DeviceID`='" + params.get("deviceid") + "'");
@@ -163,13 +162,11 @@ public class DeviceRequest extends PostRequest {
                 }
                 break;
             case "addtodb":
-                System.out.println(params);
                 int cityid = -1;
                 try {
                     ResultSet device = jdbc.executeQuery("SELECT * FROM cities WHERE name='" + params.get("cityname") + "' AND wastetype='" + params.get("wastetype") + "' AND zone='" + params.get("zonename") + "'");
                     device.first();
                     cityid = device.getInt("id");
-                    System.out.println(cityid);
                     jdbc.executeUpdate("INSERT INTO `device_city` (`DeviceID`, `CityID`) VALUES ('" + params.get("deviceid") + "', '" + cityid + "');");
                 } catch (SQLException e) {
                     e.printStackTrace();

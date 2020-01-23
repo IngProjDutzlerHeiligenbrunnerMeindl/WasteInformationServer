@@ -14,7 +14,7 @@ import java.util.Date;
 public class MqttService {
     private MqttClient client = null;
     private String serveruri;
-    JDBC db;
+    private JDBC db;
 
     public MqttService(String serverurl, String port) {
         serveruri = "tcp://" + serverurl + ":" + port;
@@ -60,7 +60,7 @@ public class MqttService {
                             } else {
                                 devicecities.first();
                                 devicecities.previous();
-                                // TODO: 23.01.20 Test this stuff 
+                                // TODO: 23.01.20 Test this stuff
                                 while (devicecities.next()) {
                                     int cityid = devicecities.getInt("CityID");
                                     checkDatabase(cityid, Integer.parseInt(deviceid));

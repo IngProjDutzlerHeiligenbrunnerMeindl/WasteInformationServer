@@ -28,37 +28,72 @@ public class Log {
 
     private static ArrayList<String> colors = new ArrayList<String>(Arrays.asList("", "DEBUG", "MESSAGE", "INFO", "WARNING", "ERROR", "CRITICAL_ERROR"));
 
+    /**
+     * Log critical Error
+     *
+     * @param msg message
+     */
     public static void criticalerror(Object msg) {
         if (Loglevel <= CRITICAL_ERROR)
             log(msg, CRITICAL_ERROR);
     }
 
+    /**
+     * Log basic Error
+     *
+     * @param msg message
+     */
     public static void error(Object msg) {
         if (Loglevel <= ERROR)
             log(msg, ERROR);
     }
 
+    /**
+     * Log warning
+     *
+     * @param msg message
+     */
     public static void warning(Object msg) {
         if (Loglevel <= WARNING)
             log(msg, WARNING);
     }
 
+    /**
+     * Log info
+     *
+     * @param msg message
+     */
     public static void info(Object msg) {
         if (Loglevel <= INFO)
             log(msg, INFO);
     }
 
+    /**
+     * Log basic message
+     *
+     * @param msg message
+     */
     public static void message(Object msg) {
         if (Loglevel <= MESSAGE)
             log(msg, MESSAGE);
     }
 
+    /**
+     * Log debug Message
+     *
+     * @param msg message
+     */
     public static void debug(Object msg) {
         if (Loglevel <= DEBUG)
             log(msg, DEBUG);
     }
 
-
+    /**
+     * Log as defined
+     *
+     * @param msg   message
+     * @param level Loglevel --> static vals defined
+     */
     public static void log(Object msg, int level) {
         boolean iswindows = System.getProperty("os.name").contains("Windows");
         StringBuilder builder = new StringBuilder();
@@ -116,6 +151,12 @@ public class Log {
         return date_format.format(resultdate);
     }
 
+    /**
+     * define Loglevel call on startup or at runtime
+     * default: 0[DEBUG] --> Max logging
+     *
+     * @param level Loglevel --> static vals defined
+     */
     public static void setLevel(int level) {
         Loglevel = level;
     }

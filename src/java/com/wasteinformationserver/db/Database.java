@@ -9,8 +9,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Vector;
 
-public abstract class
-Database {
+abstract class Database {
 
     protected String user;
     protected String password;

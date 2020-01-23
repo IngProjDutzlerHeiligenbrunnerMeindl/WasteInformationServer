@@ -6,17 +6,28 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class JDBC {
-    static Connection conn;
+    private static Connection conn;
 
-    static JDBC JDBC;
-    static boolean loggedin = false;
+    private static JDBC JDBC;
+    private static boolean loggedin = false;
 
-    static String usernamec;
-    static String passwordc;
-    static String dbnamec;
-    static String ipc;
-    static int portc;
+    private static String usernamec;
+    private static String passwordc;
+    private static String dbnamec;
+    private static String ipc;
+    private static int portc;
 
+    /**
+     * initialize database values
+     * suggested on startup
+     *
+     * @param username db username
+     * @param password db password
+     * @param dbname   Database name
+     * @param ip       Server ip or hostname
+     * @param port     Server port
+     * @throws IOException
+     */
     public static void init(String username, String password, String dbname, String ip, int port) throws IOException {
         usernamec = username;
         passwordc = password;
@@ -28,6 +39,13 @@ public class JDBC {
         logintodb(username, password, dbname, ip, port);
     }
 
+    /**
+     * get instance of db object
+     * logindata has to be set before!
+     *
+     * @return JDBC object of this
+     * @throws IOException
+     */
     public static JDBC getInstance() throws IOException {
         if (loggedin) {
             return JDBC;
@@ -55,6 +73,12 @@ public class JDBC {
 
     }
 
+    /**
+     * execute basic query --> requests only
+     *
+     * @param sql query sql statement
+     * @return ResultSet representating the table
+     */
     public ResultSet executeQuery(String sql) {
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -65,6 +89,13 @@ public class JDBC {
         return null;
     }
 
+    /**
+     * update db in some way
+     *
+     * @param sql sql insert/update/delete statement
+     * @return status
+     * @throws SQLException
+     */
     public int executeUpdate(String sql) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement(sql);
 

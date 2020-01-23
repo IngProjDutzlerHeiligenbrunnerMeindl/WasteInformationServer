@@ -42,27 +42,29 @@ public class MqttService {
 
                 @Override
                 public void messageArrived(String s, MqttMessage mqttMessage) {
-                    String message = new String(mqttMessage.getPayload());
+                    String deviceid = new String(mqttMessage.getPayload());
                     Log.message("received Request from PCB");
 
-                    ResultSet res = db.executeQuery("SELECT * from devices WHERE DeviceID=" + message);
+                    ResultSet res = db.executeQuery("SELECT * from devices WHERE DeviceID=" + deviceid);
                     try {
                         res.last();
                         if (res.getRow() != 0) {
                             //existing device
                             res.first();
+
+                            // TODO: 23.01.20  --> check device_city db and foreach all cities 
                             int cityid = res.getInt("CityID");
                             if (cityid == -1) {
                                 //device not configured yet
-                                tramsmitMessage(message + ",-1");
+                                tramsmitMessage(deviceid + ",-1");
                             } else {
-                                checkDatabase(cityid, Integer.parseInt(message));
+                                checkDatabase(cityid, Integer.parseInt(deviceid));
                             }
                         } else {
                             //new device
-                            db.executeUpdate("INSERT INTO devices (DeviceID) VALUES (" + message + ")");
+                            db.executeUpdate("INSERT INTO devices (DeviceID) VALUES (" + deviceid + ")");
                             Log.info("new device registered to server");
-                            tramsmitMessage(message + ",-1");
+                            tramsmitMessage(deviceid + ",-1");
                         }
                     } catch (SQLException e) {
                         e.printStackTrace();

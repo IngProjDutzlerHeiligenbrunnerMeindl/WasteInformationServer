@@ -23,41 +23,37 @@ public class DeviceRequest extends PostRequest {
         StringBuilder sb = new StringBuilder();
         switch (params.get("action")) {
             case "getdevices":
-                ResultSet setunconfigured = jdbc.executeQuery("SELECT * FROM `devices` WHERE `CityID`=-1");
-                ResultSet setconfigured = jdbc.executeQuery("SELECT * FROM `devices`  INNER JOIN `cities` ON devices.CityID = cities.id");
+                ResultSet deviceset = jdbc.executeQuery("SELECT * FROM `devices");
 
                 sb.append("{\"data\":[");
                 try {
-                    setconfigured.last();
-                    int configsize = setconfigured.getRow();
-                    setconfigured.first();
-                    setconfigured.previous();
+                    while (deviceset.next()) {
+                        int deviceid = deviceset.getInt("DeviceID");
+                        int cityid = deviceset.getInt("CityID");
 
-                    while (setunconfigured.next()) {
-                        int deviceid = setunconfigured.getInt("DeviceID");
-                        int cityid = setunconfigured.getInt("CityID");
+                        if (cityid == -1) {
+                            sb.append("{\"deviceid\":\"").append(deviceid).append("\",\"cityid\":\"").append(cityid).append("\"}");
+                        } else {
+                            String devicename = deviceset.getString("DeviceName");
+                            String devicelocation = deviceset.getString("DeviceLocation");
 
-                        sb.append("{\"deviceid\":\"").append(deviceid).append("\",\"cityid\":\"").append(cityid).append("\"}");
+                            sb.append("{\"deviceid\":\"").append(deviceid).append("\",\"devicename\":\"").append(devicename).append("\",\"devicelocation\":\"").append(devicelocation).append("\",\"devices\":[");
 
-                        if (!(setunconfigured.isLast() && configsize == 0)) {
-                            sb.append(",");
+                            ResultSet devicecities = jdbc.executeQuery("SELECT * FROM `device_city` INNER JOIN `cities` ON device_city.CityID=cities.id WHERE `DeviceID`='" + deviceid + "'");
+                            while (devicecities.next()) {
+                                int cityidd = devicecities.getInt("id");
+                                String cityname = devicecities.getString("name");
+                                String wastetype = devicecities.getString("wastetype");
+                                String zone = devicecities.getString("zone");
+
+                                sb.append("{\"cityid\":\"").append(cityidd).append("\",\"cityname\":\"").append(cityname).append("\",\"wastetype\":\"").append(wastetype).append("\",\"zone\":\"").append(zone).append("\"}");
+                                if (!(devicecities.isLast())) {
+                                    sb.append(",");
+                                }
+                            }
+                            sb.append("]}");
                         }
-                    }
-
-                    while (setconfigured.next()) {
-                        int deviceid = setconfigured.getInt("DeviceID");
-                        int cityid = setconfigured.getInt("CityID");
-
-                        String devicename = setconfigured.getString("DeviceName");
-                        String devicelocation = setconfigured.getString("DeviceLocation");
-
-                        String cityname = setconfigured.getString("name");
-                        String wastetype = setconfigured.getString("wastetype");
-                        String zone = setconfigured.getString("zone");
-
-                        sb.append("{\"deviceid\":\"").append(deviceid).append("\",\"cityid\":\"").append(cityid).append("\",\"devicename\":\"").append(devicename).append("\",\"devicelocation\":\"").append(devicelocation).append("\",\"cityname\":\"").append(cityname).append("\",\"wastetype\":\"").append(wastetype).append("\",\"zone\":\"").append(zone).append("\"}");
-
-                        if (!setconfigured.isLast()) {
+                        if (!(deviceset.isLast())) {
                             sb.append(",");
                         }
                     }
@@ -68,19 +64,19 @@ public class DeviceRequest extends PostRequest {
 
                 break;
             case "getCitynames":
-                setunconfigured = jdbc.executeQuery("select * from cities");
-                Log.debug(setunconfigured.toString());
+                deviceset = jdbc.executeQuery("select * from cities");
+                Log.debug(deviceset.toString());
                 sb.append("{");
                 try {
                     String prev = "";
-                    while (setunconfigured.next()) {
-                        if (!prev.equals(setunconfigured.getString("name"))) {
-                            if (!setunconfigured.isFirst()) {
+                    while (deviceset.next()) {
+                        if (!prev.equals(deviceset.getString("name"))) {
+                            if (!deviceset.isFirst()) {
                                 sb.append(",");
                             }
-                            sb.append("\"").append(setunconfigured.getString("name")).append("\":\"").append(setunconfigured.getString("name")).append("\"");
+                            sb.append("\"").append(deviceset.getString("name")).append("\":\"").append(deviceset.getString("name")).append("\"");
                         }
-                        prev = setunconfigured.getString("name");
+                        prev = deviceset.getString("name");
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -89,19 +85,19 @@ public class DeviceRequest extends PostRequest {
                 Log.debug(sb.toString());
                 break;
             case "getzones":
-                setunconfigured = jdbc.executeQuery("select * from cities WHERE `name`='" + params.get("cityname") + "' ORDER BY zone ASC");
-                Log.debug(setunconfigured.toString());
+                deviceset = jdbc.executeQuery("select * from cities WHERE `name`='" + params.get("cityname") + "' ORDER BY zone ASC");
+                Log.debug(deviceset.toString());
                 sb.append("{");
                 try {
                     int prev = 42;
-                    while (setunconfigured.next()) {
-                        if (prev != setunconfigured.getInt("zone")) {
-                            sb.append("\"").append(setunconfigured.getInt("zone")).append("\":\"").append(setunconfigured.getInt("zone")).append("\"");
-                            if (!setunconfigured.isLast()) {
+                    while (deviceset.next()) {
+                        if (prev != deviceset.getInt("zone")) {
+                            sb.append("\"").append(deviceset.getInt("zone")).append("\":\"").append(deviceset.getInt("zone")).append("\"");
+                            if (!deviceset.isLast()) {
                                 sb.append(",");
                             }
                         }
-                        prev = setunconfigured.getInt("zone");
+                        prev = deviceset.getInt("zone");
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -109,19 +105,19 @@ public class DeviceRequest extends PostRequest {
                 sb.append("}");
                 break;
             case "gettypes":
-                setunconfigured = jdbc.executeQuery("select * from cities WHERE `name`='" + params.get("cityname") + "' AND `zone`='" + params.get("zonename") + "' ORDER BY zone ASC");
-                Log.debug(setunconfigured.toString());
+                deviceset = jdbc.executeQuery("select * from cities WHERE `name`='" + params.get("cityname") + "' AND `zone`='" + params.get("zonename") + "' ORDER BY zone ASC");
+                Log.debug(deviceset.toString());
                 sb.append("{");
                 try {
                     String prev = "42";
-                    while (setunconfigured.next()) {
-                        if (!prev.equals(setunconfigured.getString("wastetype"))) {
-                            sb.append("\"" + setunconfigured.getString("wastetype") + "\":\"" + setunconfigured.getString("wastetype") + "\"");
-                            if (!setunconfigured.isLast()) {
+                    while (deviceset.next()) {
+                        if (!prev.equals(deviceset.getString("wastetype"))) {
+                            sb.append("\"" + deviceset.getString("wastetype") + "\":\"" + deviceset.getString("wastetype") + "\"");
+                            if (!deviceset.isLast()) {
                                 sb.append(",");
                             }
                         }
-                        prev = setunconfigured.getString("wastetype");
+                        prev = deviceset.getString("wastetype");
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -129,14 +125,17 @@ public class DeviceRequest extends PostRequest {
                 sb.append("}");
                 break;
             case "savetodb":
-                setunconfigured = jdbc.executeQuery("select * from cities WHERE `name`='" + params.get("cityname") + "' AND `zone`='" + params.get("zonename") + "' AND `wastetype`='" + params.get("wastetype") + "'");
                 try {
-                    setunconfigured.last();
-                    if (setunconfigured.getRow() != 1) {
+                    ResultSet cityset = jdbc.executeQuery("SELECT id from cities WHERE `name`='" + params.get("cityname") + "' AND `zone`='" + params.get("zonename") + "' AND `wastetype`='" + params.get("wastetype") + "'");
+                    cityset.last();
+                    if (cityset.getRow() != 1) {
                         // TODO: 17.01.20 error handling
                     } else {
-                        int id = setunconfigured.getInt("id");
-                        jdbc.executeUpdate("UPDATE devices SET `CityID`='" + id + "',`DeviceName`='" + params.get("devicename") + "',`DeviceLocation`='" + params.get("devicelocation") + "' WHERE `DeviceID`='" + params.get("deviceid") + "'");
+                        int cityid = cityset.getInt("id");
+                        System.out.println(cityid);
+
+                        jdbc.executeUpdate("INSERT INTO `device_city` (`DeviceID`, `CityID`) VALUES ('" + params.get("deviceid") + "', '" + cityid + "');");
+                        jdbc.executeUpdate("UPDATE devices SET `CityID`='0',`DeviceName`='" + params.get("devicename") + "',`DeviceLocation`='" + params.get("devicelocation") + "' WHERE `DeviceID`='" + params.get("deviceid") + "'");
                         sb.append("{\"success\":\"true\"}");
                     }
                 } catch (SQLException e) {
@@ -146,17 +145,38 @@ public class DeviceRequest extends PostRequest {
             case "deleteDevice":
                 try {
                     jdbc.executeUpdate("DELETE FROM devices WHERE `DeviceID`='" + params.get("id") + "'");
+                    jdbc.executeUpdate("DELETE FROM device_city WHERE `DeviceID`='" + params.get("id") + "'");
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
                 sb.append("{\"status\":\"success\"}");
                 break;
             case "getDeviceNumber":
-                // TODO: 18.01.20
+                try {
+                    ResultSet numberset = jdbc.executeQuery("SELECT * FROM devices");
+                    numberset.last();
+                    int devicenr = numberset.getRow();
+
+                    sb.append("{\"devicenr\":\"" + devicenr + "\"}");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
                 break;
             case "addtodb":
-                // TODO: 18.01.20
-                //ResultSet seti = jdbc.executeUpdate("UPDATE devices SET `CityID`='" + id + "',`DeviceName`='" + params.get("devicename") + "',`DeviceLocation`='" + params.get("devicelocation") + "' WHERE `DeviceID`='" + params.get("deviceid") + "'"); ");
+                System.out.println(params);
+                int cityid = -1;
+                try {
+                    ResultSet device = jdbc.executeQuery("SELECT * FROM cities WHERE name='" + params.get("cityname") + "' AND wastetype='" + params.get("wastetype") + "' AND zone='" + params.get("zonename") + "'");
+                    device.first();
+                    cityid = device.getInt("id");
+                    System.out.println(cityid);
+                    jdbc.executeUpdate("INSERT INTO `device_city` (`DeviceID`, `CityID`) VALUES ('" + params.get("deviceid") + "', '" + cityid + "');");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+
+                sb.append("{\"success\":true}");
                 break;
         }
         return sb.toString();

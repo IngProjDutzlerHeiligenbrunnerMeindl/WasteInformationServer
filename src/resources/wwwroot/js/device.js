@@ -24,11 +24,18 @@ $(document).ready(function () {
                     var devicename = data.data[i].devicename;
                     var devicelocation = data.data[i].devicelocation;
 
-                    var cityname = data.data[i].cityname;
-                    var cityzone = data.data[i].zone;
-                    var wastetype = data.data[i].wastetype;
+                    var row = "<tr><td>" + id + "</td><td>" + devicename + "</td><td>" + devicelocation + "</td><td>";
 
-                    $("#devices-tablebody").append("<tr><td>" + id + "</td><td>" + devicename + "</td><td>" + devicelocation + "</td><td>" + cityname + "/" + wastetype + "/" + cityzone + "</td><td><button dataid='" + id + "' type='button' class='delbtn btn btn-danger'>X</button><button dataid='" + id + "' type='button' class='addbtn btn btn-success'>ADD</button></td></tr>");
+                    for (var n = 0; n < data.data[i].devices.length; n++) {
+                        var cityname = data.data[i].devices[n].cityname;
+                        var cityzone = data.data[i].devices[n].zone;
+                        var wastetype = data.data[i].devices[n].wastetype;
+                        row += cityname + "/" + wastetype + "/" + cityzone + " </br>";
+                    }
+
+                    row += "</td><td><button dataid='" + id + "' type='button' class='delbtn btn btn-danger'>X</button><button dataid='" + id + "' type='button' class='addbtn btn btn-success'>ADD</button></td></tr>";
+
+                    $("#devices-tablebody").append(row);
 
                 }
             }
@@ -42,7 +49,7 @@ $(document).ready(function () {
 
     function addAddButton() {
         $('.addbtn').click(function (event) {
-            var id = event.target.getAttribute("deviceid");
+            var id = event.target.getAttribute("dataid");
             var cityname;
             var zone;
             var wastetype;
@@ -110,7 +117,7 @@ $(document).ready(function () {
                                                         Swal.fire({
                                                             type: "success",
                                                             title: 'Successfully configured!',
-                                                            html: 'This alert closes automatically.',
+                                                            html: 'This alert closes added.',
                                                             timer: 1000,
                                                         }).then((result) => {
                                                             console.log('Popup closed. ');

@@ -4,7 +4,18 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * basic http tools
+ *
+ * @author Lukas Heiligenbrunner
+ */
 public class HttpTools {
+    /**
+     * create md5 hash of string
+     *
+     * @param value input string
+     * @return md5 hash
+     */
     public static String StringToMD5(String value) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");

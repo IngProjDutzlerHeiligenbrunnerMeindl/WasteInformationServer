@@ -5,6 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * basic connection class to a Database
+ *
+ * @author Lukas Heiligenbrunner
+ */
 public class JDBC {
     private static Connection conn;
 

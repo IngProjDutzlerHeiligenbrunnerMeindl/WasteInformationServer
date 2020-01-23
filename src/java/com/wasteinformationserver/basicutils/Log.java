@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
+/**
+ * fancy debug and Logging messages
+ *
+ * @author Lukas Heiligenbrunner
+ */
 public class Log {
 
     private static final String ANSI_RESET = "\u001B[0m";

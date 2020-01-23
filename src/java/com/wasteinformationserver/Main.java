@@ -47,11 +47,9 @@ public class Main {
 
         //startup mqtt service
         Log.message("starting mqtt service");
-        try {
-            MqttService m = new MqttService("mqtt.heili.eu", "1883");
-            m.startupService();
-        } catch (Exception e) {
-            Log.error("An error occured in the class mqtt");
-        }
+
+        MqttService m = new MqttService("mqtt.heili.eu", "1883");
+        m.startupService();
+
     }
 }

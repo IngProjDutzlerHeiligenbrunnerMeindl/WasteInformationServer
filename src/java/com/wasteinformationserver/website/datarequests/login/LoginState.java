@@ -1,8 +1,9 @@
 package com.wasteinformationserver.website.datarequests.login;
 
+/**
+ *
+ */
 public class LoginState {
-    private LoginState() {
-    }
 
     private static LoginState mythis = new LoginState();
 

@@ -47,6 +47,12 @@ task createProperties(dependsOn: processResources) {
     }
 }
 
+task myJavadocs(type: Javadoc) {
+    title = "JAVADOC WasteInformationServer"
+    source = sourceSets.main.allJava
+    classpath = sourceSets.main.runtimeClasspath
+}
+
 classes {
     dependsOn createProperties
 }

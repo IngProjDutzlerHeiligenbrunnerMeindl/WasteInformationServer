@@ -11,11 +11,25 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Mqtt Service to receive and send back messages to the Hardware
+ * todo
+ *
+ * @author Lukas Heiligenbrunner
+ * @author Gregor Dutzler
+ */
 public class MqttService {
     private MqttClient client = null;
     private String serveruri;
     private JDBC db;
 
+    /**
+     * init mqtt service
+     * JDBC has to be inited before
+     *
+     * @param serverurl mqtt server ip or hostname
+     * @param port      mqtt server port
+     */
     public MqttService(String serverurl, String port) {
         serveruri = "tcp://" + serverurl + ":" + port;
         try {
@@ -25,8 +39,10 @@ public class MqttService {
         }
     }
 
+    /**
+     * startup of the mqtt service
+     */
     public void startupService() {
-
         try {
             client = new MqttClient(serveruri, "JavaSample42");
             MqttConnectOptions connOpts = new MqttConnectOptions();
@@ -90,7 +106,7 @@ public class MqttService {
         }
     }
 
-    public void checkDatabase(int citywastezoneid, int deviceid) {
+    private void checkDatabase(int citywastezoneid, int deviceid) {
         int wastetype = -1;
         ResultSet set2 = db.executeQuery("SELECT * FROM cities WHERE `id`='" + citywastezoneid + "'");
         try {

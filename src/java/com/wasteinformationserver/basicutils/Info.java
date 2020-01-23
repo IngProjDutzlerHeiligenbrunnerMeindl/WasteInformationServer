@@ -7,6 +7,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 
+/**
+ * get basic infos about Software
+ *
+ * @author Lukas Heiligenbrunner
+ */
 public class Info {
     private static String version = "not init";
     private static String builddate = "not init";

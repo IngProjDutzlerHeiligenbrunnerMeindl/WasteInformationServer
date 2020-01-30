@@ -22,6 +22,15 @@ public class Log {
     private static final String ANSI_CYAN = "\u001B[36m";
     private static final String ANSI_WHITE = "\u001B[37m";
 
+    // TODO: 30.01.20 update to enum 
+//    public enum Kind{
+//        CRITICAL_ERROR,
+//        ERROR,
+//        WARNING,
+//        INFO,
+//        MESSAGE,
+//        DEBUG
+//    }
     public static final int CRITICAL_ERROR = 6;
     public static final int ERROR = 5;
     public static final int WARNING = 4;

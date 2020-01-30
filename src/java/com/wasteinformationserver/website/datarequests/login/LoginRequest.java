@@ -10,6 +10,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
+/**
+ * request handler of new login request of user
+ * - checks the truth of username and password
+ * - replies right error messages or the success login
+ */
 public class LoginRequest extends PostRequest {
     @Override
     public String request(HashMap<String, String> params) {

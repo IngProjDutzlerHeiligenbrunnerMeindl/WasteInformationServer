@@ -9,8 +9,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 
+/**
+ * basic POST request handler
+ * reply function has to be implemented!
+ */
 public abstract class PostRequest implements HttpHandler {
-
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         if (httpExchange.getRequestMethod().equals("POST")) {

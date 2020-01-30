@@ -5,6 +5,9 @@ import com.wasteinformationserver.website.basicrequest.PostRequest;
 
 import java.util.HashMap;
 
+/**
+ * request handler for checking the login state of a user
+ */
 public class CheckLoginState extends PostRequest {
     @Override
     public String request(HashMap<String, String> params) {

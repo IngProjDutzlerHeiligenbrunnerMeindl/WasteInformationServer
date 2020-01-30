@@ -8,6 +8,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
 
+/**
+ * basic GET request handler
+ * reply function has to be implemented!
+ */
 public abstract class GetRequest implements HttpHandler {
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {

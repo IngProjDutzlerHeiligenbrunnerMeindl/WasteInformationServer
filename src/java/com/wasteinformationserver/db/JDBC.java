@@ -37,6 +37,8 @@ public class JDBC {
         usernamec = username;
         passwordc = password;
         dbnamec = dbname;
+        ipc = ip;
+        portc = port;
         JDBC = new JDBC(username, password, dbname, ip, port);
     }
 
@@ -61,7 +63,7 @@ public class JDBC {
 
     }
 
-    public static void logintodb(String username, String password, String dbname, String ip, int port) throws IOException {
+    private static void logintodb(String username, String password, String dbname, String ip, int port) throws IOException {
         Database db = new MySQLConnector(
                 username,
                 password,

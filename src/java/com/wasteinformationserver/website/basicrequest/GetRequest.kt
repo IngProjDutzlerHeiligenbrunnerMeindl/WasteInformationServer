@@ -34,5 +34,5 @@ abstract class GetRequest : HttpHandler {
      * @param params received get params from com.wasteinformationserver.website
      * @return json reply to com.wasteinformationserver.website
      */
-    abstract fun myrequest(params: HashMap<String, String>?): String
+    abstract fun myrequest(params: HashMap<String, String>): String
 }

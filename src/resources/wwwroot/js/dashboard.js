@@ -355,8 +355,6 @@ $(document).ready(function () {
             datetable = $("#table-pickupdates").DataTable({
                 "order": [[3, "asc"]]
             });
-
-            //todo picupdates-tablebody
         }, "json");
     }
 });

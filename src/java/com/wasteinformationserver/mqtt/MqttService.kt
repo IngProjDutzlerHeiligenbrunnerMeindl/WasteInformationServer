@@ -14,7 +14,7 @@ import java.util.*
 
 /**
  * Mqtt Service to receive and send back messages to the Hardware
- * todo
+ * check values from db send right feedback to hardware.
  *
  * @author Lukas Heiligenbrunner
  * @author Gregor Dutzler

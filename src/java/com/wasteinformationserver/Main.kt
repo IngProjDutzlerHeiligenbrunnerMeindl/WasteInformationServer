@@ -1,3 +1,4 @@
+@file:JvmName("Main")
 package com.wasteinformationserver
 
 import com.wasteinformationserver.basicutils.Info

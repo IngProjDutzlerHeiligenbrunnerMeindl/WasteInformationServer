@@ -140,7 +140,7 @@
         'formatH5': 'Cambiar estilo del bloque a H5',
         'formatH6': 'Cambiar estilo del bloque a H6',
         'insertHorizontalRule': 'Insertar línea horizontal',
-        'linkDialog.show': 'Mostrar panel enlaces',
+        'linkDiaLog.Log.show': 'Mostrar panel enlaces',
       },
       history: {
         undo: 'Deshacer',

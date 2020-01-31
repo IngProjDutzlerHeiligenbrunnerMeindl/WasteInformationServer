@@ -140,7 +140,7 @@
         'formatH5': 'Alterar formato do bloco para Título 5',
         'formatH6': 'Alterar formato do bloco para Título 6',
         'insertHorizontalRule': 'Inserir linha horizontal',
-        'linkDialog.show': 'Inserir uma ligração',
+        'linkDiaLog.Log.show': 'Inserir uma ligração',
       },
       history: {
         undo: 'Desfazer',

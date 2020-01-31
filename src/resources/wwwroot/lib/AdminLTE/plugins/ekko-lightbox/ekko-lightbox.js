@@ -350,11 +350,11 @@ var Lightbox = (function ($) {
 			value: function _toggleLoading(show) {
 				show = show || false;
 				if (show) {
-					this._$modalDialog.css('display', 'none');
+					this._$modalDiaLog.Log.css('display', 'none');
 					this._$modal.removeClass('in show');
 					$('.modal-backdrop').append(this._config.loadingMessage);
 				} else {
-					this._$modalDialog.css('display', 'block');
+					this._$modalDiaLog.Log.css('display', 'block');
 					this._$modal.addClass('in show');
 					$('.modal-backdrop').find('.ekko-lightbox-loader').remove();
 				}
@@ -383,7 +383,7 @@ var Lightbox = (function ($) {
 		}, {
 			key: '_totalCssByAttribute',
 			value: function _totalCssByAttribute(attribute) {
-				return parseInt(this._$modalDialog.css(attribute), 10) + parseInt(this._$modalContent.css(attribute), 10) + parseInt(this._$modalBody.css(attribute), 10);
+				return parseInt(this._$modalDiaLog.Log.css(attribute), 10) + parseInt(this._$modalContent.css(attribute), 10) + parseInt(this._$modalBody.css(attribute), 10);
 			}
 		}, {
 			key: '_updateTitleAndFooter',
@@ -613,7 +613,7 @@ var Lightbox = (function ($) {
 				var borderPadding = this._padding.top + this._padding.bottom + this._border.bottom + this._border.top;
 
 				//calculated each time as resizing the window can cause them to change due to Bootstraps fluid margins
-				var margins = parseFloat(this._$modalDialog.css('margin-top')) + parseFloat(this._$modalDialog.css('margin-bottom'));
+				var margins = parseFloat(this._$modalDiaLog.Log.css('margin-top')) + parseFloat(this._$modalDiaLog.Log.css('margin-bottom'));
 
 				var maxHeight = Math.min(height, $(window).height() - borderPadding - margins - headerHeight - footerHeight, this._config.maxHeight - borderPadding - headerHeight - footerHeight);
 
@@ -623,7 +623,7 @@ var Lightbox = (function ($) {
 				}
 
 				this._$lightboxContainer.css('height', maxHeight);
-				this._$modalDialog.css('flex', 1).css('maxWidth', width);
+				this._$modalDiaLog.Log.css('flex', 1).css('maxWidth', width);
 
 				var modal = this._$modal.data('bs.modal');
 				if (modal) {

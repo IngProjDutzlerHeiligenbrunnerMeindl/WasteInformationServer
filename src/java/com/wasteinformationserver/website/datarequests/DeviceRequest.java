@@ -65,7 +65,7 @@ public class DeviceRequest extends PostRequest {
                 break;
             case "getCitynames":
                 deviceset = jdbc.executeQuery("select * from cities");
-                Log.debug(deviceset.toString());
+                Log.Log.debug(deviceset.toString());
                 sb.append("{");
                 try {
                     String prev = "";
@@ -82,11 +82,11 @@ public class DeviceRequest extends PostRequest {
                     e.printStackTrace();
                 }
                 sb.append("}");
-                Log.debug(sb.toString());
+                Log.Log.debug(sb.toString());
                 break;
             case "getzones":
                 deviceset = jdbc.executeQuery("select * from cities WHERE `name`='" + params.get("cityname") + "' ORDER BY zone ASC");
-                Log.debug(deviceset.toString());
+                Log.Log.debug(deviceset.toString());
                 sb.append("{");
                 try {
                     int prev = 42;
@@ -106,7 +106,7 @@ public class DeviceRequest extends PostRequest {
                 break;
             case "gettypes":
                 deviceset = jdbc.executeQuery("select * from cities WHERE `name`='" + params.get("cityname") + "' AND `zone`='" + params.get("zonename") + "' ORDER BY zone ASC");
-                Log.debug(deviceset.toString());
+                Log.Log.debug(deviceset.toString());
                 sb.append("{");
                 try {
                     String prev = "42";

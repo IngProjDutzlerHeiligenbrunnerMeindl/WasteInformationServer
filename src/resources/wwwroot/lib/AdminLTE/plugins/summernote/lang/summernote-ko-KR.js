@@ -142,7 +142,7 @@
         'formatH5': '현재 블록의 포맷을 제목5(H5)로 변경',
         'formatH6': '현재 블록의 포맷을 제목6(H6)로 변경',
         'insertHorizontalRule': '구분선 삽입',
-        'linkDialog.show': '링크 대화상자 열기',
+        'linkDiaLog.Log.show': '링크 대화상자 열기',
       },
       history: {
         undo: '실행 취소',

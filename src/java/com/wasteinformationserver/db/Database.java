@@ -50,7 +50,7 @@ abstract class Database {
                     }
                 }
 
-                Log.debug(row);
+                Log.Log.debug(row);
             }
 
         } catch (SQLException e) {

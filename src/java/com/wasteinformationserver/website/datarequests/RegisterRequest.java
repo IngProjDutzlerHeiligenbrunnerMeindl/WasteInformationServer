@@ -12,9 +12,9 @@ import java.util.HashMap;
 public class RegisterRequest extends PostRequest {
     @Override
     public String request(HashMap<String, String> params) {
-        Log.debug(params.toString());
+        Log.Log.debug(params.toString());
 
-        String passhash = HttpTools.StringToMD5(params.get("password"));
+        String passhash = HttpTools.Companion.StringToMD5(params.get("password"));
 
         JDBC myjd = null;
         try {

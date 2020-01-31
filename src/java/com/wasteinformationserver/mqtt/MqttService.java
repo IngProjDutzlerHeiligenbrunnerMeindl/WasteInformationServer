@@ -35,7 +35,7 @@ public class MqttService {
         try {
             db = JDBC.getInstance();
         } catch (IOException e) {
-            Log.error("no connetion to db");
+            Log.Log.error("no connetion to db");
         }
     }
 
@@ -52,14 +52,14 @@ public class MqttService {
             client.setCallback(new MqttCallback() {
                 @Override
                 public void connectionLost(Throwable throwable) {
-                    Log.error("connection lost");
+                    Log.Log.error("connection lost");
                     // TODO: 12.01.20 reconnect
                 }
 
                 @Override
                 public void messageArrived(String s, MqttMessage mqttMessage) {
                     String deviceid = new String(mqttMessage.getPayload());
-                    Log.message("received Request from PCB");
+                    Log.Log.message("received Request from PCB");
 
                     ResultSet res = db.executeQuery("SELECT * from devices WHERE DeviceID=" + deviceid);
                     try {
@@ -87,7 +87,7 @@ public class MqttService {
                         } else {
                             //new device
                             db.executeUpdate("INSERT INTO devices (DeviceID) VALUES (" + deviceid + ")");
-                            Log.info("new device registered to server");
+                            Log.Log.info("new device registered to server");
                             tramsmitMessage(deviceid + ",-1");
                         }
                     } catch (SQLException e) {
@@ -102,7 +102,7 @@ public class MqttService {
             });
             client.subscribe("TopicIn");
         } catch (MqttException e) {
-            Log.error("Connection to the Broker failed");
+            Log.Log.error("Connection to the Broker failed");
         }
     }
 
@@ -127,23 +127,23 @@ public class MqttService {
             result.last();
             if (result.getRow() == 0) {
                 //if not found in db --> send zero
-                Log.debug("not found in db");
+                Log.Log.debug("not found in db");
 
                 tramsmitMessage(deviceid + "," + wastetype + "," + 0);
             } else {
-                Log.debug(result.getString("pickupdate"));
+                Log.Log.debug(result.getString("pickupdate"));
 
                 result.first();
                 do {
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                     long timestamp = formatter.parse(result.getString("pickupdate")).getTime();
                     long timestampnow = formatter.parse(formatter.format(new Date())).getTime();
-                    Log.debug("timestamp is :" + timestamp);
+                    Log.Log.debug("timestamp is :" + timestamp);
 
                     if (timestamp == timestampnow || timestamp == timestampnow + 86400000) { // 86400000 == one day
                         // valid time
                         tramsmitMessage(deviceid + "," + wastetype + "," + 1);
-                        Log.debug("valid time");
+                        Log.Log.debug("valid time");
                         return;
                     }
                 } while (result.next());
@@ -156,7 +156,7 @@ public class MqttService {
 
 
     private void tramsmitMessage(String temp) {
-        Log.debug("sending message >>>" + temp);
+        Log.Log.debug("sending message >>>" + temp);
         MqttMessage message = new MqttMessage(temp.getBytes());
         message.setQos(2);
         try {

@@ -141,7 +141,7 @@
         'formatH5': 'Formatiert aktuellen Block als H5',
         'formatH6': 'Formatiert aktuellen Block als H6',
         'insertHorizontalRule': 'Fügt eine horizontale Linie ein',
-        'linkDialog.show': 'Zeigt Linkdialog',
+        'linkDiaLog.Log.show': 'Zeigt Linkdialog',
       },
       history: {
         undo: 'Rückgängig',

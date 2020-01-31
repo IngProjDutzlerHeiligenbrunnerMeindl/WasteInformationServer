@@ -140,7 +140,7 @@
         'formatH5': 'Changer le paragraphe en cours en entête H5',
         'formatH6': 'Changer le paragraphe en cours en entête H6',
         'insertHorizontalRule': 'Insérer séparation horizontale',
-        'linkDialog.show': 'Afficher fenêtre d\'hyperlien',
+        'linkDiaLog.Log.show': 'Afficher fenêtre d\'hyperlien',
       },
       history: {
         undo: 'Annuler la dernière action',

@@ -140,7 +140,7 @@
         'formatH5': 'Aktif bloğun biçimini başlık 5 (h5) olarak değiştirir',
         'formatH6': 'Aktif bloğun biçimini başlık 6 (h6) olarak değiştirir',
         'insertHorizontalRule': 'Yatay çizgi ekler',
-        'linkDialog.show': 'Bağlantı ayar kutusunu gösterir',
+        'linkDiaLog.Log.show': 'Bağlantı ayar kutusunu gösterir',
       },
       history: {
         undo: 'Geri al',

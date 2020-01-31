@@ -24,17 +24,17 @@ public class DataRequest extends PostRequest {
         try {
             jdbc = JDBC.getInstance();
         } catch (IOException e) {
-            Log.error("no connection to db");
+            Log.Log.error("no connection to db");
             return "{\"query\" : \"nodbconn\"}";
         }
         switch (params.get("action")) {
             case "newCity":
                 sb.append("{");
-                Log.debug(params.toString());
+                Log.Log.debug(params.toString());
 
 //                check if wastezone and wasteregion already exists
 
-                Log.debug(params.get("cityname") + params.get("wastetype") + params.get("wastezone"));
+                Log.Log.debug(params.get("cityname") + params.get("wastetype") + params.get("wastezone"));
                 set = jdbc.executeQuery("select * from `cities` where `name`='" + params.get("cityname") + "' AND `wastetype`='" + params.get("wastetype") + "' AND `zone`='" + params.get("wastezone") + "'");
                 int size = 0;
                 try {
@@ -60,7 +60,7 @@ public class DataRequest extends PostRequest {
                     }
 
                 } else if (size > 1) {
-                    Log.warning("more than one entry in db!!!");
+                    Log.Log.warning("more than one entry in db!!!");
                     sb.append("\"status\" : \"exists\"");
                 } else {
                     //already exists
@@ -72,7 +72,7 @@ public class DataRequest extends PostRequest {
                 break;
             case "getAllCities":
                 set = jdbc.executeQuery("select * from cities");
-                Log.debug(set.toString());
+                Log.Log.debug(set.toString());
                 sb.append("{\"data\":[");
                 try {
                     while (set.next()) {
@@ -103,14 +103,14 @@ public class DataRequest extends PostRequest {
                         sb.append("\"status\" : \"error\"");
                     }
                 } catch (SQLIntegrityConstraintViolationException e) {
-                    Log.warning("dependencies of deletion exist");
+                    Log.Log.warning("dependencies of deletion exist");
                     sb.append("\"status\" : \"dependenciesnotdeleted\"");
                 } catch (SQLException e) {
-                    Log.error("sql exception: " + e.getMessage());
+                    Log.Log.error("sql exception: " + e.getMessage());
                     sb.append("\"status\" : \"error\"");
                 }
 
-                Log.debug(status);
+                Log.Log.debug(status);
 
                 sb.append(",\"query\":\"ok\"");
                 sb.append("}");
@@ -149,10 +149,10 @@ public class DataRequest extends PostRequest {
                         sb.append("\"status\" : \"error\"");
                     }
                 } catch (SQLIntegrityConstraintViolationException e) {
-                    Log.warning("dependencies of deletion exist");
+                    Log.Log.warning("dependencies of deletion exist");
                     sb.append("\"status\" : \"dependenciesnotdeleted\"");
                 } catch (SQLException e) {
-                    Log.error("sql exception: " + e.getMessage());
+                    Log.Log.error("sql exception: " + e.getMessage());
                     sb.append("\"status\" : \"error\"");
                 }
 
@@ -197,7 +197,7 @@ public class DataRequest extends PostRequest {
                     set.last();
                     sb.append(",\"citynumber\":\"" + set.getRow() + "\"");
                 } catch (SQLException e) {
-                    Log.error("sql exception: " + e.getMessage());
+                    Log.Log.error("sql exception: " + e.getMessage());
                     sb.append("\"status\" : \"error\"");
                 }
 

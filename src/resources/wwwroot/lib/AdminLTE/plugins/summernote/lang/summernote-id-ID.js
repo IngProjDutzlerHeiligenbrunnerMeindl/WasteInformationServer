@@ -140,7 +140,7 @@
         'formatH5': 'Ubah format gaya tulisan terpilih menjadi Heading 5',
         'formatH6': 'Ubah format gaya tulisan terpilih menjadi Heading 6',
         'insertHorizontalRule': 'Masukkan garis horizontal',
-        'linkDialog.show': 'Tampilkan Link Dialog',
+        'linkDiaLog.Log.show': 'Tampilkan Link Dialog',
       },
       history: {
         undo: 'Kembali',

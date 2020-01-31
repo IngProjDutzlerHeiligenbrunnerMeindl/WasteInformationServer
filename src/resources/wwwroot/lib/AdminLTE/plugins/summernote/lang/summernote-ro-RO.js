@@ -140,7 +140,7 @@
         'formatH5': 'Schimbă formatarea selecției în H5',
         'formatH6': 'Schimbă formatarea selecției în H6',
         'insertHorizontalRule': 'Adaugă linie orizontală',
-        'linkDialog.show': 'Inserează link',
+        'linkDiaLog.Log.show': 'Inserează link',
       },
       history: {
         undo: 'Starea anterioară',

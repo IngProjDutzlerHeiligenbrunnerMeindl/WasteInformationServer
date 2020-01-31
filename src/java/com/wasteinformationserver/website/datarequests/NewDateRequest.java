@@ -18,13 +18,13 @@ public class NewDateRequest extends PostRequest {
         try {
             jdbc = JDBC.getInstance();
         } catch (IOException e) {
-            Log.error("no connection to db");
+            Log.Log.error("no connection to db");
             return "{\"query\" : \"nodbconn\"}";
         }
         switch (params.get("action")) {
             case "getCitynames":
                 set = jdbc.executeQuery("select * from cities");
-                Log.debug(set.toString());
+                Log.Log.debug(set.toString());
                 sb.append("{\"data\":[");
                 try {
                     String prev = "";
@@ -45,11 +45,11 @@ public class NewDateRequest extends PostRequest {
                 sb.append("]");
                 sb.append(",\"query\":\"ok\"");
                 sb.append("}");
-                Log.debug(sb.toString());
+                Log.Log.debug(sb.toString());
                 break;
             case "getzones":
                 set = jdbc.executeQuery("select * from cities WHERE `name`='" + params.get("cityname") + "' ORDER BY zone ASC");
-                Log.debug(set.toString());
+                Log.Log.debug(set.toString());
                 sb.append("{\"data\":[");
                 try {
                     int prev = 42;
@@ -73,7 +73,7 @@ public class NewDateRequest extends PostRequest {
                 break;
             case "gettypes":
                 set = jdbc.executeQuery("select * from cities WHERE `name`='" + params.get("cityname") + "' AND `zone`='"+params.get("zonename")+"' ORDER BY zone ASC");
-                Log.debug(set.toString());
+                Log.Log.debug(set.toString());
                 sb.append("{\"data\":[");
                 try {
                     String prev = "42";
@@ -97,12 +97,12 @@ public class NewDateRequest extends PostRequest {
                 break;
             case "newdate":
                 sb.append("{");
-                Log.debug(params);
+                Log.Log.debug(params);
                 set = jdbc.executeQuery("select * from cities WHERE `name`='" + params.get("cityname") + "' AND `zone`='" + params.get("zone") + "' AND `wastetype`='" + params.get("wastetype") + "'");
                 try {
                     set.last();
                     if (set.getRow() == 1) {
-                        Log.debug(set.getInt("id"));
+                        Log.Log.debug(set.getInt("id"));
 
                         int status = jdbc.executeUpdate("INSERT INTO `pickupdates`(`citywastezoneid`, `pickupdate`) VALUES ('" + set.getInt("id") + "','" + params.get("date") + "')");
                         if (status == 1) {
@@ -111,7 +111,7 @@ public class NewDateRequest extends PostRequest {
                             sb.append("\"status\" : \"error\"");
                         }
                     } else {
-                        Log.warning("city doesnt exist!");
+                        Log.Log.warning("city doesnt exist!");
                         sb.append("\"status\" : \"citydoesntexist\"");
                     }
 

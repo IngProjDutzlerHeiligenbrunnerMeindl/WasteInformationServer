@@ -140,7 +140,7 @@
         'formatH5': 'H5指定',
         'formatH6': 'H6指定',
         'insertHorizontalRule': '&lt;hr /&gt;を挿入',
-        'linkDialog.show': 'リンク挿入',
+        'linkDiaLog.Log.show': 'リンク挿入',
       },
       history: {
         undo: '元に戻す',

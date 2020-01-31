@@ -11,7 +11,7 @@ class UserInfoRequest : PostRequest() {
                 println("heyho")
             }
             ""->{
-                //todo
+                //todo o
             }
         }
         return "{}";

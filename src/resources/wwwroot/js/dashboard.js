@@ -60,7 +60,7 @@ class Dashboard {
                         console.log('Popup closed. ')
 
                     });
-                    reloadtable();
+                    this.reloadtable();
                 } else if (data.status == "exists") {
                     Swal.fire({
                         type: "warning",

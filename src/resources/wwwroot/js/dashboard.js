@@ -1,30 +1,35 @@
 $(document).ready(function () {
+    new Dashboard();
+});
+
+class Dashboard {
+    constructor() {
+        //load header data
+        this.loadHeaderData();
+
+        //load footer
+        this.loadVersionFooter();
+
+        //reload city table
+        this.reloadtable();
+
+        //reload Date table
+        this.reloadDateTable();
+
+        //init time picker
+        this.initDatePicker();
+
+        //add click listeners to all buttons
+        this.addClickListeners();
+    }
+
     /* Constants */
-    var citytable;
-    var datetable;
-
-    //load header data
-    loadHeaderData();
-
-    //load footer
-    loadVersionFooter();
-
-    //reload city table
-    reloadtable();
-
-    //reload Date table
-    reloadDateTable();
-
-    //init time picker
-    initDatePicker();
-
-    //add click listeners to all buttons
-    addClickListeners();
-
+    citytable;
+    datetable;
 
     /* Btn Action Listeners */
 
-    function addClickListeners() {
+    addClickListeners() {
         //btn listeners
         $('#logoutbtn').click(function () {
             $.post('/senddata/checkloginstate', 'action=logout', function (data) {
@@ -195,8 +200,7 @@ $(document).ready(function () {
 
 
     /* Functions */
-
-    function initDatePicker() {
+    initDatePicker() {
         //Date picker pop up actions...
         var date_input = $('input[name="date"]'); //our date input has the name "date"
         var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
@@ -209,7 +213,7 @@ $(document).ready(function () {
         date_input.datepicker(options);
     }
 
-    function loadHeaderData() {
+    loadHeaderData() {
         $.post('/senddata/wastedata', 'action=getStartHeaderData', function (data) {
             console.log(data);
             $("#total-connection-labels").html(data.collectionnumber);
@@ -222,16 +226,16 @@ $(document).ready(function () {
         }, 'json');
     }
 
-    function loadVersionFooter() {
+    loadVersionFooter() {
         $.post('/senddata/wastedata', 'action=getversionandbuildtime', function (data) {
             $("#version-footer-label").html("<b>Version</b> " + data.version + " <b>Build</b> " + data.buildtime);
         }, 'json');
     }
 
-    function reloadtable() {
+    reloadtable() {
         $.post('/senddata/wastedata', 'action=getAllCities', function (data) {
-            if (citytable != null) {
-                citytable.destroy(); //delete table if already created
+            if (this.citytable != null) {
+                this.citytable.destroy(); //delete table if already created
             }
 
             console.log(data);
@@ -283,7 +287,7 @@ $(document).ready(function () {
                     }, "json");
                 });
 
-                citytable = $("#example2").DataTable();
+                this.citytable = $("#example2").DataTable();
             } else if (data.query == "nodbconn") {
                 Swal.fire({
                     type: "error",
@@ -300,10 +304,10 @@ $(document).ready(function () {
         }, 'json');
     }
 
-    function reloadDateTable() {
+    reloadDateTable() {
         $.post('/senddata/wastedata', 'action=getAllDates', function (data) {
-            if (datetable != null) {
-                datetable.destroy(); //delete table if already created
+            if (this.datetable != null) {
+                this.datetable.destroy(); //delete table if already created
             }
             console.log(data);
 
@@ -352,9 +356,11 @@ $(document).ready(function () {
                     }, "json");
                 });
             }
-            datetable = $("#table-pickupdates").DataTable({
+            this.datetable = $("#table-pickupdates").DataTable({
                 "order": [[3, "asc"]]
             });
         }, "json");
     }
-});
+}
+
+

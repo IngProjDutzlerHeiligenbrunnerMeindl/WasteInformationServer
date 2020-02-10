@@ -140,7 +140,7 @@
         'formatH5': 'Blokk formázása, mint Fejléc 5',
         'formatH6': 'Blokk formázása, mint Fejléc 6',
         'insertHorizontalRule': 'Vízszintes vonal beszúrása',
-        'linkDialog.show': 'Link párbeszédablak megjelenítése',
+        'linkDiaLog.Log.show': 'Link párbeszédablak megjelenítése',
       },
       history: {
         undo: 'Visszavonás',

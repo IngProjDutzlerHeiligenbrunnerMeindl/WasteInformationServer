@@ -52,13 +52,13 @@ public class Dateget {
 
     public void printList() {
         for (int n = 0; n < list.size(); n++) {
-            Log.debug(list.get(n));
+            Log.Log.debug(list.get(n));
         }
     }
 
     public void printListnew() {
         for (int n = 0; n < listnew.size(); n++) {
-            Log.debug(listnew.get(n));
+            Log.Log.debug(listnew.get(n));
         }
     }
 

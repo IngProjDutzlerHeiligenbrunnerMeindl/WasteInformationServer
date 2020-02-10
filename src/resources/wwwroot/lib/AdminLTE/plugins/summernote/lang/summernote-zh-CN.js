@@ -140,7 +140,7 @@
         formatH5: '设置选中内容样式为 标题5',
         formatH6: '设置选中内容样式为 标题6',
         insertHorizontalRule: '插入水平线',
-        'linkDialog.show': '显示链接对话框',
+        'linkDiaLog.Log.show': '显示链接对话框',
       },
       history: {
         undo: '撤销',

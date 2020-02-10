@@ -141,7 +141,7 @@
         'formatH5': 'Alterar formato do bloco para H5',
         'formatH6': 'Alterar formato do bloco para H6',
         'insertHorizontalRule': 'Inserir Régua horizontal',
-        'linkDialog.show': 'Inserir um Hiperlink',
+        'linkDiaLog.Log.show': 'Inserir um Hiperlink',
       },
       history: {
         undo: 'Desfazer',

@@ -140,7 +140,7 @@
         formatH5: 'Mainīt bloka tipu uz virsrakstu H5',
         formatH6: 'Mainīt bloka tipu uz virsrakstu H6',
         insertHorizontalRule: 'Ievietot horizontālu līniju',
-        'linkDialog.show': 'Parādīt saites logu',
+        'linkDiaLog.Log.show': 'Parādīt saites logu',
       },
       history: {
         undo: 'Atsauks (undo)',

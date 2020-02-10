@@ -140,7 +140,7 @@
         'formatH5': 'Formatteer huidig blok als H5',
         'formatH6': 'Formatteer huidig blok als H6',
         'insertHorizontalRule': 'Invoegen horizontale lijn',
-        'linkDialog.show': 'Toon Link Dialoogvenster',
+        'linkDiaLog.Log.show': 'Toon Link Dialoogvenster',
       },
       history: {
         undo: 'Ongedaan maken',

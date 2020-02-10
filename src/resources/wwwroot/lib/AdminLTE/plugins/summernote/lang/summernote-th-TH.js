@@ -140,7 +140,7 @@
         'formatH5': 'เปลี่ยนรูปแบบบล็อคปัจจุบันเป็น H5',
         'formatH6': 'เปลี่ยนรูปแบบบล็อคปัจจุบันเป็น H6',
         'insertHorizontalRule': 'Insert horizontal rule',
-        'linkDialog.show': 'เปิดหน้าแก้ไข Link',
+        'linkDiaLog.Log.show': 'เปิดหน้าแก้ไข Link',
       },
       history: {
         undo: 'ยกเลิกการกระทำ',

@@ -236,16 +236,16 @@
           $btn.toggleClass('active', isActive);
       },
       onDialogShown: function ($dialog, handler) {
-          $dialog.one('shown.bs.modal', handler);
+          $diaLog.Log.one('shown.bs.modal', handler);
       },
       onDialogHidden: function ($dialog, handler) {
-          $dialog.one('hidden.bs.modal', handler);
+          $diaLog.Log.one('hidden.bs.modal', handler);
       },
       showDialog: function ($dialog) {
-          $dialog.modal('show');
+          $diaLog.Log.modal('show');
       },
       hideDialog: function ($dialog) {
-          $dialog.modal('hide');
+          $diaLog.Log.modal('hide');
       },
       createLayout: function ($note, options) {
           var $editor = (options.airMode ? ui.airEditor([
@@ -424,7 +424,7 @@
               'formatH5': 'Change current block\'s format as H5',
               'formatH6': 'Change current block\'s format as H6',
               'insertHorizontalRule': 'Insert horizontal rule',
-              'linkDialog.show': 'Show Link Dialog'
+              'linkDiaLog.Log.show': 'Show Link Dialog'
           },
           history: {
               undo: 'Undo',
@@ -5252,7 +5252,7 @@
                       e.preventDefault();
                   }
               },
-              'summernote.keyup summernote.scroll summernote.change summernote.dialog.shown': function () {
+              'summernote.keyup summernote.scroll summernote.change summernote.diaLog.Log.shown': function () {
                   _this.update();
               },
               'summernote.disable': function () {
@@ -6042,22 +6042,22 @@
           this.context.memo('button.link', function () {
               return _this.button({
                   contents: _this.ui.icon(_this.options.icons.link),
-                  tooltip: _this.lang.link.link + _this.representShortcut('linkDialog.show'),
-                  click: _this.context.createInvokeHandler('linkDialog.show')
+                  tooltip: _this.lang.link.link + _this.representShortcut('linkDiaLog.Log.show'),
+                  click: _this.context.createInvokeHandler('linkDiaLog.Log.show')
               }).render();
           });
           this.context.memo('button.picture', function () {
               return _this.button({
                   contents: _this.ui.icon(_this.options.icons.picture),
                   tooltip: _this.lang.image.image,
-                  click: _this.context.createInvokeHandler('imageDialog.show')
+                  click: _this.context.createInvokeHandler('imageDiaLog.Log.show')
               }).render();
           });
           this.context.memo('button.video', function () {
               return _this.button({
                   contents: _this.ui.icon(_this.options.icons.video),
                   tooltip: _this.lang.video.video,
-                  click: _this.context.createInvokeHandler('videoDialog.show')
+                  click: _this.context.createInvokeHandler('videoDiaLog.Log.show')
               }).render();
           });
           this.context.memo('button.hr', function () {
@@ -6101,7 +6101,7 @@
               return _this.button({
                   contents: _this.ui.icon(_this.options.icons.question),
                   tooltip: _this.lang.options.help,
-                  click: _this.context.createInvokeHandler('helpDialog.show')
+                  click: _this.context.createInvokeHandler('helpDiaLog.Log.show')
               }).render();
           });
       };
@@ -6180,7 +6180,7 @@
               return _this.button({
                   contents: _this.ui.icon(_this.options.icons.link),
                   tooltip: _this.lang.link.edit,
-                  click: _this.context.createInvokeHandler('linkDialog.show')
+                  click: _this.context.createInvokeHandler('linkDiaLog.Log.show')
               }).render();
           });
           this.context.memo('button.unlink', function () {
@@ -6516,9 +6516,9 @@
           this.$editor = context.layoutInfo.editor;
           this.options = context.options;
           this.lang = this.options.langInfo;
-          context.memo('help.linkDialog.show', this.options.langInfo.help['linkDialog.show']);
+          context.memo('help.linkDiaLog.Log.show', this.options.langInfo.help['linkDiaLog.Log.show']);
       }
-      LinkDialog.prototype.initialize = function () {
+      LinkDiaLog.Log.prototype.initialize = function () {
           var $container = this.options.dialogsInBody ? this.$body : this.$editor;
           var body = [
               '<div class="form-group note-form-group">',
@@ -6547,11 +6547,11 @@
               footer: footer
           }).render().appendTo($container);
       };
-      LinkDialog.prototype.destroy = function () {
+      LinkDiaLog.Log.prototype.destroy = function () {
           this.ui.hideDialog(this.$dialog);
-          this.$dialog.remove();
+          this.$diaLog.Log.remove();
       };
-      LinkDialog.prototype.bindEnterKey = function ($input, $btn) {
+      LinkDiaLog.Log.prototype.bindEnterKey = function ($input, $btn) {
           $input.on('keypress', function (event) {
               if (event.keyCode === key.code.ENTER) {
                   event.preventDefault();
@@ -6562,7 +6562,7 @@
       /**
        * toggle update button
        */
-      LinkDialog.prototype.toggleLinkBtn = function ($linkBtn, $linkText, $linkUrl) {
+      LinkDiaLog.Log.prototype.toggleLinkBtn = function ($linkBtn, $linkText, $linkUrl) {
           this.ui.toggleBtn($linkBtn, $linkText.val() && $linkUrl.val());
       };
       /**
@@ -6571,16 +6571,16 @@
        * @param {Object} linkInfo
        * @return {Promise}
        */
-      LinkDialog.prototype.showLinkDialog = function (linkInfo) {
+      LinkDiaLog.Log.prototype.showLinkDialog = function (linkInfo) {
           var _this = this;
           return $$1.Deferred(function (deferred) {
-              var $linkText = _this.$dialog.find('.note-link-text');
-              var $linkUrl = _this.$dialog.find('.note-link-url');
-              var $linkBtn = _this.$dialog.find('.note-link-btn');
+              var $linkText = _this.$diaLog.Log.find('.note-link-text');
+              var $linkUrl = _this.$diaLog.Log.find('.note-link-url');
+              var $linkBtn = _this.$diaLog.Log.find('.note-link-btn');
               var $openInNewWindow = _this.$dialog
                   .find('.sn-checkbox-open-in-new-window input[type=checkbox]');
               _this.ui.onDialogShown(_this.$dialog, function () {
-                  _this.context.triggerEvent('dialog.shown');
+                  _this.context.triggerEvent('diaLog.Log.shown');
                   // If no url was given and given text is valid URL then copy that into URL Field
                   if (!linkInfo.url && func.isValidUrl(linkInfo.text)) {
                       linkInfo.url = linkInfo.text;
@@ -6634,7 +6634,7 @@
       /**
        * @param {Object} layoutInfo
        */
-      LinkDialog.prototype.show = function () {
+      LinkDiaLog.Log.prototype.show = function () {
           var _this = this;
           var linkInfo = this.context.invoke('editor.getLinkInfo');
           this.context.invoke('editor.saveRange');
@@ -6658,7 +6658,7 @@
               'summernote.keyup summernote.mouseup summernote.change summernote.scroll': function () {
                   _this.update();
               },
-              'summernote.disable summernote.dialog.shown': function () {
+              'summernote.disable summernote.diaLog.Log.shown': function () {
                   _this.hide();
               }
           };
@@ -6717,7 +6717,7 @@
           this.options = context.options;
           this.lang = this.options.langInfo;
       }
-      ImageDialog.prototype.initialize = function () {
+      ImageDiaLog.Log.prototype.initialize = function () {
           var $container = this.options.dialogsInBody ? this.$body : this.$editor;
           var imageLimitation = '';
           if (this.options.maximumImageFileSize) {
@@ -6748,11 +6748,11 @@
               footer: footer
           }).render().appendTo($container);
       };
-      ImageDialog.prototype.destroy = function () {
+      ImageDiaLog.Log.prototype.destroy = function () {
           this.ui.hideDialog(this.$dialog);
-          this.$dialog.remove();
+          this.$diaLog.Log.remove();
       };
-      ImageDialog.prototype.bindEnterKey = function ($input, $btn) {
+      ImageDiaLog.Log.prototype.bindEnterKey = function ($input, $btn) {
           $input.on('keypress', function (event) {
               if (event.keyCode === key.code.ENTER) {
                   event.preventDefault();
@@ -6760,7 +6760,7 @@
               }
           });
       };
-      ImageDialog.prototype.show = function () {
+      ImageDiaLog.Log.prototype.show = function () {
           var _this = this;
           this.context.invoke('editor.saveRange');
           this.showImageDialog().then(function (data) {
@@ -6789,14 +6789,14 @@
        * @param {jQuery} $dialog
        * @return {Promise}
        */
-      ImageDialog.prototype.showImageDialog = function () {
+      ImageDiaLog.Log.prototype.showImageDialog = function () {
           var _this = this;
           return $$1.Deferred(function (deferred) {
-              var $imageInput = _this.$dialog.find('.note-image-input');
-              var $imageUrl = _this.$dialog.find('.note-image-url');
-              var $imageBtn = _this.$dialog.find('.note-image-btn');
+              var $imageInput = _this.$diaLog.Log.find('.note-image-input');
+              var $imageUrl = _this.$diaLog.Log.find('.note-image-url');
+              var $imageBtn = _this.$diaLog.Log.find('.note-image-btn');
               _this.ui.onDialogShown(_this.$dialog, function () {
-                  _this.context.triggerEvent('dialog.shown');
+                  _this.context.triggerEvent('diaLog.Log.shown');
                   // Cloning imageInput to clear element.
                   $imageInput.replaceWith($imageInput.clone().on('change', function (event) {
                       deferred.resolve(event.target.files || event.target.value);
@@ -6946,7 +6946,7 @@
           this.options = context.options;
           this.lang = this.options.langInfo;
       }
-      VideoDialog.prototype.initialize = function () {
+      VideoDiaLog.Log.prototype.initialize = function () {
           var $container = this.options.dialogsInBody ? this.$body : this.$editor;
           var body = [
               '<div class="form-group note-form-group row-fluid">',
@@ -6963,11 +6963,11 @@
               footer: footer
           }).render().appendTo($container);
       };
-      VideoDialog.prototype.destroy = function () {
+      VideoDiaLog.Log.prototype.destroy = function () {
           this.ui.hideDialog(this.$dialog);
-          this.$dialog.remove();
+          this.$diaLog.Log.remove();
       };
-      VideoDialog.prototype.bindEnterKey = function ($input, $btn) {
+      VideoDiaLog.Log.prototype.bindEnterKey = function ($input, $btn) {
           $input.on('keypress', function (event) {
               if (event.keyCode === key.code.ENTER) {
                   event.preventDefault();
@@ -6975,7 +6975,7 @@
               }
           });
       };
-      VideoDialog.prototype.createVideoNode = function (url) {
+      VideoDiaLog.Log.prototype.createVideoNode = function (url) {
           // video url patterns(youtube, instagram, vimeo, dailymotion, youku, mp4, ogg, webm)
           var ytRegExp = /\/\/(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w|-]{11})(?:(?:[\?&]t=)(\S+))?$/;
           var ytRegExpForStart = /^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?$/;
@@ -7081,7 +7081,7 @@
           $video.addClass('note-video-clip');
           return $video[0];
       };
-      VideoDialog.prototype.show = function () {
+      VideoDiaLog.Log.prototype.show = function () {
           var _this = this;
           var text = this.context.invoke('editor.getSelectedText');
           this.context.invoke('editor.saveRange');
@@ -7105,13 +7105,13 @@
        * @param {jQuery} $dialog
        * @return {Promise}
        */
-      VideoDialog.prototype.showVideoDialog = function (text) {
+      VideoDiaLog.Log.prototype.showVideoDialog = function (text) {
           var _this = this;
           return $$1.Deferred(function (deferred) {
-              var $videoUrl = _this.$dialog.find('.note-video-url');
-              var $videoBtn = _this.$dialog.find('.note-video-btn');
+              var $videoUrl = _this.$diaLog.Log.find('.note-video-url');
+              var $videoBtn = _this.$diaLog.Log.find('.note-video-btn');
               _this.ui.onDialogShown(_this.$dialog, function () {
-                  _this.context.triggerEvent('dialog.shown');
+                  _this.context.triggerEvent('diaLog.Log.shown');
                   $videoUrl.on('input paste propertychange', function () {
                       _this.ui.toggleBtn($videoBtn, $videoUrl.val());
                   });
@@ -7146,7 +7146,7 @@
           this.options = context.options;
           this.lang = this.options.langInfo;
       }
-      HelpDialog.prototype.initialize = function () {
+      HelpDiaLog.Log.prototype.initialize = function () {
           var $container = this.options.dialogsInBody ? this.$body : this.$editor;
           var body = [
               '<p class="text-center">',
@@ -7168,11 +7168,11 @@
               }
           }).render().appendTo($container);
       };
-      HelpDialog.prototype.destroy = function () {
+      HelpDiaLog.Log.prototype.destroy = function () {
           this.ui.hideDialog(this.$dialog);
-          this.$dialog.remove();
+          this.$diaLog.Log.remove();
       };
-      HelpDialog.prototype.createShortcutList = function () {
+      HelpDiaLog.Log.prototype.createShortcutList = function () {
           var _this = this;
           var keyMap = this.options.keyMap[env.isMac ? 'mac' : 'pc'];
           return Object.keys(keyMap).map(function (key) {
@@ -7190,17 +7190,17 @@
        *
        * @return {Promise}
        */
-      HelpDialog.prototype.showHelpDialog = function () {
+      HelpDiaLog.Log.prototype.showHelpDialog = function () {
           var _this = this;
           return $$1.Deferred(function (deferred) {
               _this.ui.onDialogShown(_this.$dialog, function () {
-                  _this.context.triggerEvent('dialog.shown');
+                  _this.context.triggerEvent('diaLog.Log.shown');
                   deferred.resolve();
               });
               _this.ui.showDialog(_this.$dialog);
           }).promise();
       };
-      HelpDialog.prototype.show = function () {
+      HelpDiaLog.Log.prototype.show = function () {
           var _this = this;
           this.context.invoke('editor.saveRange');
           this.showHelpDialog().then(function () {
@@ -7221,7 +7221,7 @@
               'summernote.keyup summernote.mouseup summernote.scroll': function () {
                   _this.update();
               },
-              'summernote.disable summernote.change summernote.dialog.shown': function () {
+              'summernote.disable summernote.change summernote.diaLog.Log.shown': function () {
                   _this.hide();
               },
               'summernote.focusout': function (we, e) {
@@ -7293,7 +7293,7 @@
               'summernote.keydown': function (we, e) {
                   _this.handleKeydown(e);
               },
-              'summernote.disable summernote.dialog.shown': function () {
+              'summernote.disable summernote.diaLog.Log.shown': function () {
                   _this.hide();
               }
           };
@@ -7671,7 +7671,7 @@
                   'CTRL+NUM5': 'formatH5',
                   'CTRL+NUM6': 'formatH6',
                   'CTRL+ENTER': 'insertHorizontalRule',
-                  'CTRL+K': 'linkDialog.show'
+                  'CTRL+K': 'linkDiaLog.Log.show'
               },
               mac: {
                   'ENTER': 'insertParagraph',
@@ -7700,7 +7700,7 @@
                   'CMD+NUM5': 'formatH5',
                   'CMD+NUM6': 'formatH6',
                   'CMD+ENTER': 'insertHorizontalRule',
-                  'CMD+K': 'linkDialog.show'
+                  'CMD+K': 'linkDiaLog.Log.show'
               }
           },
           icons: {

@@ -47347,7 +47347,7 @@ var Path = function () {
                   p3y = _c$args3[5];
             }
 
-            // http://blog.hackers-cafe.net/2009/06/how-to-calculate-bezier-curves-bounding.html
+            // http://bLog.Log.hackers-cafe.net/2009/06/how-to-calculate-bezier-curves-bounding.html
             bbox.addPoint(p3x, p3y);
 
             var p0 = [cx, cy];

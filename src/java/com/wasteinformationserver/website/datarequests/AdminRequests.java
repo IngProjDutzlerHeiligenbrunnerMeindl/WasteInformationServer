@@ -28,7 +28,7 @@ public class AdminRequests extends PostRequest {
 
                 /* is it a jar file? */
                 if (!currentJar.getName().endsWith(".jar"))
-                    Log.warning("not jar --> cant restart");
+                    Log.Log.warning("not jar --> cant restart");
 
                 /* Build command: java -jar application.jar */
                 final ArrayList<String> command = new ArrayList<String>();

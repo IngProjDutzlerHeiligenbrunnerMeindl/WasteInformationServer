@@ -140,7 +140,7 @@
         'formatH5': 'Canviar l\'estil del bloc com a un H5',
         'formatH6': 'Canviar l\'estil del bloc com a un H6',
         'insertHorizontalRule': 'Inserir una línia horitzontal',
-        'linkDialog.show': 'Mostrar panel d\'enllaços',
+        'linkDiaLog.Log.show': 'Mostrar panel d\'enllaços',
       },
       history: {
         undo: 'Desfer',

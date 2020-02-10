@@ -140,7 +140,7 @@
         'formatH5': 'Zamień format bloku na H5',
         'formatH6': 'Zamień format bloku na H6',
         'insertHorizontalRule': 'Wstaw poziomą linię',
-        'linkDialog.show': 'Pokaż dialog linkowania',
+        'linkDiaLog.Log.show': 'Pokaż dialog linkowania',
       },
       history: {
         undo: 'Cofnij',

@@ -138,7 +138,7 @@
         'formatH5': 'Muuta kappaleen formaatti H5',
         'formatH6': 'Muuta kappaleen formaatti H6',
         'insertHorizontalRule': 'Lisää vaakaviiva',
-        'linkDialog.show': 'Lisää linkki',
+        'linkDiaLog.Log.show': 'Lisää linkki',
       },
       history: {
         undo: 'Kumoa',

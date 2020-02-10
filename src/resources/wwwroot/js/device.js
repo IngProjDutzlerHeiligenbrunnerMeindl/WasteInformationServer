@@ -1,12 +1,23 @@
 $(document).ready(function () {
+    new Device();
+});
 
-    var devicetable = null;
-    reloadDevices();
 
-    function reloadDevices() {
+class Device {
+    constructor() {
+        this.reloadDevices()
+    }
+
+    devicetable = null;
+
+    /**
+     * reload devices list on page
+     */
+    reloadDevices() {
+        var _this = this;
         $.post('/senddata/Devicedata', 'action=getdevices', function (data) {
-            if (devicetable != null) {
-                devicetable.destroy();
+            if (_this.devicetable != null) {
+                _this.devicetable.destroy();
             }
             console.log(data);
 
@@ -18,7 +29,7 @@ $(document).ready(function () {
                 var cityid = data.data[i].cityid;
 
 
-                if (cityid == -1) {
+                if (cityid === -1) {
                     $("#devices-tablebody").append("<tr><td>" + id + "</td><td>new Device</td><td><button deviceid=\"" + id + "\"type=\"button\" class=\"btn btn-primary configuredevicebutton\">Configure</button></td><td></td><td><button dataid='" + id + "' type='button' class='delbtn btn btn-danger'>X</button></td></tr>");
                 } else {
                     var devicename = data.data[i].devicename;
@@ -40,14 +51,17 @@ $(document).ready(function () {
                 }
             }
 
-            addDeleteButton();
-            addAddButton();
-            addConfigDialog();
-            devicetable = $('#table-devices').DataTable();
+            _this.addDeleteButton();
+            _this.addAddButton();
+            _this.addConfigDialog();
+            _this.devicetable = $('#table-devices').DataTable();
         }, 'json');
     }
 
-    function addAddButton() {
+    /**
+     * add click listener to add button to add new city entries to current device
+     */
+    addAddButton() {
         $('.addbtn').click(function (event) {
             var id = event.target.getAttribute("dataid");
             var cityname;
@@ -137,13 +151,17 @@ $(document).ready(function () {
         });
     }
 
-    function addDeleteButton() {
+    /**
+     * add click listener to delete button to delete this device entry
+     */
+    addDeleteButton() {
+        var _this = this;
         $(".delbtn").click(function (event) {
             var id = event.target.getAttribute("dataid");
             console.log("clicked btn data " + id);
             $.post('/senddata/Devicedata', 'action=deleteDevice&id=' + id, function (data) {
                 console.log(data);
-                if (data.status == "success") {
+                if (data.status === "success") {
                     Swal.fire({
                         type: "success",
                         title: 'Successfully deleted city!',
@@ -153,8 +171,8 @@ $(document).ready(function () {
                         console.log('Popup closed. ')
 
                     });
-                    reloadDevices();
-                } else if (data.status == "dependenciesnotdeleted") {
+                    _this.reloadDevices();
+                } else if (data.status === "dependenciesnotdeleted") {
                     Swal.fire({
                         type: "warning",
                         title: 'This city is a dependency of a date',
@@ -170,7 +188,10 @@ $(document).ready(function () {
         });
     }
 
-    function addConfigDialog() {
+    /**
+     * add click listener to unconfigured device to show configure dialog
+     */
+    addConfigDialog() {
         $(".configuredevicebutton").click(function (event) {
             var id = event.target.getAttribute("deviceid");
             var cityname;
@@ -269,6 +290,5 @@ $(document).ready(function () {
             console.log("click..." + id);
         });
     }
-
-});
+}
 

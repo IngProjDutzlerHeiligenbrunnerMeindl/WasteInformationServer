@@ -29,7 +29,8 @@ class DeviceRequest : PostRequest() {
                         val cityid = deviceset.getInt("CityID")
                         if (cityid == -1) {
                             sb.append("{\"deviceid\":\"").append(deviceid).append("\",\"cityid\":\"").append(cityid).append("\"}")
-                        } else {
+                        }
+                        else {
                             val devicename = deviceset.getString("DeviceName")
                             val devicelocation = deviceset.getString("DeviceLocation")
                             sb.append("{\"deviceid\":\"").append(deviceid).append("\",\"devicename\":\"").append(devicename).append("\",\"devicelocation\":\"").append(devicelocation).append("\",\"devices\":[")
@@ -122,7 +123,8 @@ class DeviceRequest : PostRequest() {
                 if (cityset.row != 1) {
                     error("error saving device to db --> device multiply defined?")
                     sb.append("{\"success\":\"false\"}")
-                } else {
+                }
+                else {
                     val cityid = cityset.getInt("id")
                     jdbc.executeUpdate("INSERT INTO `device_city` (`DeviceID`, `CityID`) VALUES ('" + params["deviceid"] + "', '" + cityid + "');")
                     jdbc.executeUpdate("UPDATE devices SET `CityID`='0',`DeviceName`='" + params["devicename"] + "',`DeviceLocation`='" + params["devicelocation"] + "' WHERE `DeviceID`='" + params["deviceid"] + "'")

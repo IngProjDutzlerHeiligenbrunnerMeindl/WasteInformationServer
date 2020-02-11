@@ -63,6 +63,7 @@ public class Info {
 
     /**
      * print memory utilization
+     * todo parse into website somehow
      */
     public static void getMemoryUsage() {
         Runtime runtime = Runtime.getRuntime();

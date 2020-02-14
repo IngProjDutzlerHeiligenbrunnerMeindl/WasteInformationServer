@@ -1,10 +1,16 @@
 package com.wasteinformationserver.website.datarequests
 
+import com.google.gson.Gson
+import com.google.gson.JsonArray
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
+import com.wasteinformationserver.basicutils.Log
 import com.wasteinformationserver.basicutils.Log.Log.debug
 import com.wasteinformationserver.basicutils.Log.Log.error
 import com.wasteinformationserver.db.JDBC
 import com.wasteinformationserver.website.basicrequest.PostRequest
 import java.io.IOException
+import java.lang.Exception
 import java.sql.ResultSet
 import java.sql.SQLException
 import java.util.*
@@ -19,39 +25,56 @@ class DeviceRequest : PostRequest() {
         }
         val sb = StringBuilder()
         var deviceset: ResultSet
+
+        val gson = Gson()
+        val elem = gson.toJsonTree(Object())
+
         when (params["action"]) {
             "getdevices" -> {
                 deviceset = jdbc!!.executeQuery("SELECT * FROM `devices")
+                elem.asJsonObject.add("data",JsonArray())
                 sb.append("{\"data\":[")
                 try {
                     while (deviceset.next()) {
                         val deviceid = deviceset.getInt("DeviceID")
                         val cityid = deviceset.getInt("CityID")
                         if (cityid == -1) {
-                            sb.append("{\"deviceid\":\"").append(deviceid).append("\",\"cityid\":\"").append(cityid).append("\"}")
+                            val obj = JsonObject()
+                            obj.addProperty("deviceid",deviceid)
+                            obj.addProperty("cityid",cityid)
+                            elem.asJsonObject.get("data").asJsonArray.add(obj)
                         }
                         else {
+                            val obj = JsonObject()
                             val devicename = deviceset.getString("DeviceName")
                             val devicelocation = deviceset.getString("DeviceLocation")
-                            sb.append("{\"deviceid\":\"").append(deviceid).append("\",\"devicename\":\"").append(devicename).append("\",\"devicelocation\":\"").append(devicelocation).append("\",\"devices\":[")
-                            val devicecities = jdbc.executeQuery("SELECT * FROM `device_city` INNER JOIN `cities` ON device_city.CityID=cities.id WHERE `DeviceID`='$deviceid'")
+                            obj.addProperty("deviceid",deviceid)
+                            obj.addProperty("devicename",devicename)
+                            obj.addProperty("devicelocation",devicelocation)
+
+                            val locations = JsonArray()
+                            obj.add("locations",locations)
+
+                            elem.asJsonObject.get("data").asJsonArray.add(obj)
+
+                           val devicecities = jdbc.executeQuery("SELECT * FROM `device_city` INNER JOIN `cities` ON device_city.CityID=cities.id WHERE `DeviceID`='$deviceid'")
                             while (devicecities.next()) {
                                 val cityidd = devicecities.getInt("id")
                                 val cityname = devicecities.getString("name")
                                 val wastetype = devicecities.getString("wastetype")
                                 val zone = devicecities.getString("zone")
-                                sb.append("{\"cityid\":\"").append(cityidd).append("\",\"cityname\":\"").append(cityname).append("\",\"wastetype\":\"").append(wastetype).append("\",\"zone\":\"").append(zone).append("\"}")
-                                if (!devicecities.isLast) {
-                                    sb.append(",")
-                                }
+
+                                val objc = JsonObject()
+                                objc.addProperty("cityid",cityidd)
+                                objc.addProperty("cityname",cityname)
+                                objc.addProperty("wastetype",wastetype)
+                                objc.addProperty("zone",zone)
+
+                                locations.add(objc)
                             }
-                            sb.append("]}")
-                        }
-                        if (!deviceset.isLast) {
-                            sb.append(",")
                         }
                     }
-                    sb.append("]}")
+                    Log.debug(gson.toJson(elem))
                 } catch (e: SQLException) {
                     e.printStackTrace()
                 }

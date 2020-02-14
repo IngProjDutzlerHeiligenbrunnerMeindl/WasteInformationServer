@@ -2,7 +2,6 @@ package com.wasteinformationserver.website.datarequests
 
 import com.google.gson.Gson
 import com.google.gson.JsonArray
-import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.wasteinformationserver.basicutils.Log
 import com.wasteinformationserver.basicutils.Log.Log.debug
@@ -10,7 +9,6 @@ import com.wasteinformationserver.basicutils.Log.Log.error
 import com.wasteinformationserver.db.JDBC
 import com.wasteinformationserver.website.basicrequest.PostRequest
 import java.io.IOException
-import java.lang.Exception
 import java.sql.ResultSet
 import java.sql.SQLException
 import java.util.*
@@ -32,7 +30,7 @@ class DeviceRequest : PostRequest() {
         when (params["action"]) {
             "getdevices" -> {
                 deviceset = jdbc!!.executeQuery("SELECT * FROM `devices")
-                elem.asJsonObject.add("data",JsonArray())
+                elem.asJsonObject.add("data", JsonArray())
                 sb.append("{\"data\":[")
                 try {
                     while (deviceset.next()) {
@@ -40,24 +38,24 @@ class DeviceRequest : PostRequest() {
                         val cityid = deviceset.getInt("CityID")
                         if (cityid == -1) {
                             val obj = JsonObject()
-                            obj.addProperty("deviceid",deviceid)
-                            obj.addProperty("cityid",cityid)
+                            obj.addProperty("deviceid", deviceid)
+                            obj.addProperty("cityid", cityid)
                             elem.asJsonObject.get("data").asJsonArray.add(obj)
                         }
                         else {
                             val obj = JsonObject()
                             val devicename = deviceset.getString("DeviceName")
                             val devicelocation = deviceset.getString("DeviceLocation")
-                            obj.addProperty("deviceid",deviceid)
-                            obj.addProperty("devicename",devicename)
-                            obj.addProperty("devicelocation",devicelocation)
+                            obj.addProperty("deviceid", deviceid)
+                            obj.addProperty("devicename", devicename)
+                            obj.addProperty("devicelocation", devicelocation)
 
                             val locations = JsonArray()
-                            obj.add("locations",locations)
+                            obj.add("locations", locations)
 
                             elem.asJsonObject.get("data").asJsonArray.add(obj)
 
-                           val devicecities = jdbc.executeQuery("SELECT * FROM `device_city` INNER JOIN `cities` ON device_city.CityID=cities.id WHERE `DeviceID`='$deviceid'")
+                            val devicecities = jdbc.executeQuery("SELECT * FROM `device_city` INNER JOIN `cities` ON device_city.CityID=cities.id WHERE `DeviceID`='$deviceid'")
                             while (devicecities.next()) {
                                 val cityidd = devicecities.getInt("id")
                                 val cityname = devicecities.getString("name")
@@ -65,12 +63,14 @@ class DeviceRequest : PostRequest() {
                                 val zone = devicecities.getString("zone")
 
                                 val objc = JsonObject()
-                                objc.addProperty("cityid",cityidd)
-                                objc.addProperty("cityname",cityname)
-                                objc.addProperty("wastetype",wastetype)
-                                objc.addProperty("zone",zone)
+                                objc.addProperty("cityid", cityidd)
+                                objc.addProperty("cityname", cityname)
+                                objc.addProperty("wastetype", wastetype)
+                                objc.addProperty("zone", zone)
 
                                 locations.add(objc)
+                                // todo better var names
+                                // todo implement in js and other methods
                             }
                         }
                     }

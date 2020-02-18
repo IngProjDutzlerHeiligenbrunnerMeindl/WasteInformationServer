@@ -49,6 +49,8 @@ task createProperties(dependsOn: processResources) {
     }
 }
 
+tasks.processResources.dependsOn("WebServer:build")
+
 task myJavadocs(type: Javadoc) {
     title = "JAVADOC WasteInformationServer"
     source = sourceSets.main.allJava

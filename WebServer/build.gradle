@@ -24,13 +24,13 @@ sourceSets {
 }
 
 compileKotlin2Js {
-    kotlinOptions.outputFile = "${projectDir}/web/lib/WasteInformationServer.js"
-    kotlinOptions.moduleKind = "amd"
+    kotlinOptions.outputFile = "${projectDir}/build/web/WasteInformationServer.js"
+    kotlinOptions.moduleKind = "plain"
     kotlinOptions.sourceMap = true
 }
 
 compileTestKotlin2Js {
-    kotlinOptions.moduleKind = "amd"
+    kotlinOptions.moduleKind = "plain"
     kotlinOptions.sourceMap = true
 }
 
@@ -91,11 +91,4 @@ build.doLast() {
         from new File("build/classes/test")
         into "${web_dir}/lib"
     }
-
-    copy {
-        includeEmptyDirs = false
-        from new File("build/resources/test")
-        into "${web_dir}"
-    }
-
 }

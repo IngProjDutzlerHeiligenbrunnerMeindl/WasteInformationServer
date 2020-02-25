@@ -15,5 +15,12 @@ class Dashboard {
 
             document.getElementById("total-city-number-label")?.innerHTML   = json["citynumber"] as String
         } }
+
+        window.fetch("/senddata/wastedata", RequestInit(method = "POST", body = "action=getversionandbuildtime")).then { it -> it.text().then {
+            val json = JSON.parse<Json>(it)
+            document.getElementById("version-footer-label")?.innerHTML  = "<b>Version</b> " + json["version"] + " <b>Build</b> " + json["buildtime"]  as String
+        } }
+
+
     }
 }

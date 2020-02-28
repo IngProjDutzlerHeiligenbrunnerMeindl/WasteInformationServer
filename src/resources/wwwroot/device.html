@@ -72,15 +72,6 @@
                     data-accordion="false">
 
                     <li class="nav-item">
-                        <a href="ShedulePickUp.html" class="nav-link">
-                            <i class="nav-icon fas fa-calendar-alt"></i>
-                            <p>
-                                Shedule Pick-up
-                            </p>
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
                         <a href="dashboard.html" class="nav-link">
                             <i class="nav-icon fas fa-columns"></i>
                             <p>
@@ -88,9 +79,6 @@
                             </p>
                         </a>
                     </li>
-
-
-
 
 
                     <li id="devicepanel" class="nav-item">
@@ -102,14 +90,7 @@
                         </a>
                     </li>
 
-                    <li class="nav-item">
-                        <a href="#todo" class="nav-link">
-                            <i class="nav-icon fas fa-plus-circle"></i>
-                            <p>
-                                New Entry
-                            </p>
-                        </a>
-                    </li>
+
 
                     <li id="adminpanel" class="nav-item hideit">
                         <a href="adminpanel.html" class="nav-link">
@@ -175,9 +156,9 @@
                         <!-- small box -->
                         <div class="small-box bg-info">
                             <div class="inner">
-                                <h3>TODO</h3>
+                                <h3 id="devicenr-label">-1</h3>
 
-                                <p>Todo</p>
+                                <p>Devices</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-bag"></i>
@@ -190,9 +171,9 @@
                         <!-- small box -->
                         <div class="small-box bg-success">
                             <div class="inner">
-                                <h3>TODO</h3>
+                                <h3 id="unconfigured-devices-label">-1</h3>
 
-                                <p>Devices</p>
+                                <p>Not Configured Devices</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-stats-bars"></i>
@@ -234,7 +215,7 @@
                                         <th><i class="fas fa-id-card"></i> Device ID</th>
                                         <th><i class="fas fa-signature"></i> Devicename</th>
                                         <th><i class="fas fa-search-location"></i> Devicelocation</th>
-                                        <th> <i class="fas fa-recycle"></i> WasteType</th>
+                                        <th><i class="fas fa-recycle"></i> WasteType</th>
                                         <th><i class="fas fa-edit"></i> Action</th>
                                     </tr>
                                     </tfoot>

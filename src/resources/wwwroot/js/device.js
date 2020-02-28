@@ -1,11 +1,12 @@
-$(document).ready(function () {
+$(function () {
     new Device();
 });
 
 
 class Device {
     constructor() {
-        this.reloadDevices()
+        this.reloadDevices();
+        this.loadHeader();
     }
 
     devicetable = null;
@@ -50,9 +51,9 @@ class Device {
                 }
             }
 
-            _this.addDeleteButton();
-            _this.addAddButton();
-            _this.addConfigDialog();
+            _this._addDeleteButton();
+            _this._addAddButton();
+            _this._addConfigDialog();
             _this.devicetable = $('#table-devices').DataTable();
         }, 'json');
     }
@@ -60,7 +61,8 @@ class Device {
     /**
      * add click listener to add button to add new city entries to current device
      */
-    addAddButton() {
+    _addAddButton() {
+        var _this = this;
         $('.addbtn').click(function (event) {
             var id = event.target.getAttribute("dataid");
             var cityname;
@@ -83,8 +85,6 @@ class Device {
                 }
                 ]).then((result) => {
                     if (result.value) {
-                        console.log(result.value);
-                        const answers = JSON.stringify(result.value);
                         cityname = result.value[0];
 
                         console.log("cityname=" + cityname);
@@ -103,7 +103,6 @@ class Device {
                                 }
                             ]).then((result) => {
                                 if (result.value) {
-                                    console.log(result.value);
                                     zone = result.value[0];
                                     $.post('/senddata/Devicedata', 'action=gettypes&cityname=' + cityname + '&zonename=' + zone, function (data) {
                                         Swal.mixin({
@@ -120,11 +119,8 @@ class Device {
                                             }
                                         ]).then((result) => {
                                             if (result.value) {
-                                                console.log(result.value);
                                                 wastetype = result.value[0];
 
-
-                                                //todo add to db
                                                 $.post('/senddata/Devicedata', 'action=addtodb&deviceid=' + id + '&cityname=' + cityname + '&zonename=' + zone + '&wastetype=' + wastetype, function (data) {
                                                     if (data.success) {
                                                         Swal.fire({
@@ -133,8 +129,7 @@ class Device {
                                                             html: 'This alert closes added.',
                                                             timer: 1000,
                                                         }).then((result) => {
-                                                            console.log('Popup closed. ');
-                                                            reloadDevices();
+                                                            _this.reloadDevices();
                                                         });
                                                     }
                                                 });
@@ -153,7 +148,7 @@ class Device {
     /**
      * add click listener to delete button to delete this device entry
      */
-    addDeleteButton() {
+    _addDeleteButton() {
         var _this = this;
         $(".delbtn").click(function (event) {
             var id = event.target.getAttribute("dataid");
@@ -190,7 +185,8 @@ class Device {
     /**
      * add click listener to unconfigured device to show configure dialog
      */
-    addConfigDialog() {
+    _addConfigDialog() {
+        var _this = this;
         $(".configuredevicebutton").click(function (event) {
             var id = event.target.getAttribute("deviceid");
             var cityname;
@@ -271,7 +267,7 @@ class Device {
                                                             timer: 1000,
                                                         }).then((result) => {
                                                             console.log('Popup closed. ');
-                                                            reloadDevices();
+                                                            _this.reloadDevices();
                                                         });
                                                     }
                                                 });
@@ -284,10 +280,18 @@ class Device {
                     }
                 });
             });
+        });
+    }
 
-
-            console.log("click..." + id);
+    /**
+     * Load header tiles
+     */
+    loadHeader(){
+        $.post('/senddata/Devicedata', 'action=getheader', function (data) {
+            if (data.success) {
+                $("#devicenr-label").html(data.devicenumber);
+                $("#unconfigured-devices-label").html(data.unconfigureddevices);
+            }
         });
     }
 }
-

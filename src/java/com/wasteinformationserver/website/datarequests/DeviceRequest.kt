@@ -142,14 +142,6 @@ class DeviceRequest : PostRequest() {
                 }
                 sb.append("{\"status\":\"success\"}")
             }
-            "getDeviceNumber" -> try {
-                val numberset = jdbc!!.executeQuery("SELECT * FROM devices")
-                numberset.last()
-                val devicenr = numberset.row
-                sb.append("{\"devicenr\":\"$devicenr\"}")
-            } catch (e: SQLException) {
-                e.printStackTrace()
-            }
             "addtodb" -> {
                 var cityid = -1
                 try {
@@ -161,6 +153,21 @@ class DeviceRequest : PostRequest() {
                     e.printStackTrace()
                 }
                 sb.append("{\"success\":true}")
+            }
+            "getheader" -> {
+                try {
+                    var numberset = jdbc!!.executeQuery("SELECT * FROM devices")
+                    numberset.last()
+                    val devicenr = numberset.row
+
+                    numberset = jdbc!!.executeQuery("SELECT * FROM devices WHERE CityID=-1")
+                    numberset.last()
+                    val unconfigureddevices = numberset.row
+
+                    sb.append("{\"success\":true,\"devicenumber\":$devicenr, \"unconfigureddevices\":$unconfigureddevices}")
+                } catch (e: SQLException) {
+                    e.printStackTrace()
+                }
             }
         }
         return sb.toString()

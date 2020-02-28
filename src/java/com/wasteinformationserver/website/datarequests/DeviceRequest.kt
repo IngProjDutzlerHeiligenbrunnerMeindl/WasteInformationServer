@@ -28,19 +28,19 @@ class DeviceRequest : PostRequest() {
                         val deviceid = deviceset.getInt("DeviceID")
                         val cityid = deviceset.getInt("CityID")
                         if (cityid == -1) {
-                            sb.append("{\"deviceid\":\"").append(deviceid).append("\",\"cityid\":\"").append(cityid).append("\"}")
+                            sb.append("{\"deviceid\":").append(deviceid).append(",\"cityid\":").append(cityid).append("}")
                         }
                         else {
                             val devicename = deviceset.getString("DeviceName")
                             val devicelocation = deviceset.getString("DeviceLocation")
-                            sb.append("{\"deviceid\":\"").append(deviceid).append("\",\"devicename\":\"").append(devicename).append("\",\"devicelocation\":\"").append(devicelocation).append("\",\"devices\":[")
+                            sb.append("{\"deviceid\":").append(deviceid).append(",\"devicename\":\"").append(devicename).append("\",\"devicelocation\":\"").append(devicelocation).append("\",\"devices\":[")
                             val devicecities = jdbc.executeQuery("SELECT * FROM `device_city` INNER JOIN `cities` ON device_city.CityID=cities.id WHERE `DeviceID`='$deviceid'")
                             while (devicecities.next()) {
                                 val cityidd = devicecities.getInt("id")
                                 val cityname = devicecities.getString("name")
                                 val wastetype = devicecities.getString("wastetype")
                                 val zone = devicecities.getString("zone")
-                                sb.append("{\"cityid\":\"").append(cityidd).append("\",\"cityname\":\"").append(cityname).append("\",\"wastetype\":\"").append(wastetype).append("\",\"zone\":\"").append(zone).append("\"}")
+                                sb.append("{\"cityid\":").append(cityidd).append(",\"cityname\":\"").append(cityname).append("\",\"wastetype\":\"").append(wastetype).append("\",\"zone\":\"").append(zone).append("\"}")
                                 if (!devicecities.isLast) {
                                     sb.append(",")
                                 }

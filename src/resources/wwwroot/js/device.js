@@ -36,7 +36,6 @@ class Device {
                     var devicelocation = data.data[i].devicelocation;
 
                     var row = "<tr><td>" + id + "</td><td>" + devicename + "</td><td>" + devicelocation + "</td><td>";
-
                     for (var n = 0; n < data.data[i].devices.length; n++) {
                         var cityname = data.data[i].devices[n].cityname;
                         var cityzone = data.data[i].devices[n].zone;

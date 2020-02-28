@@ -6,7 +6,6 @@ import com.wasteinformationserver.basicutils.Log.Log.error
 import com.wasteinformationserver.basicutils.Log.Log.warning
 import com.wasteinformationserver.db.JDBC
 import com.wasteinformationserver.website.basicrequest.PostRequest
-import java.io.IOException
 import java.sql.ResultSet
 import java.sql.SQLException
 import java.sql.SQLIntegrityConstraintViolationException
@@ -18,12 +17,12 @@ class DataRequest : PostRequest() {
         val sb = StringBuilder()
         var set: ResultSet?
         var status = -1
-        val jdbc: JDBC = try {
-            JDBC.getInstance()
-        } catch (e: IOException) {
+        val jdbc: JDBC = JDBC.getInstance()
+        if (!jdbc.isConnected) {
             error("no connection to db")
             return "{\"query\" : \"nodbconn\"}"
         }
+
         when (params["action"]) {
             "newCity" -> {
                 sb.append("{")

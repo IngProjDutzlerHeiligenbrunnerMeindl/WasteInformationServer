@@ -4,7 +4,6 @@ import com.wasteinformationserver.basicutils.Log;
 import com.wasteinformationserver.db.JDBC;
 import com.wasteinformationserver.website.basicrequest.PostRequest;
 
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -13,14 +12,14 @@ public class NewDateRequest extends PostRequest {
     @Override
     public String request(HashMap<String, String> params) {
         StringBuilder sb = new StringBuilder();
-        JDBC jdbc;
         ResultSet set;
-        try {
-            jdbc = JDBC.getInstance();
-        } catch (IOException e) {
+
+        JDBC jdbc = JDBC.getInstance();
+        if (!jdbc.isConnected()) {
             Log.Log.error("no connection to db");
             return "{\"query\" : \"nodbconn\"}";
         }
+
         switch (params.get("action")) {
             case "getCitynames":
                 set = jdbc.executeQuery("select * from cities");
@@ -72,7 +71,7 @@ public class NewDateRequest extends PostRequest {
                 sb.append("}");
                 break;
             case "gettypes":
-                set = jdbc.executeQuery("select * from cities WHERE `name`='" + params.get("cityname") + "' AND `zone`='"+params.get("zonename")+"' ORDER BY zone ASC");
+                set = jdbc.executeQuery("select * from cities WHERE `name`='" + params.get("cityname") + "' AND `zone`='" + params.get("zonename") + "' ORDER BY zone ASC");
                 Log.Log.debug(set.toString());
                 sb.append("{\"data\":[");
                 try {

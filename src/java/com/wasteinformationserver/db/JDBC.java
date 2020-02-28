@@ -1,4 +1,7 @@
 package com.wasteinformationserver.db;
+
+import com.wasteinformationserver.basicutils.Log;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -53,14 +56,15 @@ public class JDBC {
      * @return JDBC object of this
      * @throws IOException
      */
-    public static JDBC getInstance() throws IOException {
-        if (loggedin) {
-            return JDBC;
-        } else {
-            logintodb(usernamec, passwordc, dbnamec, ipc, portc);
-            return JDBC;
+    public static JDBC getInstance() {
+        if (!loggedin) {
+            try {
+                logintodb(usernamec, passwordc, dbnamec, ipc, portc);
+            } catch (IOException e) {
+                Log.Log.error("no connetion to db - retrying in 5min");
+            }
         }
-
+        return JDBC;
     }
 
     private static void logintodb(String username, String password, String dbname, String ip, int port) throws IOException {
@@ -76,6 +80,7 @@ public class JDBC {
             loggedin = true;
         } catch (SQLException e) {
             throw new IOException("No connection to database");
+            // todo reconnect every 5mins or something
         }
 
     }
@@ -107,5 +112,9 @@ public class JDBC {
         PreparedStatement stmt = conn.prepareStatement(sql);
 
         return stmt.executeUpdate();
+    }
+
+    public boolean isConnected() {
+        return loggedin;
     }
 }

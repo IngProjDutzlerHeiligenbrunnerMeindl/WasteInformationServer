@@ -4,21 +4,20 @@ import com.wasteinformationserver.basicutils.Log.Log.debug
 import com.wasteinformationserver.basicutils.Log.Log.error
 import com.wasteinformationserver.db.JDBC
 import com.wasteinformationserver.website.basicrequest.PostRequest
-import java.io.IOException
 import java.sql.ResultSet
 import java.sql.SQLException
 import java.util.*
 
 class DeviceRequest : PostRequest() {
     override fun request(params: HashMap<String, String>): String {
-        var jdbc: JDBC? = null
-        try {
-            jdbc = JDBC.getInstance()
-        } catch (e: IOException) {
-            e.printStackTrace()
+        val jdbc = JDBC.getInstance()
+        if (!jdbc.isConnected) {
+            error("no connection to db")
+            return "{\"query\" : \"nodbconn\"}"
         }
+
         val sb = StringBuilder()
-        var deviceset: ResultSet
+        val deviceset: ResultSet
         when (params["action"]) {
             "getdevices" -> {
                 deviceset = jdbc!!.executeQuery("SELECT * FROM `devices")
@@ -135,7 +134,7 @@ class DeviceRequest : PostRequest() {
             }
             "deleteDevice" -> {
                 try {
-                    jdbc!!.executeUpdate("DELETE FROM devices WHERE `DeviceID`='" + params["id"] + "'")
+                    jdbc.executeUpdate("DELETE FROM devices WHERE `DeviceID`='" + params["id"] + "'")
                     jdbc.executeUpdate("DELETE FROM device_city WHERE `DeviceID`='" + params["id"] + "'")
                 } catch (e: SQLException) {
                     e.printStackTrace()
@@ -145,7 +144,7 @@ class DeviceRequest : PostRequest() {
             "addtodb" -> {
                 var cityid = -1
                 try {
-                    val device = jdbc!!.executeQuery("SELECT * FROM cities WHERE name='" + params["cityname"] + "' AND wastetype='" + params["wastetype"] + "' AND zone='" + params["zonename"] + "'")
+                    val device = jdbc.executeQuery("SELECT * FROM cities WHERE name='" + params["cityname"] + "' AND wastetype='" + params["wastetype"] + "' AND zone='" + params["zonename"] + "'")
                     device.first()
                     cityid = device.getInt("id")
                     jdbc.executeUpdate("INSERT INTO `device_city` (`DeviceID`, `CityID`) VALUES ('" + params["deviceid"] + "', '" + cityid + "');")
@@ -156,11 +155,11 @@ class DeviceRequest : PostRequest() {
             }
             "getheader" -> {
                 try {
-                    var numberset = jdbc!!.executeQuery("SELECT * FROM devices")
+                    var numberset = jdbc.executeQuery("SELECT * FROM devices")
                     numberset.last()
                     val devicenr = numberset.row
 
-                    numberset = jdbc!!.executeQuery("SELECT * FROM devices WHERE CityID=-1")
+                    numberset = jdbc.executeQuery("SELECT * FROM devices WHERE CityID=-1")
                     numberset.last()
                     val unconfigureddevices = numberset.row
 

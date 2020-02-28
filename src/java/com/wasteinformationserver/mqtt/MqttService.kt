@@ -20,9 +20,9 @@ import java.util.*
  * @author Gregor Dutzler
  */
 class MqttService(serverurl: String, port: String) {
-    private var client: MqttClient? = null
-    private val serveruri: String
-    private var db: JDBC? = null
+    private val serveruri: String = "tcp://$serverurl:$port"
+    private var client: MqttClient = MqttClient(serveruri, "JavaSample42")
+    private var db: JDBC = JDBC.getInstance()
 
     /**
      * init mqtt service
@@ -32,8 +32,7 @@ class MqttService(serverurl: String, port: String) {
      * @param port      mqtt server port
      */
     init {
-        serveruri = "tcp://$serverurl:$port"
-        connect()
+        connectToDb()
     }
 
     /**
@@ -44,26 +43,27 @@ class MqttService(serverurl: String, port: String) {
             client = MqttClient(serveruri, "JavaSample42")
             val connOpts = MqttConnectOptions()
             connOpts.isCleanSession = true
-            client!!.connect(connOpts)
-            client!!.setCallback(object : MqttCallback {
+            client.connect(connOpts)
+            client.setCallback(object : MqttCallback {
                 override fun connectionLost(throwable: Throwable) {
                     error("connection lost")
-                    connect()
+                    connectToDb()
                 }
 
                 override fun messageArrived(s: String, mqttMessage: MqttMessage) {
                     val deviceid = String(mqttMessage.payload)
                     message("received Request from PCB")
-                    val res = db!!.executeQuery("SELECT * from devices WHERE DeviceID=$deviceid")
+                    val res = db.executeQuery("SELECT * from devices WHERE DeviceID=$deviceid")
                     try {
                         res.last()
                         if (res.row != 0) { //existing device
                             res.first()
-                            val devicecities = db!!.executeQuery("SELECT * from device_city WHERE DeviceID='$deviceid'")
+                            val devicecities = db.executeQuery("SELECT * from device_city WHERE DeviceID='$deviceid'")
                             devicecities.last()
                             if (devicecities.row == 0) { //not configured
                                 tramsmitMessage("$deviceid,-1")
-                            } else {
+                            }
+                            else {
                                 devicecities.first()
                                 devicecities.previous()
 
@@ -72,8 +72,9 @@ class MqttService(serverurl: String, port: String) {
                                     checkDatabase(cityid, deviceid.toInt())
                                 }
                             }
-                        } else { //new device
-                            db!!.executeUpdate("INSERT INTO devices (DeviceID) VALUES ($deviceid)")
+                        }
+                        else { //new device
+                            db.executeUpdate("INSERT INTO devices (DeviceID) VALUES ($deviceid)")
                             info("new device registered to server")
                             tramsmitMessage("$deviceid,-1")
                         }
@@ -84,7 +85,7 @@ class MqttService(serverurl: String, port: String) {
 
                 override fun deliveryComplete(iMqttDeliveryToken: IMqttDeliveryToken) {}
             })
-            client!!.subscribe("TopicIn")
+            client.subscribe("TopicIn")
         } catch (e: MqttException) {
             error("Connection to the Broker failed")
         }
@@ -92,24 +93,26 @@ class MqttService(serverurl: String, port: String) {
 
     private fun checkDatabase(citywastezoneid: Int, deviceid: Int) {
         var wastetype = -1
-        val set2 = db!!.executeQuery("SELECT * FROM cities WHERE `id`='$citywastezoneid'")
+        val set2 = db.executeQuery("SELECT * FROM cities WHERE `id`='$citywastezoneid'")
         try {
             set2.last()
             if (set2.row != 1) { //error
-            } else {
+            }
+            else {
                 val typ = set2.getString("wastetype")
                 wastetype = getIntTyp(typ)
             }
         } catch (e: SQLException) {
             e.printStackTrace()
         }
-        val result = db!!.executeQuery("SELECT pickupdates.pickupdate FROM pickupdates WHERE pickupdates.citywastezoneid=$citywastezoneid")
+        val result = db.executeQuery("SELECT pickupdates.pickupdate FROM pickupdates WHERE pickupdates.citywastezoneid=$citywastezoneid")
         try {
             result.last()
             if (result.row == 0) { //if not found in db --> send zero
                 debug("not found in db")
                 tramsmitMessage("$deviceid,$wastetype,0")
-            } else {
+            }
+            else {
                 debug(result.getString("pickupdate"))
                 result.first()
                 do {
@@ -138,41 +141,33 @@ class MqttService(serverurl: String, port: String) {
         val message = MqttMessage(temp.toByteArray())
         message.qos = 2
         try {
-            client!!.publish("TopicOut", message)
+            client.publish("TopicOut", message)
         } catch (e: MqttException) {
             e.printStackTrace()
         }
     }
 
     private fun getTyp(number: Int): String? {
-        if (number == 1) {
-            return "Plastic"
-        } else if (number == 2) {
-            return "Metal"
-        } else if (number == 3) {
-            return "Residual waste"
-        } else if (number == 4) {
-            return "Biowaste"
+        return when (number) {
+            1 -> "Plastic"
+            2 -> "Metal"
+            3 -> "Residual waste"
+            4 -> "Biowaste"
+            else -> null
         }
-        return null
     }
 
     private fun getIntTyp(temp: String): Int {
-        var number = 0
-        when (temp) {
-            "Plastic" -> number = 1
-            "Metal" -> number = 2
-            "Residual waste" -> number = 3
-            "Biowaste" -> number = 4
+        return when (temp) {
+            "Plastic" -> 1
+            "Metal" -> 2
+            "Residual waste" -> 3
+            "Biowaste" -> 4
+            else -> 0
         }
-        return number
     }
 
-    private fun connect() {
-        try {
-            db = JDBC.getInstance()
-        } catch (e: IOException) {
-            error("no connetion to db")
-        }
+    private fun connectToDb() {
+        db = JDBC.getInstance()
     }
 }

@@ -72,21 +72,20 @@
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                     data-accordion="false">
 
+                    <li class="nav-item">
+                        <a href="dashboard.html" class="nav-link">
+                            <i class="nav-icon fas fa-columns"></i>
+                            <p>
+                                Dashboard
+                            </p>
+                        </a>
+                    </li>
 
                     <li class="nav-item">
                         <a href="ShedulePickUp.html" class="nav-link">
                             <i class="nav-icon fas fa-calendar-alt"></i>
                             <p>
                                 Shedule Pick-up
-                            </p>
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="dashboard.html" class="nav-link">
-                            <i class="nav-icon fas fa-columns"></i>
-                            <p>
-                                Dashboard
                             </p>
                         </a>
                     </li>
@@ -100,14 +99,6 @@
                         </a>
                     </li>
 
-                    <li class="nav-item">
-                        <a href="#todo" class="nav-link">
-                            <i class="nav-icon fas fa-plus-circle"></i>
-                            <p>
-                                New Entry
-                            </p>
-                        </a>
-                    </li>
 
                     <li id="adminpanel" class="nav-item hideit">
                         <a href="adminpanel.html" class="nav-link">
@@ -156,7 +147,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Shedule Puck-up</li>
+                            <li class="breadcrumb-item active">Shedule Pick-up</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -173,9 +164,9 @@
                         <!-- small box -->
                         <div class="small-box bg-info">
                             <div class="inner">
-                                <h3 id="total-connection-labels">42</h3>
+                                <h3 id="total-sheduled-actions-label">42</h3>
 
-                                <p>Total collections</p>
+                                <p>Sheduled actions</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-bag"></i>
@@ -188,9 +179,9 @@
                         <!-- small box -->
                         <div class="small-box bg-gray">
                             <div class="inner">
-                                <h3 id="total-city-number-label">42</h3>
+                                <h3 id="next-action-label">42</h3>
 
-                                <p>total collect zones</p>
+                                <p>next Action</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-android-globe" style="color: lightgrey"></i>
@@ -203,9 +194,9 @@
                         <!-- small box -->
                         <div class="small-box bg-warning">
                             <div class="inner">
-                                <h3 id="planed-collection-label">44</h3>
+                                <h3 id="last-added-label">44</h3>
 
-                                <p>Planned Collections</p>
+                                <p>last Added</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-calendar"></i>
@@ -218,9 +209,9 @@
                         <!-- small box -->
                         <div class="small-box bg-success">
                             <div class="inner">
-                                <h3 id="finished-collection-label">65</h3>
+                                <h3 id="todo-label">65</h3>
 
-                                <p>Finished Collections</p>
+                                <p>TODO</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-android-checkmark-circle"></i>
@@ -504,7 +495,7 @@
 
 <!-- OWN -->
 
-<script type="text/javascript" src="js/dashboard.js"></script>
+<script type="text/javascript" src="js/sheduledpickup.js"></script>
 <script src="js/userManager.js"></script>
 
 </body>

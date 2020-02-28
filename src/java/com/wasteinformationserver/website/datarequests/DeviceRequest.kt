@@ -142,11 +142,10 @@ class DeviceRequest : PostRequest() {
                 sb.append("{\"status\":\"success\"}")
             }
             "addtodb" -> {
-                var cityid = -1
                 try {
                     val device = jdbc.executeQuery("SELECT * FROM cities WHERE name='" + params["cityname"] + "' AND wastetype='" + params["wastetype"] + "' AND zone='" + params["zonename"] + "'")
                     device.first()
-                    cityid = device.getInt("id")
+                    var cityid = device.getInt("id")
                     jdbc.executeUpdate("INSERT INTO `device_city` (`DeviceID`, `CityID`) VALUES ('" + params["deviceid"] + "', '" + cityid + "');")
                 } catch (e: SQLException) {
                     e.printStackTrace()

@@ -30,6 +30,7 @@ class Dashboard {
     /* Btn Action Listeners */
 
     addClickListeners() {
+        const _this = this;
         //btn listeners
         $('#logoutbtn').click(function () {
             $.post('/senddata/checkloginstate', 'action=logout', function (data) {
@@ -60,7 +61,7 @@ class Dashboard {
                         console.log('Popup closed. ')
 
                     });
-                    this.reloadtable();
+                    _this.reloadtable();
                 } else if (data.status == "exists") {
                     Swal.fire({
                         type: "warning",
@@ -181,7 +182,7 @@ class Dashboard {
                     zone.html("Select Zone");
                     wastetype.html("Select waste type");
                     date.val("");
-                    reloadDateTable();
+                    _this.reloadDateTable();
                 } else if (data.status == "citydoesntexist") {
                     Swal.fire({
                         type: "warning",
@@ -233,9 +234,10 @@ class Dashboard {
     }
 
     reloadtable() {
+        const _this = this;
         $.post('/senddata/wastedata', 'action=getAllCities', function (data) {
-            if (this.citytable != null) {
-                this.citytable.destroy(); //delete table if already created
+            if (_this.citytable != null) {
+                _this.citytable.destroy(); //delete table if already created
             }
 
             console.log(data);
@@ -287,7 +289,7 @@ class Dashboard {
                     }, "json");
                 });
 
-                this.citytable = $("#example2").DataTable();
+                _this.citytable = $("#example2").DataTable();
             } else if (data.query == "nodbconn") {
                 Swal.fire({
                     type: "error",
@@ -305,9 +307,10 @@ class Dashboard {
     }
 
     reloadDateTable() {
+        const _this = this;
         $.post('/senddata/wastedata', 'action=getAllDates', function (data) {
-            if (this.datetable != null) {
-                this.datetable.destroy(); //delete table if already created
+            if (_this.datetable != null) {
+                _this.datetable.destroy(); //delete table if already created
             }
             console.log(data);
 
@@ -356,7 +359,7 @@ class Dashboard {
                     }, "json");
                 });
             }
-            this.datetable = $("#table-pickupdates").DataTable({
+            _this.datetable = $("#table-pickupdates").DataTable({
                 "order": [[3, "asc"]]
             });
         }, "json");

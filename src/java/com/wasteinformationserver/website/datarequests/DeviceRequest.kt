@@ -8,6 +8,11 @@ import java.sql.ResultSet
 import java.sql.SQLException
 import java.util.*
 
+/**
+ * Class for all requests on device Page
+ *
+ * @author Lukas Heiligenbrunner
+ */
 class DeviceRequest : PostRequest() {
     override fun request(params: HashMap<String, String>): String {
         val jdbc = JDBC.getInstance()
@@ -19,6 +24,9 @@ class DeviceRequest : PostRequest() {
         val sb = StringBuilder()
         val deviceset: ResultSet
         when (params["action"]) {
+            /**
+             * return all available devices
+             */
             "getdevices" -> {
                 deviceset = jdbc!!.executeQuery("SELECT * FROM `devices")
                 sb.append("{\"data\":[")
@@ -55,6 +63,9 @@ class DeviceRequest : PostRequest() {
                     e.printStackTrace()
                 }
             }
+            /**
+             * returns all available city names
+             */
             "getCitynames" -> {
                 deviceset = jdbc!!.executeQuery("select * from cities")
                 debug(deviceset.toString())
@@ -76,6 +87,9 @@ class DeviceRequest : PostRequest() {
                 sb.append("}")
                 debug(sb.toString())
             }
+            /**
+             * returns all available zones for specified city
+             */
             "getzones" -> {
                 deviceset = jdbc!!.executeQuery("select * from cities WHERE `name`='" + params["cityname"] + "' ORDER BY zone ASC")
                 debug(deviceset.toString())
@@ -96,6 +110,9 @@ class DeviceRequest : PostRequest() {
                 }
                 sb.append("}")
             }
+            /**
+             * returns all available waste types for specified zone and city
+             */
             "gettypes" -> {
                 deviceset = jdbc!!.executeQuery("select * from cities WHERE `name`='" + params["cityname"] + "' AND `zone`='" + params["zonename"] + "' ORDER BY zone ASC")
                 debug(deviceset.toString())
@@ -116,6 +133,9 @@ class DeviceRequest : PostRequest() {
                 }
                 sb.append("}")
             }
+            /**
+             * configure device and save infos to db
+             */
             "savetodb" -> try {
                 val cityset = jdbc!!.executeQuery("SELECT id from cities WHERE `name`='" + params["cityname"] + "' AND `zone`='" + params["zonename"] + "' AND `wastetype`='" + params["wastetype"] + "'")
                 cityset.last()
@@ -132,6 +152,9 @@ class DeviceRequest : PostRequest() {
             } catch (e: SQLException) {
                 e.printStackTrace()
             }
+            /**
+             * delete a configured device from db
+             */
             "deleteDevice" -> {
                 try {
                     jdbc.executeUpdate("DELETE FROM devices WHERE `DeviceID`='" + params["id"] + "'")
@@ -141,6 +164,9 @@ class DeviceRequest : PostRequest() {
                 }
                 sb.append("{\"status\":\"success\"}")
             }
+            /**
+             * add new city/zone/type to db to existing one
+             */
             "addtodb" -> {
                 try {
                     val device = jdbc.executeQuery("SELECT * FROM cities WHERE name='" + params["cityname"] + "' AND wastetype='" + params["wastetype"] + "' AND zone='" + params["zonename"] + "'")
@@ -152,6 +178,9 @@ class DeviceRequest : PostRequest() {
                 }
                 sb.append("{\"success\":true}")
             }
+            /**
+             * return header information such as devicenumber and number of unconfigured devices
+             */
             "getheader" -> {
                 try {
                     var numberset = jdbc.executeQuery("SELECT * FROM devices")

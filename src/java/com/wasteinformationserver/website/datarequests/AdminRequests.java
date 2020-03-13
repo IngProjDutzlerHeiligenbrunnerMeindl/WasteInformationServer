@@ -9,14 +9,25 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * all requests for Admin page
+ *
+ * @author Lukas Heiligenbrunner
+ */
 public class AdminRequests extends PostRequest {
     @Override
     public String request(HashMap<String, String> params) {
         String result = "";
         switch (params.get("action")) {
+            /**
+             * shut down the whole application
+             */
             case "shutdownserver":
                 System.exit(0);
                 break;
+            /**
+             * restart the server application
+             */
             case "restartserver":
                 final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
                 File currentJar = null;

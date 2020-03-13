@@ -12,6 +12,11 @@ import java.sql.SQLIntegrityConstraintViolationException
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * General Datarequests for Dashboard
+ *
+ * @author Lukas Heiligenbrunner
+ */
 class DataRequest : PostRequest() {
     override fun request(params: HashMap<String, String>): String {
         val sb = StringBuilder()
@@ -24,6 +29,9 @@ class DataRequest : PostRequest() {
         }
 
         when (params["action"]) {
+            /**
+             * create a new city entry in db
+             */
             "newCity" -> {
                 sb.append("{")
                 debug(params.toString())
@@ -62,6 +70,9 @@ class DataRequest : PostRequest() {
                 sb.append(",\"query\":\"ok\"")
                 sb.append("}")
             }
+            /**
+             * return all defined cities from db
+             */
             "getAllCities" -> {
                 set = jdbc.executeQuery("select * from cities")
                 debug(set.toString())
@@ -83,6 +94,9 @@ class DataRequest : PostRequest() {
                 sb.append(",\"query\":\"ok\"")
                 sb.append("}")
             }
+            /**
+             * delete a specific city
+             */
             "deletecity" -> {
                 //DELETE FROM `cities` WHERE `id`=0
                 sb.append("{")
@@ -105,6 +119,9 @@ class DataRequest : PostRequest() {
                 sb.append(",\"query\":\"ok\"")
                 sb.append("}")
             }
+            /**
+             * returns all configured dates with its city and zone
+             */
             "getAllDates" -> {
                 set = jdbc.executeQuery("SELECT pickupdates.id,pickupdates.pickupdate,cities.userid,cities.name,cities.wastetype,cities.zone " +
                         "FROM `pickupdates` INNER JOIN `cities` ON pickupdates.citywastezoneid = cities.id")
@@ -127,6 +144,9 @@ class DataRequest : PostRequest() {
                 sb.append(",\"query\":\"ok\"")
                 sb.append("}")
             }
+            /**
+             * delete a specific date
+             */
             "deletedate" -> {
                 sb.append("{")
                 try {
@@ -147,6 +167,9 @@ class DataRequest : PostRequest() {
                 sb.append(",\"query\":\"ok\"")
                 sb.append("}")
             }
+            /**
+             * return version foot data
+             */
             "getversionandbuildtime" -> {
                 sb.append("{")
                 sb.append("\"version\" : \"" + Info.getVersion() + "\"")
@@ -154,6 +177,9 @@ class DataRequest : PostRequest() {
                 sb.append(",\"query\":\"ok\"")
                 sb.append("}")
             }
+            /**
+             * return head data with basic collection infos
+             */
             "getStartHeaderData" -> {
                 sb.append("{")
                 try {

@@ -10,6 +10,11 @@ import java.io.IOException
 import java.net.BindException
 import java.net.InetSocketAddress
 
+/**
+ * class to create the website nodes at specific paths
+ *
+ * @author Lukas Heiligenbrunner
+ */
 class Webserver {
     fun startserver() {
         info("starting Webserver")

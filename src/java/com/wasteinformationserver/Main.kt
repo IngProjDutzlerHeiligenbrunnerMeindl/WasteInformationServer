@@ -8,6 +8,11 @@ import com.wasteinformationserver.mqtt.MqttService
 import com.wasteinformationserver.website.Webserver
 import java.io.IOException
 
+/**
+ * application entry point
+ *
+ * @author Lukas Heiligenbrunner
+ */
 fun main() {
     Log.setLevel(Log.DEBUG)
     Info.init()

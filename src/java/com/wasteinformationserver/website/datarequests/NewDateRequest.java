@@ -9,6 +9,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
+/**
+ * todo
+ *
+ * @author Lukas Heiligenbrunner
+ */
 public class NewDateRequest extends PostRequest {
     @Override
     public String request(HashMap<String, String> params) {

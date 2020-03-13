@@ -7,6 +7,11 @@ import com.wasteinformationserver.basicutils.Log.Log.warning
 import com.wasteinformationserver.website.datarequests.login.LoginState
 import java.io.IOException
 
+/**
+ * Http handler to deliver all the main pages (index.html ...)
+ *
+ * @author Lukas Heiligenbrunner
+ */
 class MainPage : HttpHandler {
     @Throws(IOException::class)
     override fun handle(t: HttpExchange) {

@@ -21,7 +21,7 @@ class MySQLConnector extends Database {
     public Connection getConnection() throws SQLException {
         DriverManager.setLoginTimeout(1);
         return DriverManager.getConnection(
-                "jdbc:mysql://" + host + ":" + port + "/" + dbName + "?useSSL=false",
+                "jdbc:mysql://" + host + ":" + port + "/" + dbName + "?useSSL=false&serverTimezone=CET",
                 user,
                 password);
     }

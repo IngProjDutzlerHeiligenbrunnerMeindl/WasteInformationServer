@@ -8,6 +8,11 @@ import com.wasteinformationserver.website.basicrequest.PostRequest
 import java.sql.ResultSet
 import java.sql.SQLException
 
+/**
+ * todo
+ *
+ * @author Lukas Heiligenbrunner
+ */
 class NewDateRequest : PostRequest() {
     override fun request(params: HashMap<String, String>): String {
         val sb = StringBuilder()

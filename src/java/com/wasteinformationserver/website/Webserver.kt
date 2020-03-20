@@ -28,7 +28,7 @@ class Webserver {
             server.createContext("/senddata/admindata", AdminRequests())
             server.createContext("/senddata/newdate", NewDateRequest())
             server.createContext("/senddata/Devicedata", DeviceRequest())
-            server.executor = null // creates a default executor
+            server.executor = java.util.concurrent.Executors.newCachedThreadPool() // creates a default executor
             server.start()
             info("Server available at http://127.0.0.1:8000 now")
         } catch (e: BindException) {

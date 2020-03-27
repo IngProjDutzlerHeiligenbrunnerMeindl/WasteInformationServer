@@ -68,7 +68,12 @@ class Storage {
             val inp = FileInputStream("settings.prop")
             prop.load(inp)
 
-            mqttServer = prop.get("mqttserver") as String
+            mqttServer = prop["mqttserver"] as String
+            mqttPort = (prop["mqttport"] as String).toInt()
+            dbName = prop["dbname"] as String
+            dbUser = prop["dbuser"] as String
+            dbPassword = prop["dbpass"] as String
+            dbPort = (prop["dbport"] as String).toInt()
         } catch (ee: FileNotFoundException) {
             // file not generated yet
             store()
@@ -83,11 +88,11 @@ class Storage {
      */
     fun store() {
         prop["mqttserver"] = mqttServer
-        prop["mqttport"] = mqttPort
+        prop["mqttport"] = mqttPort.toString()
         prop["dbname"] = dbName
         prop["dbuser"] = dbUser
         prop["dbpass"] = dbPassword
-        prop["dbport"] = dbPort
+        prop["dbport"] = dbPort.toString()
 
         prop.store(FileOutputStream("settings.prop"), "")
     }

@@ -3,6 +3,7 @@ package com.wasteinformationserver
 
 import com.wasteinformationserver.basicutils.Info
 import com.wasteinformationserver.basicutils.Log
+import com.wasteinformationserver.basicutils.Storage
 import com.wasteinformationserver.db.JDBC
 import com.wasteinformationserver.mqtt.MqttService
 import com.wasteinformationserver.website.Webserver
@@ -16,6 +17,7 @@ import java.io.IOException
 fun main() {
     Log.setLevel(Log.DEBUG)
     Info.init()
+    Storage.getInstance().init()
 
     Log.info("startup of WasteInformationServer")
 

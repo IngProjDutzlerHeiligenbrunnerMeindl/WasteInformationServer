@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>WasteInformation Server</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <!-- AdminLTE Libs -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="lib/AdminLTE/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="lib/AdminLTE/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
+
+    <!-- !Theme style -->
+    <link rel="stylesheet" href="lib/AdminLTE/dist/css/adminlte.min.css">
+    <!-- !overlayScrollbars -->
+    <link rel="stylesheet" href="lib/AdminLTE/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+
+    <!-- custom stylesheets -->
+    <link rel="stylesheet" type="text/css" href="css/dashboard.css">
+    <link rel="stylesheet" type="text/css" href="css/general.css">
+
+    <link rel="icon" type="image/png" href="/favicon.png">
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="ShedulePickUp.html" class="brand-link">
+            <img src="/favicon.png" alt="AdminLTE Logo"
+                 class="brand-image img-circle elevation-3"
+                 style="opacity: .8">
+            <span class="brand-text font-weight-light">Waste Control</span>
+        </a>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Sidebar user panel (optional) -->
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    <!-- <img src="lib/AdminLTE/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image"> -->
+                    <i class="nav-icon fas fa-user img-circle elevation-2" style="color:white"></i>
+                </div>
+                <!-- <i class="nav-icon fas fa-tachometer-alt"></i> -->
+                <div class="info">
+                    <a href="user.html" class="d-block" id="userlabel">Username to set!</a>
+                </div>
+            </div>
+
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
+
+                    <li class="nav-item">
+                        <a href="dashboard.html" class="nav-link">
+                            <i class="nav-icon fas fa-columns"></i>
+                            <p>
+                                Dashboard
+                            </p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="ShedulePickUp.html" class="nav-link">
+                            <i class="nav-icon fas fa-calendar-alt"></i>
+                            <p>
+                                Shedule Pick-up
+                            </p>
+                        </a>
+                    </li>
+
+                    <li id="devicepanel" class="nav-item">
+                        <a href="device.html" class="nav-link">
+                            <i class="nav-icon fas fa-desktop"></i>
+                            <p>
+                                Devices
+                            </p>
+                        </a>
+                    </li>
+
+
+                    <li id="adminpanel" class="nav-item hideit">
+                        <a href="adminpanel.html" class="nav-link">
+                            <i class="nav-icon fas fa-plus-circle"></i>
+                            <p>
+                                Admin panel
+                            </p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#todo" class="nav-link">
+                            <i class="nav-icon fas fa-cog"></i>
+                            <p>
+                                Settings
+                            </p>
+                        </a>
+                    </li>
+
+
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link" id="logoutbtn">
+                            <i class="nav-icon fas fa-sign-out-alt"></i>
+                            <p>
+                                Logout
+                            </p>
+                        </a>
+                    </li>
+
+                </ul>
+            </nav>
+            <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">Dashboard</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Shedule Pick-up</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <!-- Small boxes (Stat box) -->
+                <div class="row">
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-info">
+                            <div class="inner">
+                                <h3 id="total-sheduled-actions-label">42</h3>
+
+                                <p>Sheduled actions</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-bag"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-gray">
+                            <div class="inner">
+                                <h3 id="next-action-label">42</h3>
+
+                                <p>next Action</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-android-globe" style="color: lightgrey"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-warning">
+                            <div class="inner">
+                                <h3 id="last-added-label">44</h3>
+
+                                <p>last Added</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-calendar"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-success">
+                            <div class="inner">
+                                <h3 id="todo-label">65</h3>
+
+                                <p>TODO</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-android-checkmark-circle"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                </div>
+                <!-- /.row -->
+                <!-- Main row -->
+                <div class="row">
+                    <!-- Left col -->
+                    <section class="col-lg-7 connectedSortable">
+                        <!-- Custom tabs (Charts with tabs)-->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-chart-pie mr-1"></i>
+                                    All pickupdats
+                                </h3>
+                            </div><!-- /.card-header -->
+                            <div class="card-body">
+                                <table id="table-pickupdates" class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>
+                                            <i class="fas fa-city"></i>
+                                            City
+                                        </th>
+                                        <th><i class="fas fa-search-location"></i>
+                                            Zone
+                                        </th>
+                                        <th><i class="fas fa-recycle"></i>
+                                            Waste Type
+                                        </th>
+                                        <th><i class="fas fa-calendar-alt"></i>
+                                            Date
+                                        </th>
+                                        <th><i class="fas fa-trash-alt"></i>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="picupdates-tablebody">
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <th>
+                                            <i class="fas fa-city"></i>
+                                            City
+                                        </th>
+                                        <th><i class="fas fa-search-location"></i>
+                                            Zone
+                                        </th>
+                                        <th><i class="fas fa-recycle"></i>
+                                            Waste Type
+                                        </th>
+                                        <th><i class="fas fa-calendar-alt"></i>
+                                            Date
+                                        </th>
+                                        <th><i class="fas fa-trash-alt"></i>
+                                        </th>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div><!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-chart-pie mr-1"></i>
+                                    New City
+                                </h3>
+                                <button id="btn-savecity" type="button" class="btn btn-success"
+                                        style="float:right;">Save
+                                </button>
+                            </div><!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="form-group" style="margin-top: 15px; width: 10cm;">
+                                    <label for="new_city_cityname">City/Village name</label>
+                                    <input type="email" class="form-control" id="new_city_cityname"
+                                           aria-describedby="emailHelp" placeholder="Enter city name here">
+                                    <small class="form-text text-muted">Please try to use no special
+                                        characters</small>
+                                </div>
+                                <div class="form-group" style="width: 10cm;">
+                                    <label for="new_city_zonename">Zone Name</label>
+                                    <input type="email" class="form-control" id="new_city_zonename"
+                                           aria-describedby="emailHelp" placeholder="Enter Zone name here">
+                                    <small class="form-text text-muted">Please try to use no special
+                                        characters</small>
+                                </div>
+
+                                <div class="input-group-prepend">
+                                    <button id="dropdown-wastetype" type="button"
+                                            class="btn btn-outline-dark dropdown-toggle"
+                                            data-toggle="dropdown">
+                                        Select waste type
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="wastetype-citynew-item dropdown-item" href="#">Plastic</a>
+                                        <a class="wastetype-citynew-item dropdown-item" href="#">Metal</a>
+                                        <a class="wastetype-citynew-item dropdown-item" href="#">Residual waste</a>
+                                        <a class="wastetype-citynew-item dropdown-item" href="#">Biowaste</a>
+                                    </div>
+                                </div>
+                            </div><!-- /.card-body -->
+                        </div>
+
+
+                        <!-- Custom tabs (Charts with tabs)-->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-chart-pie mr-1"></i>
+                                    New Pick up date
+                                </h3>
+                            </div><!-- /.card-header -->
+                            <div class="card-body">
+                                <form>
+
+                                    <h4>Add Data:</h4>
+                                    <div class="input-group mt-3 mb-3" style="width: 100%;">
+
+                                        <div class="input-group-prepend">
+                                            <button id="dropdown-city" type="button"
+                                                    class="btn btn-outline-dark dropdown-toggle"
+                                                    data-toggle="dropdown">
+                                                Select city
+                                            </button>
+                                            <div id="dropdown-city-data" class="dropdown-menu">
+                                            </div>
+                                        </div>
+
+                                        <div class="input-group-prepend">
+                                            <button id="dropdown-zone" type="button"
+                                                    class="btn btn-outline-dark dropdown-toggle"
+                                                    data-toggle="dropdown">
+                                                Select Zone
+                                            </button>
+                                            <div id="dropdown-zone-data" class="dropdown-menu">
+                                            </div>
+                                        </div>
+                                        <div class="input-group-prepend">
+                                            <button id="dropdown-type-data" type="button"
+                                                    class="btn btn-outline-dark dropdown-toggle"
+                                                    data-toggle="dropdown">
+                                                Select waste type
+                                            </button>
+                                            <div id="dropdown-type-drops" class="dropdown-menu">
+                                            </div>
+                                        </div>
+                                        <input id="input-wastetime" style="width: 50px;" class="form-control" id="date"
+                                               name="date" placeholder="MM/DD/YYY" type="text"/>
+                                        <button type="button" class="btn-savelist btn btn-success"
+                                                style="float:right;">Save
+                                        </button>
+                                    </div>
+                                </form>
+                            </div><!-- /.card-body -->
+                        </div>
+                    </section>
+
+
+                    <!-- /.Left col -->
+                    <!-- right col (We are only adding the ID to make the widgets sortable)-->
+                    <section class="col-lg-5 connectedSortable">
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-chart-pie mr-1"></i>
+                                    Pick up locations
+                                </h3>
+                            </div><!-- /.card-header -->
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <table id="example2" class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>
+                                            <i class="fas fa-city"></i>
+                                            City
+                                        </th>
+                                        <th><i class="fas fa-search-location"></i>
+                                            Zone
+                                        </th>
+                                        <th><i class="fas fa-recycle"></i>
+                                            Waste Type
+                                        </th>
+                                        <th><i class="fas fa-calendar-alt"></i>
+                                            Date
+                                        </th>
+                                        <th><i class="fas fa-trash-alt"></i>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="location-table-data">
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <th>
+                                            <i class="fas fa-city"></i>
+                                            City
+                                        </th>
+                                        <th><i class="fas fa-search-location"></i>
+                                            Zone
+                                        </th>
+                                        <th><i class="fas fa-recycle"></i>
+                                            Waste Type
+                                        </th>
+                                        <th><i class="fas fa-calendar-alt"></i>
+                                            Date
+                                        </th>
+                                        <th><i class="fas fa-trash-alt"></i>
+                                        </th>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+
+                        <!-- /.card -->
+                    </section>
+                    <!-- right col -->
+                </div>
+                <!-- /.row (main row) -->
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <footer class="main-footer">
+        <strong>By Gregor Dutzler & Lukas Heiligenbrunner & Emil Meindl</strong>
+        <div id="version-footer-label" class="float-right d-none d-sm-inline-block">
+            <b>Version</b> 3.0.0
+            <b>Build</b> 2019-8-8 9:30
+        </div>
+
+
+    </footer>
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- AdminLTE Libs -->
+<!-- jQuery -->
+<script src="lib/AdminLTE/plugins/jquery/jquery.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="lib/AdminLTE/plugins/jquery-ui/jquery-ui.min.js"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+    $.widget.bridge('uibutton', $.ui.button)
+</script>
+<!-- Bootstrap 4 -->
+<script src="lib/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="lib/AdminLTE/dist/js/adminlte.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+
+<!-- DataTables -->
+<script src="lib/AdminLTE/plugins/datatables/jquery.dataTables.js"></script>
+<script src="lib/AdminLTE/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+<script src="lib/AdminLTE/plugins/sweetalert2/sweetalert2.all.js"></script>
+
+<!-- custom js -->
+<script type="text/javascript" src="js/sheduledpickup.js"></script>
+<script src="js/userManager.js"></script>
+
+</body>
+</html>

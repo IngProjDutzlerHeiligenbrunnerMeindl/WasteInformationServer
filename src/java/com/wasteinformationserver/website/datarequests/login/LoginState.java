@@ -5,7 +5,7 @@ package com.wasteinformationserver.website.datarequests.login;
  */
 public class LoginState {
 
-    private static LoginState mythis = new LoginState();
+    private static final LoginState mythis = new LoginState();
 
     /**
      * get object

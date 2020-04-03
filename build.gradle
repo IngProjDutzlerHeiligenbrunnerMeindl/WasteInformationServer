@@ -40,7 +40,7 @@ task run (type: JavaExec){
 
 task createProperties(dependsOn: processResources) {
     doLast {
-        new File("$projectDir/src/resources/version.properties").withWriter { w ->
+        new File("$projectDir/src/resources/version.prop").withWriter { w ->
             Properties p = new Properties()
             p['version'] = project.version.toString()
             p['buildtime'] = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date())

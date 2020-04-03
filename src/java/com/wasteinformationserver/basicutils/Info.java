@@ -51,7 +51,7 @@ public class Info {
         starttime = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date());
         Properties prop = new Properties();
         try {
-            URL url = Info.class.getResource("/version.properties");
+            URL url = Info.class.getResource("/version.prop");
 
             prop.load(url.openStream());
             version = (String) prop.get("version");
@@ -75,10 +75,10 @@ public class Info {
         long allocatedMemory = runtime.totalMemory();
         long freeMemory = runtime.freeMemory();
 
-        sb.append("free memory: " + format.format(freeMemory / 1024) + "\n");
-        sb.append("allocated memory: " + format.format(allocatedMemory / 1024) + "\n");
-        sb.append("max memory: " + format.format(maxMemory / 1024) + "\n");
-        sb.append("total free memory: " + format.format((freeMemory + (maxMemory - allocatedMemory)) / 1024) + "\n");
+        sb.append("free memory: ").append(format.format(freeMemory / 1024)).append("\n");
+        sb.append("allocated memory: ").append(format.format(allocatedMemory / 1024)).append("\n");
+        sb.append("max memory: ").append(format.format(maxMemory / 1024)).append("\n");
+        sb.append("total free memory: ").append(format.format((freeMemory + (maxMemory - allocatedMemory)) / 1024)).append("\n");
 
         System.out.println(sb.toString());
     }

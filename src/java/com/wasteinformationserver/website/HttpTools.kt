@@ -17,7 +17,7 @@ class HttpTools {
          * @param value input string
          * @return md5 hash
          */
-        fun StringToMD5(value: String): String {
+        fun stringToMD5(value: String): String {
             return try {
                 val md = MessageDigest.getInstance("MD5")
                 val messageDigest = md.digest(value.toByteArray())

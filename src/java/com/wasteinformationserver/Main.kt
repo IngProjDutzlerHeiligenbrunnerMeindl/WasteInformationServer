@@ -36,6 +36,7 @@ fun main() {
     Log.message("initial login to db")
     try {
         JDBC.init("ingproject", "Kb9Dxklumt76ieq6", "ingproject", "db.power4future.at", 3306)
+        // todo make dynamic with settings page
         //JDBC.init("users", "kOpaIJUjkgb9ur6S", "wasteinformation", "192.168.65.15", 3306);
     } catch (e: IOException) { //e.printStackTrace();
         Log.error("no connection to db")
@@ -50,6 +51,6 @@ fun main() {
     //startup mqtt service
     Log.message("starting mqtt service")
 
-    val m = MqttService("mqtt.heili.eu", "1883")
+    val m = MqttService("mqtt.heili.eu", "1883") // todo make dynamic with settings page
     m.startupService()
 }

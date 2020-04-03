@@ -4,7 +4,7 @@ import com.wasteinformationserver.basicutils.Log.Log.debug
 import com.wasteinformationserver.basicutils.Log.Log.error
 import com.wasteinformationserver.basicutils.Log.Log.message
 import com.wasteinformationserver.db.JDBC
-import com.wasteinformationserver.website.HttpTools.Companion.StringToMD5
+import com.wasteinformationserver.website.HttpTools.Companion.stringToMD5
 import com.wasteinformationserver.website.basicrequest.PostRequest
 import java.io.IOException
 import java.sql.SQLException
@@ -33,12 +33,13 @@ class LoginRequest : PostRequest() {
         try {
             s.last()
             if (s.row == 1) { //success
-                if (StringToMD5(password!!) == s.getString("password")) {
+                if (stringToMD5(password!!) == s.getString("password")) {
                     debug("login success")
                     LoginState.getObject().logIn()
                     LoginState.getObject().setAccountData(username, s.getString("firstName"), s.getString("secondName"), s.getString("email"), s.getInt("permission"))
                     response = "{\"accept\": true}"
-                } else {
+                }
+                else {
                     debug("wrong password")
                 }
             } else if (s.row == 0) { //user not found

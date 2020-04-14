@@ -4,21 +4,20 @@
  * Licensed under MIT (https://github.com/ColorlibHQ/AdminLTE/blob/master/LICENSE)
  */
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-        typeof define === 'function' && define.amd ? define(['exports'], factory) :
-            (global = global || self, factory(global.adminlte = {}));
-}(this, (function (exports) {
-    'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+  (global = global || self, factory(global.adminlte = {}));
+}(this, (function (exports) { 'use strict';
 
+  /**
+   * --------------------------------------------
+   * AdminLTE ControlSidebar.js
+   * License MIT
+   * --------------------------------------------
+   */
+  var ControlSidebar = function ($) {
     /**
-     * --------------------------------------------
-     * AdminLTE ControlSidebar.js
-     * License MIT
-     * --------------------------------------------
-     */
-    var ControlSidebar = function ($) {
-        /**
-         * Constants
+     * Constants
      * ====================================================
      */
     var NAME = 'ControlSidebar';
@@ -43,83 +42,83 @@
       CONTROL_SIDEBAR_SLIDE: 'control-sidebar-slide-open',
       LAYOUT_FIXED: 'layout-fixed',
       NAVBAR_FIXED: 'layout-navbar-fixed',
-        NAVBAR_SM_FIXED: 'layout-sm-navbar-fixed',
-        NAVBAR_MD_FIXED: 'layout-md-navbar-fixed',
-        NAVBAR_LG_FIXED: 'layout-lg-navbar-fixed',
-        NAVBAR_XL_FIXED: 'layout-xl-navbar-fixed',
-        FOOTER_FIXED: 'layout-footer-fixed',
-        FOOTER_SM_FIXED: 'layout-sm-footer-fixed',
-        FOOTER_MD_FIXED: 'layout-md-footer-fixed',
-        FOOTER_LG_FIXED: 'layout-lg-footer-fixed',
-        FOOTER_XL_FIXED: 'layout-xl-footer-fixed'
+      NAVBAR_SM_FIXED: 'layout-sm-navbar-fixed',
+      NAVBAR_MD_FIXED: 'layout-md-navbar-fixed',
+      NAVBAR_LG_FIXED: 'layout-lg-navbar-fixed',
+      NAVBAR_XL_FIXED: 'layout-xl-navbar-fixed',
+      FOOTER_FIXED: 'layout-footer-fixed',
+      FOOTER_SM_FIXED: 'layout-sm-footer-fixed',
+      FOOTER_MD_FIXED: 'layout-md-footer-fixed',
+      FOOTER_LG_FIXED: 'layout-lg-footer-fixed',
+      FOOTER_XL_FIXED: 'layout-xl-footer-fixed'
     };
-        var Default = {
-            controlsidebarSlide: true,
-            scrollbarTheme: 'os-theme-light',
-            scrollbarAutoHide: 'l'
-        };
-        /**
-         * Class Definition
-         * ====================================================
-         */
+    var Default = {
+      controlsidebarSlide: true,
+      scrollbarTheme: 'os-theme-light',
+      scrollbarAutoHide: 'l'
+    };
+    /**
+     * Class Definition
+     * ====================================================
+     */
 
-        var ControlSidebar = /*#__PURE__*/function () {
-            function ControlSidebar(element, config) {
-                this._element = element;
-                this._config = config;
+    var ControlSidebar = /*#__PURE__*/function () {
+      function ControlSidebar(element, config) {
+        this._element = element;
+        this._config = config;
 
-                this._init();
-            } // Public
+        this._init();
+      } // Public
 
 
-            var _proto = ControlSidebar.prototype;
+      var _proto = ControlSidebar.prototype;
 
-            _proto.collapse = function collapse() {
-                // Show the control sidebar
-                if (this._config.controlsidebarSlide) {
-                    $('html').addClass(ClassName.CONTROL_SIDEBAR_ANIMATE);
-                    $('body').removeClass(ClassName.CONTROL_SIDEBAR_SLIDE).delay(300).queue(function () {
-                        $(Selector.CONTROL_SIDEBAR).hide();
-                        $('html').removeClass(ClassName.CONTROL_SIDEBAR_ANIMATE);
-                        $(this).dequeue();
-                    });
-                } else {
-                    $('body').removeClass(ClassName.CONTROL_SIDEBAR_OPEN);
-                }
+      _proto.collapse = function collapse() {
+        // Show the control sidebar
+        if (this._config.controlsidebarSlide) {
+          $('html').addClass(ClassName.CONTROL_SIDEBAR_ANIMATE);
+          $('body').removeClass(ClassName.CONTROL_SIDEBAR_SLIDE).delay(300).queue(function () {
+            $(Selector.CONTROL_SIDEBAR).hide();
+            $('html').removeClass(ClassName.CONTROL_SIDEBAR_ANIMATE);
+            $(this).dequeue();
+          });
+        } else {
+          $('body').removeClass(ClassName.CONTROL_SIDEBAR_OPEN);
+        }
 
-                var collapsedEvent = $.Event(Event.COLLAPSED);
-                $(this._element).trigger(collapsedEvent);
-            };
+        var collapsedEvent = $.Event(Event.COLLAPSED);
+        $(this._element).trigger(collapsedEvent);
+      };
 
-            _proto.show = function show() {
-                // Collapse the control sidebar
-                if (this._config.controlsidebarSlide) {
-                    $('html').addClass(ClassName.CONTROL_SIDEBAR_ANIMATE);
-                    $(Selector.CONTROL_SIDEBAR).show().delay(10).queue(function () {
-                        $('body').addClass(ClassName.CONTROL_SIDEBAR_SLIDE).delay(300).queue(function () {
-                            $('html').removeClass(ClassName.CONTROL_SIDEBAR_ANIMATE);
-                            $(this).dequeue();
-                        });
-                        $(this).dequeue();
-                    });
-                } else {
-                    $('body').addClass(ClassName.CONTROL_SIDEBAR_OPEN);
-                }
+      _proto.show = function show() {
+        // Collapse the control sidebar
+        if (this._config.controlsidebarSlide) {
+          $('html').addClass(ClassName.CONTROL_SIDEBAR_ANIMATE);
+          $(Selector.CONTROL_SIDEBAR).show().delay(10).queue(function () {
+            $('body').addClass(ClassName.CONTROL_SIDEBAR_SLIDE).delay(300).queue(function () {
+              $('html').removeClass(ClassName.CONTROL_SIDEBAR_ANIMATE);
+              $(this).dequeue();
+            });
+            $(this).dequeue();
+          });
+        } else {
+          $('body').addClass(ClassName.CONTROL_SIDEBAR_OPEN);
+        }
 
-                var expandedEvent = $.Event(Event.EXPANDED);
-                $(this._element).trigger(expandedEvent);
-            };
+        var expandedEvent = $.Event(Event.EXPANDED);
+        $(this._element).trigger(expandedEvent);
+      };
 
       _proto.toggle = function toggle() {
-          var shouldClose = $('body').hasClass(ClassName.CONTROL_SIDEBAR_OPEN) || $('body').hasClass(ClassName.CONTROL_SIDEBAR_SLIDE);
+        var shouldClose = $('body').hasClass(ClassName.CONTROL_SIDEBAR_OPEN) || $('body').hasClass(ClassName.CONTROL_SIDEBAR_SLIDE);
 
-          if (shouldClose) {
-              // Close the control sidebar
-              this.collapse();
-          } else {
-              // Open the control sidebar
-              this.show();
-          }
+        if (shouldClose) {
+          // Close the control sidebar
+          this.collapse();
+        } else {
+          // Open the control sidebar
+          this.show();
+        }
       } // Private
       ;
 
@@ -232,18 +231,18 @@
 
       ControlSidebar._jQueryInterface = function _jQueryInterface(operation) {
         return this.each(function () {
-            var data = $(this).data(DATA_KEY);
+          var data = $(this).data(DATA_KEY);
 
-            var _options = $.extend({}, Default, $(this).data());
+          var _options = $.extend({}, Default, $(this).data());
 
-            if (!data) {
-                data = new ControlSidebar(this, _options);
-                $(this).data(DATA_KEY, data);
-            }
+          if (!data) {
+            data = new ControlSidebar(this, _options);
+            $(this).data(DATA_KEY, data);
+          }
 
-            if (data[operation] === 'undefined') {
-                throw new Error(operation + " is not a function");
-            }
+          if (data[operation] === 'undefined') {
+            throw new Error(operation + " is not a function");
+          }
 
           data[operation]();
         });
@@ -294,153 +293,153 @@
     var DATA_KEY = 'lte.layout';
     var JQUERY_NO_CONFLICT = $.fn[NAME];
     var Selector = {
-        HEADER: '.main-header',
-        MAIN_SIDEBAR: '.main-sidebar',
-        SIDEBAR: '.main-sidebar .sidebar',
-        CONTENT: '.content-wrapper',
-        BRAND: '.brand-link',
-        CONTENT_HEADER: '.content-header',
-        WRAPPER: '.wrapper',
-        CONTROL_SIDEBAR: '.control-sidebar',
-        CONTROL_SIDEBAR_CONTENT: '.control-sidebar-content',
-        CONTROL_SIDEBAR_BTN: '[data-widget="control-sidebar"]',
-        LAYOUT_FIXED: '.layout-fixed',
-        FOOTER: '.main-footer',
-        PUSHMENU_BTN: '[data-widget="pushmenu"]',
-        LOGIN_BOX: '.login-box',
-        REGISTER_BOX: '.register-box'
+      HEADER: '.main-header',
+      MAIN_SIDEBAR: '.main-sidebar',
+      SIDEBAR: '.main-sidebar .sidebar',
+      CONTENT: '.content-wrapper',
+      BRAND: '.brand-link',
+      CONTENT_HEADER: '.content-header',
+      WRAPPER: '.wrapper',
+      CONTROL_SIDEBAR: '.control-sidebar',
+      CONTROL_SIDEBAR_CONTENT: '.control-sidebar-content',
+      CONTROL_SIDEBAR_BTN: '[data-widget="control-sidebar"]',
+      LAYOUT_FIXED: '.layout-fixed',
+      FOOTER: '.main-footer',
+      PUSHMENU_BTN: '[data-widget="pushmenu"]',
+      LOGIN_BOX: '.login-box',
+      REGISTER_BOX: '.register-box'
     };
     var ClassName = {
-        HOLD: 'hold-transition',
-        SIDEBAR: 'main-sidebar',
-        CONTENT_FIXED: 'content-fixed',
-        SIDEBAR_FOCUSED: 'sidebar-focused',
-        LAYOUT_FIXED: 'layout-fixed',
-        NAVBAR_FIXED: 'layout-navbar-fixed',
-        FOOTER_FIXED: 'layout-footer-fixed',
-        LOGIN_PAGE: 'login-page',
-        REGISTER_PAGE: 'register-page',
-        CONTROL_SIDEBAR_SLIDE_OPEN: 'control-sidebar-slide-open',
-        CONTROL_SIDEBAR_OPEN: 'control-sidebar-open'
+      HOLD: 'hold-transition',
+      SIDEBAR: 'main-sidebar',
+      CONTENT_FIXED: 'content-fixed',
+      SIDEBAR_FOCUSED: 'sidebar-focused',
+      LAYOUT_FIXED: 'layout-fixed',
+      NAVBAR_FIXED: 'layout-navbar-fixed',
+      FOOTER_FIXED: 'layout-footer-fixed',
+      LOGIN_PAGE: 'login-page',
+      REGISTER_PAGE: 'register-page',
+      CONTROL_SIDEBAR_SLIDE_OPEN: 'control-sidebar-slide-open',
+      CONTROL_SIDEBAR_OPEN: 'control-sidebar-open'
     };
     var Default = {
-        scrollbarTheme: 'os-theme-light',
-        scrollbarAutoHide: 'l',
-        panelAutoHeight: true,
-        loginRegisterAutoHeight: true
+      scrollbarTheme: 'os-theme-light',
+      scrollbarAutoHide: 'l',
+      panelAutoHeight: true,
+      loginRegisterAutoHeight: true
     };
-      /**
-       * Class Definition
-       * ====================================================
-       */
+    /**
+     * Class Definition
+     * ====================================================
+     */
 
-      var Layout = /*#__PURE__*/function () {
-          function Layout(element, config) {
-              this._config = config;
-              this._element = element;
+    var Layout = /*#__PURE__*/function () {
+      function Layout(element, config) {
+        this._config = config;
+        this._element = element;
 
-              this._init();
-          } // Public
+        this._init();
+      } // Public
 
 
-          var _proto = Layout.prototype;
+      var _proto = Layout.prototype;
 
-          _proto.fixLayoutHeight = function fixLayoutHeight(extra) {
-              if (extra === void 0) {
-                  extra = null;
+      _proto.fixLayoutHeight = function fixLayoutHeight(extra) {
+        if (extra === void 0) {
+          extra = null;
+        }
+
+        var control_sidebar = 0;
+
+        if ($('body').hasClass(ClassName.CONTROL_SIDEBAR_SLIDE_OPEN) || $('body').hasClass(ClassName.CONTROL_SIDEBAR_OPEN) || extra == 'control_sidebar') {
+          control_sidebar = $(Selector.CONTROL_SIDEBAR_CONTENT).height();
+        }
+
+        var heights = {
+          window: $(window).height(),
+          header: $(Selector.HEADER).length !== 0 ? $(Selector.HEADER).outerHeight() : 0,
+          footer: $(Selector.FOOTER).length !== 0 ? $(Selector.FOOTER).outerHeight() : 0,
+          sidebar: $(Selector.SIDEBAR).length !== 0 ? $(Selector.SIDEBAR).height() : 0,
+          control_sidebar: control_sidebar
+        };
+
+        var max = this._max(heights);
+
+        var offset = this._config.panelAutoHeight;
+
+        if (offset === true) {
+          offset = 0;
+        }
+
+        if (offset !== false) {
+          if (max == heights.control_sidebar) {
+            $(Selector.CONTENT).css('min-height', max + offset);
+          } else if (max == heights.window) {
+            $(Selector.CONTENT).css('min-height', max + offset - heights.header - heights.footer);
+          } else {
+            $(Selector.CONTENT).css('min-height', max + offset - heights.header);
+          }
+        }
+
+        if ($('body').hasClass(ClassName.LAYOUT_FIXED)) {
+          if (offset !== false) {
+            $(Selector.CONTENT).css('min-height', max + offset - heights.header - heights.footer);
+          }
+
+          if (typeof $.fn.overlayScrollbars !== 'undefined') {
+            $(Selector.SIDEBAR).overlayScrollbars({
+              className: this._config.scrollbarTheme,
+              sizeAutoCapable: true,
+              scrollbars: {
+                autoHide: this._config.scrollbarAutoHide,
+                clickScrolling: true
               }
+            });
+          }
+        }
+      };
 
-              var control_sidebar = 0;
+      _proto.fixLoginRegisterHeight = function fixLoginRegisterHeight() {
+        if ($(Selector.LOGIN_BOX + ', ' + Selector.REGISTER_BOX).length === 0) {
+          $('body, html').css('height', 'auto');
+        } else if ($(Selector.LOGIN_BOX + ', ' + Selector.REGISTER_BOX).length !== 0) {
+          var box_height = $(Selector.LOGIN_BOX + ', ' + Selector.REGISTER_BOX).height();
 
-              if ($('body').hasClass(ClassName.CONTROL_SIDEBAR_SLIDE_OPEN) || $('body').hasClass(ClassName.CONTROL_SIDEBAR_OPEN) || extra == 'control_sidebar') {
-                  control_sidebar = $(Selector.CONTROL_SIDEBAR_CONTENT).height();
-              }
+          if ($('body').css('min-height') !== box_height) {
+            $('body').css('min-height', box_height);
+          }
+        }
+      } // Private
+      ;
 
-              var heights = {
-                  window: $(window).height(),
-                  header: $(Selector.HEADER).length !== 0 ? $(Selector.HEADER).outerHeight() : 0,
-                  footer: $(Selector.FOOTER).length !== 0 ? $(Selector.FOOTER).outerHeight() : 0,
-                  sidebar: $(Selector.SIDEBAR).length !== 0 ? $(Selector.SIDEBAR).height() : 0,
-                  control_sidebar: control_sidebar
-              };
+      _proto._init = function _init() {
+        var _this = this;
 
-              var max = this._max(heights);
+        // Activate layout height watcher
+        this.fixLayoutHeight();
 
-              var offset = this._config.panelAutoHeight;
+        if (this._config.loginRegisterAutoHeight === true) {
+          this.fixLoginRegisterHeight();
+        } else if (Number.isInteger(this._config.loginRegisterAutoHeight)) {
+          setInterval(this.fixLoginRegisterHeight, this._config.loginRegisterAutoHeight);
+        }
 
-              if (offset === true) {
-                  offset = 0;
-              }
-
-              if (offset !== false) {
-                  if (max == heights.control_sidebar) {
-                      $(Selector.CONTENT).css('min-height', max + offset);
-                  } else if (max == heights.window) {
-                      $(Selector.CONTENT).css('min-height', max + offset - heights.header - heights.footer);
-                  } else {
-                      $(Selector.CONTENT).css('min-height', max + offset - heights.header);
-                  }
-              }
-
-              if ($('body').hasClass(ClassName.LAYOUT_FIXED)) {
-                  if (offset !== false) {
-                      $(Selector.CONTENT).css('min-height', max + offset - heights.header - heights.footer);
-                  }
-
-                  if (typeof $.fn.overlayScrollbars !== 'undefined') {
-                      $(Selector.SIDEBAR).overlayScrollbars({
-                          className: this._config.scrollbarTheme,
-                          sizeAutoCapable: true,
-                          scrollbars: {
-                              autoHide: this._config.scrollbarAutoHide,
-                              clickScrolling: true
-                          }
-                      });
-                  }
-              }
-          };
-
-          _proto.fixLoginRegisterHeight = function fixLoginRegisterHeight() {
-              if ($(Selector.LOGIN_BOX + ', ' + Selector.REGISTER_BOX).length === 0) {
-                  $('body, html').css('height', 'auto');
-              } else if ($(Selector.LOGIN_BOX + ', ' + Selector.REGISTER_BOX).length !== 0) {
-                  var box_height = $(Selector.LOGIN_BOX + ', ' + Selector.REGISTER_BOX).height();
-
-                  if ($('body').css('min-height') !== box_height) {
-                      $('body').css('min-height', box_height);
-                  }
-              }
-          } // Private
-          ;
-
-          _proto._init = function _init() {
-              var _this = this;
-
-              // Activate layout height watcher
-              this.fixLayoutHeight();
-
-              if (this._config.loginRegisterAutoHeight === true) {
-                  this.fixLoginRegisterHeight();
-              } else if (Number.isInteger(this._config.loginRegisterAutoHeight)) {
-                  setInterval(this.fixLoginRegisterHeight, this._config.loginRegisterAutoHeight);
-              }
-
-              $(Selector.SIDEBAR).on('collapsed.lte.treeview expanded.lte.treeview', function () {
-                  _this.fixLayoutHeight();
-              });
-              $(Selector.PUSHMENU_BTN).on('collapsed.lte.pushmenu shown.lte.pushmenu', function () {
-                  _this.fixLayoutHeight();
-              });
-              $(Selector.CONTROL_SIDEBAR_BTN).on('collapsed.lte.controlsidebar', function () {
-                  _this.fixLayoutHeight();
-              }).on('expanded.lte.controlsidebar', function () {
-                  _this.fixLayoutHeight('control_sidebar');
-              });
-              $(window).resize(function () {
-                  _this.fixLayoutHeight();
-              });
-              $('body.hold-transition').removeClass('hold-transition');
-          };
+        $(Selector.SIDEBAR).on('collapsed.lte.treeview expanded.lte.treeview', function () {
+          _this.fixLayoutHeight();
+        });
+        $(Selector.PUSHMENU_BTN).on('collapsed.lte.pushmenu shown.lte.pushmenu', function () {
+          _this.fixLayoutHeight();
+        });
+        $(Selector.CONTROL_SIDEBAR_BTN).on('collapsed.lte.controlsidebar', function () {
+          _this.fixLayoutHeight();
+        }).on('expanded.lte.controlsidebar', function () {
+          _this.fixLayoutHeight('control_sidebar');
+        });
+        $(window).resize(function () {
+          _this.fixLayoutHeight();
+        });
+        $('body.hold-transition').removeClass('hold-transition');
+      };
 
       _proto._max = function _max(numbers) {
         // Calculate the maximum number in a list
@@ -455,26 +454,26 @@
       ;
 
       Layout._jQueryInterface = function _jQueryInterface(config) {
-          if (config === void 0) {
-              config = '';
+        if (config === void 0) {
+          config = '';
+        }
+
+        return this.each(function () {
+          var data = $(this).data(DATA_KEY);
+
+          var _options = $.extend({}, Default, $(this).data());
+
+          if (!data) {
+            data = new Layout($(this), _options);
+            $(this).data(DATA_KEY, data);
           }
 
-          return this.each(function () {
-              var data = $(this).data(DATA_KEY);
-
-              var _options = $.extend({}, Default, $(this).data());
-
-              if (!data) {
-                  data = new Layout($(this), _options);
-                  $(this).data(DATA_KEY, data);
-              }
-
-              if (config === 'init' || config === '') {
-                  data['_init']();
-              } else if (config === 'fixLayoutHeight' || config === 'fixLoginRegisterHeight') {
-                  data[config]();
-              }
-          });
+          if (config === 'init' || config === '') {
+            data['_init']();
+          } else if (config === 'fixLayoutHeight' || config === 'fixLoginRegisterHeight') {
+            data[config]();
+          }
+        });
       };
 
       return Layout;
@@ -542,42 +541,42 @@
       OVERLAY: '#sidebar-overlay',
       WRAPPER: '.wrapper'
     };
-      var ClassName = {
-          COLLAPSED: 'sidebar-collapse',
-          OPEN: 'sidebar-open',
-          CLOSED: 'sidebar-closed'
-      };
-      /**
-       * Class Definition
-       * ====================================================
-       */
+    var ClassName = {
+      COLLAPSED: 'sidebar-collapse',
+      OPEN: 'sidebar-open',
+      CLOSED: 'sidebar-closed'
+    };
+    /**
+     * Class Definition
+     * ====================================================
+     */
 
-      var PushMenu = /*#__PURE__*/function () {
-          function PushMenu(element, options) {
-              this._element = element;
-              this._options = $.extend({}, Default, options);
+    var PushMenu = /*#__PURE__*/function () {
+      function PushMenu(element, options) {
+        this._element = element;
+        this._options = $.extend({}, Default, options);
 
-              if (!$(Selector.OVERLAY).length) {
-                  this._addOverlay();
-              }
+        if (!$(Selector.OVERLAY).length) {
+          this._addOverlay();
+        }
 
-              this._init();
-          } // Public
+        this._init();
+      } // Public
 
 
       var _proto = PushMenu.prototype;
 
-          _proto.expand = function expand() {
-              if (this._options.autoCollapseSize) {
-                  if ($(window).width() <= this._options.autoCollapseSize) {
-                      $(Selector.BODY).addClass(ClassName.OPEN);
-                  }
-              }
+      _proto.expand = function expand() {
+        if (this._options.autoCollapseSize) {
+          if ($(window).width() <= this._options.autoCollapseSize) {
+            $(Selector.BODY).addClass(ClassName.OPEN);
+          }
+        }
 
-              $(Selector.BODY).removeClass(ClassName.COLLAPSED).removeClass(ClassName.CLOSED);
+        $(Selector.BODY).removeClass(ClassName.COLLAPSED).removeClass(ClassName.CLOSED);
 
-              if (this._options.enableRemember) {
-                  localStorage.setItem("remember" + EVENT_KEY, ClassName.OPEN);
+        if (this._options.enableRemember) {
+          localStorage.setItem("remember" + EVENT_KEY, ClassName.OPEN);
         }
 
         var shownEvent = $.Event(Event.SHOWN);
@@ -587,7 +586,7 @@
       _proto.collapse = function collapse() {
         if (this._options.autoCollapseSize) {
           if ($(window).width() <= this._options.autoCollapseSize) {
-              $(Selector.BODY).removeClass(ClassName.OPEN).addClass(ClassName.CLOSED);
+            $(Selector.BODY).removeClass(ClassName.OPEN).addClass(ClassName.CLOSED);
           }
         }
 
@@ -605,7 +604,7 @@
         if (!$(Selector.BODY).hasClass(ClassName.COLLAPSED)) {
           this.collapse();
         } else {
-            this.expand();
+          this.expand();
         }
       };
 
@@ -620,11 +619,11 @@
               this.collapse();
             }
           } else if (resize == true) {
-              if ($(Selector.BODY).hasClass(ClassName.OPEN)) {
-                  $(Selector.BODY).removeClass(ClassName.OPEN);
-              } else if ($(Selector.BODY).hasClass(ClassName.CLOSED)) {
-                  this.expand();
-              }
+            if ($(Selector.BODY).hasClass(ClassName.OPEN)) {
+              $(Selector.BODY).removeClass(ClassName.OPEN);
+            } else if ($(Selector.BODY).hasClass(ClassName.CLOSED)) {
+              this.expand();
+            }
           }
         }
       };
@@ -690,9 +689,9 @@
             $(this).data(DATA_KEY, data);
           }
 
-            if (typeof operation === 'string' && operation.match(/collapse|expand|toggle/)) {
-                data[operation]();
-            }
+          if (typeof operation === 'string' && operation.match(/collapse|expand|toggle/)) {
+            data[operation]();
+          }
         });
       };
 
@@ -762,35 +761,35 @@
       DATA_WIDGET: '[data-widget="treeview"]'
     };
     var ClassName = {
-        LI: 'nav-item',
-        LINK: 'nav-link',
-        TREEVIEW_MENU: 'nav-treeview',
-        OPEN: 'menu-open',
-        SIDEBAR_COLLAPSED: 'sidebar-collapse'
+      LI: 'nav-item',
+      LINK: 'nav-link',
+      TREEVIEW_MENU: 'nav-treeview',
+      OPEN: 'menu-open',
+      SIDEBAR_COLLAPSED: 'sidebar-collapse'
     };
     var Default = {
-        trigger: Selector.DATA_WIDGET + " " + Selector.LINK,
-        animationSpeed: 300,
-        accordion: true,
-        expandSidebar: false,
-        sidebarButtonSelector: '[data-widget="pushmenu"]'
+      trigger: Selector.DATA_WIDGET + " " + Selector.LINK,
+      animationSpeed: 300,
+      accordion: true,
+      expandSidebar: false,
+      sidebarButtonSelector: '[data-widget="pushmenu"]'
     };
-      /**
-       * Class Definition
-       * ====================================================
-       */
+    /**
+     * Class Definition
+     * ====================================================
+     */
 
-      var Treeview = /*#__PURE__*/function () {
-          function Treeview(element, config) {
-              this._config = config;
-              this._element = element;
-          } // Public
+    var Treeview = /*#__PURE__*/function () {
+      function Treeview(element, config) {
+        this._config = config;
+        this._element = element;
+      } // Public
 
 
-          var _proto = Treeview.prototype;
+      var _proto = Treeview.prototype;
 
-          _proto.init = function init() {
-              this._setupListeners();
+      _proto.init = function init() {
+        this._setupListeners();
       };
 
       _proto.expand = function expand(treeviewMenu, parentLi) {
@@ -798,20 +797,20 @@
 
         var expandedEvent = $.Event(Event.EXPANDED);
 
-          if (this._config.accordion) {
-              var openMenuLi = parentLi.siblings(Selector.OPEN).first();
-              var openTreeview = openMenuLi.find(Selector.TREEVIEW_MENU).first();
-              this.collapse(openTreeview, openMenuLi);
-          }
+        if (this._config.accordion) {
+          var openMenuLi = parentLi.siblings(Selector.OPEN).first();
+          var openTreeview = openMenuLi.find(Selector.TREEVIEW_MENU).first();
+          this.collapse(openTreeview, openMenuLi);
+        }
 
-          treeviewMenu.stop().slideDown(this._config.animationSpeed, function () {
-              parentLi.addClass(ClassName.OPEN);
-              $(_this._element).trigger(expandedEvent);
-          });
+        treeviewMenu.stop().slideDown(this._config.animationSpeed, function () {
+          parentLi.addClass(ClassName.OPEN);
+          $(_this._element).trigger(expandedEvent);
+        });
 
-          if (this._config.expandSidebar) {
-              this._expandSidebar();
-          }
+        if (this._config.expandSidebar) {
+          this._expandSidebar();
+        }
       };
 
       _proto.collapse = function collapse(treeviewMenu, parentLi) {
@@ -853,30 +852,30 @@
       } // Private
       ;
 
-          _proto._setupListeners = function _setupListeners() {
-              var _this3 = this;
+      _proto._setupListeners = function _setupListeners() {
+        var _this3 = this;
 
-              $(document).on('click', this._config.trigger, function (event) {
-                  _this3.toggle(event);
-              });
-          };
+        $(document).on('click', this._config.trigger, function (event) {
+          _this3.toggle(event);
+        });
+      };
 
-          _proto._expandSidebar = function _expandSidebar() {
-              if ($('body').hasClass(ClassName.SIDEBAR_COLLAPSED)) {
-                  $(this._config.sidebarButtonSelector).PushMenu('expand');
-              }
-          } // Static
-          ;
+      _proto._expandSidebar = function _expandSidebar() {
+        if ($('body').hasClass(ClassName.SIDEBAR_COLLAPSED)) {
+          $(this._config.sidebarButtonSelector).PushMenu('expand');
+        }
+      } // Static
+      ;
 
-          Treeview._jQueryInterface = function _jQueryInterface(config) {
-              return this.each(function () {
-                  var data = $(this).data(DATA_KEY);
+      Treeview._jQueryInterface = function _jQueryInterface(config) {
+        return this.each(function () {
+          var data = $(this).data(DATA_KEY);
 
-                  var _options = $.extend({}, Default, $(this).data());
+          var _options = $.extend({}, Default, $(this).data());
 
-                  if (!data) {
-                      data = new Treeview($(this), _options);
-                      $(this).data(DATA_KEY, data);
+          if (!data) {
+            data = new Treeview($(this), _options);
+            $(this).data(DATA_KEY, data);
           }
 
           if (config === 'init') {
@@ -935,25 +934,25 @@
       DATA_TOGGLE: '[data-widget="chat-pane-toggle"]',
       DIRECT_CHAT: '.direct-chat'
     };
-      var ClassName = {
-          DIRECT_CHAT_OPEN: 'direct-chat-contacts-open'
-      };
-      /**
-       * Class Definition
-       * ====================================================
-       */
+    var ClassName = {
+      DIRECT_CHAT_OPEN: 'direct-chat-contacts-open'
+    };
+    /**
+     * Class Definition
+     * ====================================================
+     */
 
-      var DirectChat = /*#__PURE__*/function () {
-          function DirectChat(element, config) {
-              this._element = element;
-          }
+    var DirectChat = /*#__PURE__*/function () {
+      function DirectChat(element, config) {
+        this._element = element;
+      }
 
-          var _proto = DirectChat.prototype;
+      var _proto = DirectChat.prototype;
 
-          _proto.toggle = function toggle() {
-              $(this._element).parents(Selector.DIRECT_CHAT).first().toggleClass(ClassName.DIRECT_CHAT_OPEN);
-              var toggledEvent = $.Event(Event.TOGGLED);
-              $(this._element).trigger(toggledEvent);
+      _proto.toggle = function toggle() {
+        $(this._element).parents(Selector.DIRECT_CHAT).first().toggleClass(ClassName.DIRECT_CHAT_OPEN);
+        var toggledEvent = $.Event(Event.TOGGLED);
+        $(this._element).trigger(toggledEvent);
       } // Static
       ;
 
@@ -1024,25 +1023,25 @@
       onCheck: function onCheck(item) {
         return item;
       },
-        onUnCheck: function onUnCheck(item) {
-            return item;
-        }
+      onUnCheck: function onUnCheck(item) {
+        return item;
+      }
     };
-      /**
-       * Class Definition
-       * ====================================================
-       */
+    /**
+     * Class Definition
+     * ====================================================
+     */
 
-      var TodoList = /*#__PURE__*/function () {
-          function TodoList(element, config) {
-              this._config = config;
-              this._element = element;
+    var TodoList = /*#__PURE__*/function () {
+      function TodoList(element, config) {
+        this._config = config;
+        this._element = element;
 
-              this._init();
-          } // Public
+        this._init();
+      } // Public
 
 
-          var _proto = TodoList.prototype;
+      var _proto = TodoList.prototype;
 
       _proto.toggle = function toggle(item) {
         item.parents('li').toggleClass(ClassName.TODO_LIST_DONE);
@@ -1077,11 +1076,11 @@
         return this.each(function () {
           var data = $(this).data(DATA_KEY);
 
-            var _options = $.extend({}, Default, $(this).data());
+          var _options = $.extend({}, Default, $(this).data());
 
           if (!data) {
-              data = new TodoList($(this), _options);
-              $(this).data(DATA_KEY, data);
+            data = new TodoList($(this), _options);
+            $(this).data(DATA_KEY, data);
           }
 
           if (config === 'init') {
@@ -1140,12 +1139,12 @@
       REMOVED: "removed" + EVENT_KEY
     };
     var ClassName = {
-        CARD: 'card',
-        COLLAPSED: 'collapsed-card',
-        COLLAPSING: 'collapsing-card',
-        EXPANDING: 'expanding-card',
-        WAS_COLLAPSED: 'was-collapsed',
-        MAXIMIZED: 'maximized-card'
+      CARD: 'card',
+      COLLAPSED: 'collapsed-card',
+      COLLAPSING: 'collapsing-card',
+      EXPANDING: 'expanding-card',
+      WAS_COLLAPSED: 'was-collapsed',
+      MAXIMIZED: 'maximized-card'
     };
     var Selector = {
       DATA_REMOVE: '[data-card-widget="remove"]',
@@ -1168,46 +1167,46 @@
       minimizeIcon: 'fa-compress'
     };
 
-      var CardWidget = /*#__PURE__*/function () {
-          function CardWidget(element, settings) {
-              this._element = element;
-              this._parent = element.parents(Selector.CARD).first();
+    var CardWidget = /*#__PURE__*/function () {
+      function CardWidget(element, settings) {
+        this._element = element;
+        this._parent = element.parents(Selector.CARD).first();
 
-              if (element.hasClass(ClassName.CARD)) {
-                  this._parent = element;
-              }
+        if (element.hasClass(ClassName.CARD)) {
+          this._parent = element;
+        }
 
-              this._settings = $.extend({}, Default, settings);
-          }
+        this._settings = $.extend({}, Default, settings);
+      }
 
       var _proto = CardWidget.prototype;
 
       _proto.collapse = function collapse() {
-          var _this = this;
+        var _this = this;
 
-          this._parent.addClass(ClassName.COLLAPSING).children(Selector.CARD_BODY + ", " + Selector.CARD_FOOTER).slideUp(this._settings.animationSpeed, function () {
-              _this._parent.addClass(ClassName.COLLAPSED).removeClass(ClassName.COLLAPSING);
-          });
+        this._parent.addClass(ClassName.COLLAPSING).children(Selector.CARD_BODY + ", " + Selector.CARD_FOOTER).slideUp(this._settings.animationSpeed, function () {
+          _this._parent.addClass(ClassName.COLLAPSED).removeClass(ClassName.COLLAPSING);
+        });
 
-          this._parent.find('> ' + Selector.CARD_HEADER + ' ' + this._settings.collapseTrigger + ' .' + this._settings.collapseIcon).addClass(this._settings.expandIcon).removeClass(this._settings.collapseIcon);
+        this._parent.find('> ' + Selector.CARD_HEADER + ' ' + this._settings.collapseTrigger + ' .' + this._settings.collapseIcon).addClass(this._settings.expandIcon).removeClass(this._settings.collapseIcon);
 
-          var collapsed = $.Event(Event.COLLAPSED);
+        var collapsed = $.Event(Event.COLLAPSED);
 
-          this._element.trigger(collapsed, this._parent);
+        this._element.trigger(collapsed, this._parent);
       };
 
       _proto.expand = function expand() {
-          var _this2 = this;
+        var _this2 = this;
 
-          this._parent.addClass(ClassName.EXPANDING).children(Selector.CARD_BODY + ", " + Selector.CARD_FOOTER).slideDown(this._settings.animationSpeed, function () {
-              _this2._parent.removeClass(ClassName.COLLAPSED).removeClass(ClassName.EXPANDING);
-          });
+        this._parent.addClass(ClassName.EXPANDING).children(Selector.CARD_BODY + ", " + Selector.CARD_FOOTER).slideDown(this._settings.animationSpeed, function () {
+          _this2._parent.removeClass(ClassName.COLLAPSED).removeClass(ClassName.EXPANDING);
+        });
 
-          this._parent.find('> ' + Selector.CARD_HEADER + ' ' + this._settings.collapseTrigger + ' .' + this._settings.expandIcon).addClass(this._settings.collapseIcon).removeClass(this._settings.expandIcon);
+        this._parent.find('> ' + Selector.CARD_HEADER + ' ' + this._settings.collapseTrigger + ' .' + this._settings.expandIcon).addClass(this._settings.collapseIcon).removeClass(this._settings.expandIcon);
 
-          var expanded = $.Event(Event.EXPANDED);
+        var expanded = $.Event(Event.EXPANDED);
 
-          this._element.trigger(expanded, this._parent);
+        this._element.trigger(expanded, this._parent);
       };
 
       _proto.remove = function remove() {
@@ -1300,19 +1299,19 @@
       ;
 
       CardWidget._jQueryInterface = function _jQueryInterface(config) {
-          var data = $(this).data(DATA_KEY);
+        var data = $(this).data(DATA_KEY);
 
-          var _options = $.extend({}, Default, $(this).data());
+        var _options = $.extend({}, Default, $(this).data());
 
-          if (!data) {
-              data = new CardWidget($(this), _options);
-              $(this).data(DATA_KEY, typeof config === 'string' ? data : config);
-          }
+        if (!data) {
+          data = new CardWidget($(this), _options);
+          $(this).data(DATA_KEY, typeof config === 'string' ? data : config);
+        }
 
-          if (typeof config === 'string' && config.match(/collapse|expand|remove|toggle|maximize|minimize|toggleMaximize/)) {
-              data[config]();
-          } else if (typeof config === 'object') {
-              data._init($(this));
+        if (typeof config === 'string' && config.match(/collapse|expand|remove|toggle|maximize|minimize|toggleMaximize/)) {
+          data[config]();
+        } else if (typeof config === 'object') {
+          data._init($(this));
         }
       };
 
@@ -1404,16 +1403,16 @@
       }
     };
 
-      var CardRefresh = /*#__PURE__*/function () {
-          function CardRefresh(element, settings) {
-              this._element = element;
-              this._parent = element.parents(Selector.CARD).first();
-              this._settings = $.extend({}, Default, settings);
-              this._overlay = $(this._settings.overlayTemplate);
+    var CardRefresh = /*#__PURE__*/function () {
+      function CardRefresh(element, settings) {
+        this._element = element;
+        this._parent = element.parents(Selector.CARD).first();
+        this._settings = $.extend({}, Default, settings);
+        this._overlay = $(this._settings.overlayTemplate);
 
-              if (element.hasClass(ClassName.CARD)) {
-                  this._parent = element;
-              }
+        if (element.hasClass(ClassName.CARD)) {
+          this._parent = element;
+        }
 
         if (this._settings.source === '') {
           throw new Error('Source url was not defined. Please specify a url in your CardRefresh source option.');
@@ -1460,33 +1459,33 @@
 
       // Private
       _proto._init = function _init(card) {
-          var _this = this;
+        var _this = this;
 
-          $(this).find(this._settings.trigger).on('click', function () {
-              _this.load();
-          });
+        $(this).find(this._settings.trigger).on('click', function () {
+          _this.load();
+        });
 
-          if (this._settings.loadOnInit) {
-              this.load();
-          }
+        if (this._settings.loadOnInit) {
+          this.load();
+        }
       } // Static
       ;
 
       CardRefresh._jQueryInterface = function _jQueryInterface(config) {
-          var data = $(this).data(DATA_KEY);
+        var data = $(this).data(DATA_KEY);
 
-          var _options = $.extend({}, Default, $(this).data());
+        var _options = $.extend({}, Default, $(this).data());
 
-          if (!data) {
-              data = new CardRefresh($(this), _options);
-              $(this).data(DATA_KEY, typeof config === 'string' ? data : config);
-          }
+        if (!data) {
+          data = new CardRefresh($(this), _options);
+          $(this).data(DATA_KEY, typeof config === 'string' ? data : config);
+        }
 
-          if (typeof config === 'string' && config.match(/load/)) {
-              data[config]();
-          } else {
-              data._init($(this));
-          }
+        if (typeof config === 'string' && config.match(/load/)) {
+          data[config]();
+        } else {
+          data._init($(this));
+        }
       };
 
       return CardRefresh;
@@ -1497,28 +1496,28 @@
      */
 
 
-      $(document).on('click', Selector.DATA_REFRESH, function (event) {
-          if (event) {
-              event.preventDefault();
-          }
+    $(document).on('click', Selector.DATA_REFRESH, function (event) {
+      if (event) {
+        event.preventDefault();
+      }
 
-          CardRefresh._jQueryInterface.call($(this), 'load');
+      CardRefresh._jQueryInterface.call($(this), 'load');
+    });
+    $(document).ready(function () {
+      $(Selector.DATA_REFRESH).each(function () {
+        CardRefresh._jQueryInterface.call($(this));
       });
-      $(document).ready(function () {
-          $(Selector.DATA_REFRESH).each(function () {
-              CardRefresh._jQueryInterface.call($(this));
-          });
-      });
-      /**
-       * jQuery API
-       * ====================================================
-       */
+    });
+    /**
+     * jQuery API
+     * ====================================================
+     */
 
-      $.fn[NAME] = CardRefresh._jQueryInterface;
-      $.fn[NAME].Constructor = CardRefresh;
+    $.fn[NAME] = CardRefresh._jQueryInterface;
+    $.fn[NAME].Constructor = CardRefresh;
 
-      $.fn[NAME].noConflict = function () {
-          $.fn[NAME] = JQUERY_NO_CONFLICT;
+    $.fn[NAME].noConflict = function () {
+      $.fn[NAME] = JQUERY_NO_CONFLICT;
       return CardRefresh._jQueryInterface;
     };
 
@@ -1537,89 +1536,89 @@
      * ====================================================
      */
     var NAME = 'Dropdown';
-      var DATA_KEY = 'lte.dropdown';
-      var JQUERY_NO_CONFLICT = $.fn[NAME];
-      var Selector = {
-          NAVBAR: '.navbar',
-          DROPDOWN_MENU: '.dropdown-menu',
-          DROPDOWN_MENU_ACTIVE: '.dropdown-menu.show',
-          DROPDOWN_TOGGLE: '[data-toggle="dropdown"]'
+    var DATA_KEY = 'lte.dropdown';
+    var JQUERY_NO_CONFLICT = $.fn[NAME];
+    var Selector = {
+      NAVBAR: '.navbar',
+      DROPDOWN_MENU: '.dropdown-menu',
+      DROPDOWN_MENU_ACTIVE: '.dropdown-menu.show',
+      DROPDOWN_TOGGLE: '[data-toggle="dropdown"]'
+    };
+    var ClassName = {
+      DROPDOWN_HOVER: 'dropdown-hover',
+      DROPDOWN_RIGHT: 'dropdown-menu-right'
+    };
+    var Default = {};
+    /**
+     * Class Definition
+     * ====================================================
+     */
+
+    var Dropdown = /*#__PURE__*/function () {
+      function Dropdown(element, config) {
+        this._config = config;
+        this._element = element;
+      } // Public
+
+
+      var _proto = Dropdown.prototype;
+
+      _proto.toggleSubmenu = function toggleSubmenu() {
+        this._element.siblings().show().toggleClass("show");
+
+        if (!this._element.next().hasClass('show')) {
+          this._element.parents('.dropdown-menu').first().find('.show').removeClass("show").hide();
+        }
+
+        this._element.parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function (e) {
+          $('.dropdown-submenu .show').removeClass("show").hide();
+        });
       };
-      var ClassName = {
-          DROPDOWN_HOVER: 'dropdown-hover',
-          DROPDOWN_RIGHT: 'dropdown-menu-right'
-      };
-      var Default = {};
-      /**
-       * Class Definition
-       * ====================================================
-       */
 
-      var Dropdown = /*#__PURE__*/function () {
-          function Dropdown(element, config) {
-              this._config = config;
-              this._element = element;
-          } // Public
+      _proto.fixPosition = function fixPosition() {
+        var elm = $(Selector.DROPDOWN_MENU_ACTIVE);
 
+        if (elm.length !== 0) {
+          if (elm.hasClass(ClassName.DROPDOWN_RIGHT)) {
+            elm.css('left', 'inherit');
+            elm.css('right', 0);
+          } else {
+            elm.css('left', 0);
+            elm.css('right', 'inherit');
+          }
 
-          var _proto = Dropdown.prototype;
+          var offset = elm.offset();
+          var width = elm.width();
+          var windowWidth = $(window).width();
+          var visiblePart = windowWidth - offset.left;
 
-          _proto.toggleSubmenu = function toggleSubmenu() {
-              this._element.siblings().show().toggleClass("show");
+          if (offset.left < 0) {
+            elm.css('left', 'inherit');
+            elm.css('right', offset.left - 5);
+          } else {
+            if (visiblePart < width) {
+              elm.css('left', 'inherit');
+              elm.css('right', 0);
+            }
+          }
+        }
+      } // Static
+      ;
 
-              if (!this._element.next().hasClass('show')) {
-                  this._element.parents('.dropdown-menu').first().find('.show').removeClass("show").hide();
-              }
+      Dropdown._jQueryInterface = function _jQueryInterface(config) {
+        return this.each(function () {
+          var data = $(this).data(DATA_KEY);
 
-              this._element.parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function (e) {
-                  $('.dropdown-submenu .show').removeClass("show").hide();
-              });
-          };
+          var _config = $.extend({}, Default, $(this).data());
 
-          _proto.fixPosition = function fixPosition() {
-              var elm = $(Selector.DROPDOWN_MENU_ACTIVE);
-
-              if (elm.length !== 0) {
-                  if (elm.hasClass(ClassName.DROPDOWN_RIGHT)) {
-                      elm.css('left', 'inherit');
-                      elm.css('right', 0);
-                  } else {
-                      elm.css('left', 0);
-                      elm.css('right', 'inherit');
-                  }
-
-                  var offset = elm.offset();
-                  var width = elm.width();
-                  var windowWidth = $(window).width();
-                  var visiblePart = windowWidth - offset.left;
-
-                  if (offset.left < 0) {
-                      elm.css('left', 'inherit');
-                      elm.css('right', offset.left - 5);
-                  } else {
-                      if (visiblePart < width) {
-                          elm.css('left', 'inherit');
-                          elm.css('right', 0);
-                      }
-                  }
-              }
-          } // Static
-          ;
-
-          Dropdown._jQueryInterface = function _jQueryInterface(config) {
-              return this.each(function () {
-                  var data = $(this).data(DATA_KEY);
-
-                  var _config = $.extend({}, Default, $(this).data());
-
-                  if (!data) {
+          if (!data) {
             data = new Dropdown($(this), _config);
             $(this).data(DATA_KEY, data);
           }
 
-                  if (config === 'toggleSubmenu' || config == 'fixPosition') {
-                      data[config]();
-                  }
+          if (config === 'toggleSubmenu' || config == 'fixPosition') {
+            data[config]();
+          }
         });
       };
 
@@ -1631,28 +1630,28 @@
      */
 
 
-      $(Selector.DROPDOWN_MENU + ' ' + Selector.DROPDOWN_TOGGLE).on("click", function (event) {
-          event.preventDefault();
-          event.stopPropagation();
+    $(Selector.DROPDOWN_MENU + ' ' + Selector.DROPDOWN_TOGGLE).on("click", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
 
-          Dropdown._jQueryInterface.call($(this), 'toggleSubmenu');
-      });
-      $(Selector.NAVBAR + ' ' + Selector.DROPDOWN_TOGGLE).on("click", function (event) {
-          event.preventDefault();
-          setTimeout(function () {
-              Dropdown._jQueryInterface.call($(this), 'fixPosition');
-          }, 1);
-      });
-      /**
-       * jQuery API
-       * ====================================================
-       */
+      Dropdown._jQueryInterface.call($(this), 'toggleSubmenu');
+    });
+    $(Selector.NAVBAR + ' ' + Selector.DROPDOWN_TOGGLE).on("click", function (event) {
+      event.preventDefault();
+      setTimeout(function () {
+        Dropdown._jQueryInterface.call($(this), 'fixPosition');
+      }, 1);
+    });
+    /**
+     * jQuery API
+     * ====================================================
+     */
 
-      $.fn[NAME] = Dropdown._jQueryInterface;
-      $.fn[NAME].Constructor = Dropdown;
+    $.fn[NAME] = Dropdown._jQueryInterface;
+    $.fn[NAME].Constructor = Dropdown;
 
-      $.fn[NAME].noConflict = function () {
-          $.fn[NAME] = JQUERY_NO_CONFLICT;
+    $.fn[NAME].noConflict = function () {
+      $.fn[NAME] = JQUERY_NO_CONFLICT;
       return Dropdown._jQueryInterface;
     };
 
@@ -1711,25 +1710,25 @@
       imageAlt: null,
       imageHeight: '25px',
       title: null,
-        subtitle: null,
-        close: true,
-        body: null,
-        class: null
+      subtitle: null,
+      close: true,
+      body: null,
+      class: null
     };
-      /**
-       * Class Definition
-       * ====================================================
-       */
+    /**
+     * Class Definition
+     * ====================================================
+     */
 
-      var Toasts = /*#__PURE__*/function () {
-          function Toasts(element, config) {
-              this._config = config;
+    var Toasts = /*#__PURE__*/function () {
+      function Toasts(element, config) {
+        this._config = config;
 
-              this._prepareContainer();
+        this._prepareContainer();
 
-              var initEvent = $.Event(Event.INIT);
-              $('body').trigger(initEvent);
-          } // Public
+        var initEvent = $.Event(Event.INIT);
+        $('body').trigger(initEvent);
+      } // Public
 
 
       var _proto = Toasts.prototype;
@@ -1841,9 +1840,9 @@
 
       Toasts._jQueryInterface = function _jQueryInterface(option, config) {
         return this.each(function () {
-            var _options = $.extend({}, Default, config);
+          var _options = $.extend({}, Default, config);
 
-            var toast = new Toasts($(this), _options);
+          var toast = new Toasts($(this), _options);
 
           if (option === 'create') {
             toast[option]();
@@ -1873,15 +1872,15 @@
   exports.CardRefresh = CardRefresh;
   exports.CardWidget = CardWidget;
   exports.ControlSidebar = ControlSidebar;
-    exports.DirectChat = DirectChat;
-    exports.Dropdown = Dropdown;
-    exports.Layout = Layout;
-    exports.PushMenu = PushMenu;
-    exports.Toasts = Toasts;
-    exports.TodoList = TodoList;
-    exports.Treeview = Treeview;
+  exports.DirectChat = DirectChat;
+  exports.Dropdown = Dropdown;
+  exports.Layout = Layout;
+  exports.PushMenu = PushMenu;
+  exports.Toasts = Toasts;
+  exports.TodoList = TodoList;
+  exports.Treeview = Treeview;
 
-    Object.defineProperty(exports, '__esModule', {value: true});
+  Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 //# sourceMappingURL=adminlte.js.map

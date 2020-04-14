@@ -44,17 +44,21 @@
 
         <!-- Sidebar -->
         <div class="sidebar">
-            <!-- Sidebar user panel (optional) -->
-            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image">
-                    <!-- <img src="lib/AdminLTE/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image"> -->
-                    <i class="nav-icon fas fa-user img-circle elevation-2" style="color:white"></i>
-                </div>
-                <!-- <i class="nav-icon fas fa-tachometer-alt"></i> -->
-                <div class="info">
-                    <a href="user.html" class="d-block" id="userlabel">Username to set!</a>
-                </div>
-            </div>
+            <!-- Sidebar User -->
+            <nav class="user-panel mt-3 pb-3 mb-3">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
+
+                    <li class="nav-item">
+                        <a href="user.html" class="nav-link">
+                            <i class="nav-icon fas fa-user"></i>
+                            <p id="userlabel">
+                                Username to set!
+                            </p>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
 
             <!-- Sidebar Menu -->
             <nav class="mt-2">
@@ -113,7 +117,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0 text-dark">Dashboard</h1>
+                        <h1 class="m-0 text-dark sandwich"><i class="fas fa-bars"></i> &ensp;User Area</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -142,7 +146,6 @@
                             <div class="icon">
                                 <i class="ion ion-bag"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -157,7 +160,6 @@
                             <div class="icon">
                                 <i class="ion ion-stats-bars"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -269,7 +271,7 @@
 
 <!-- custom js -->
 
-<script src="js/userManager.js"></script>
+<script src="js/general.js"></script>
 
 </body>
 </html>

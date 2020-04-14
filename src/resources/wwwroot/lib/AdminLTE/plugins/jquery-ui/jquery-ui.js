@@ -1,6 +1,6 @@
 /*! jQuery UI - v1.12.1 - 2016-09-14
 * http://jqueryui.com
-* Includes: widget.js, position.js, data.js, disable-selection.js, effect.js, effects/effect-blind.js, effects/effect-bounce.js, effects/effect-clip.js, effects/effect-drop.js, effects/effect-explode.js, effects/effect-fade.js, effects/effect-fold.js, effects/effect-highlight.js, effects/effect-puff.js, effects/effect-pulsate.js, effects/effect-scale.js, effects/effect-shake.js, effects/effect-size.js, effects/effect-slide.js, effects/effect-transfer.js, focusable.js, form-reset-mixin.js, jquery-1-7.js, keycode.js, labels.js, scroll-parent.js, tabbable.js, unique-id.js, widgets/accordion.js, widgets/autocomplete.js, widgets/button.js, widgets/checkboxradio.js, widgets/controlgroup.js, widgets/datepicker.js, widgets/diaLog.Log.js, widgets/draggable.js, widgets/droppable.js, widgets/menu.js, widgets/mouse.js, widgets/progressbar.js, widgets/resizable.js, widgets/selectable.js, widgets/selectmenu.js, widgets/slider.js, widgets/sortable.js, widgets/spinner.js, widgets/tabs.js, widgets/tooltip.js
+* Includes: widget.js, position.js, data.js, disable-selection.js, effect.js, effects/effect-blind.js, effects/effect-bounce.js, effects/effect-clip.js, effects/effect-drop.js, effects/effect-explode.js, effects/effect-fade.js, effects/effect-fold.js, effects/effect-highlight.js, effects/effect-puff.js, effects/effect-pulsate.js, effects/effect-scale.js, effects/effect-shake.js, effects/effect-size.js, effects/effect-slide.js, effects/effect-transfer.js, focusable.js, form-reset-mixin.js, jquery-1-7.js, keycode.js, labels.js, scroll-parent.js, tabbable.js, unique-id.js, widgets/accordion.js, widgets/autocomplete.js, widgets/button.js, widgets/checkboxradio.js, widgets/controlgroup.js, widgets/datepicker.js, widgets/dialog.js, widgets/draggable.js, widgets/droppable.js, widgets/menu.js, widgets/mouse.js, widgets/progressbar.js, widgets/resizable.js, widgets/selectable.js, widgets/selectmenu.js, widgets/slider.js, widgets/sortable.js, widgets/spinner.js, widgets/tabs.js, widgets/tooltip.js
 * Copyright jQuery Foundation and other contributors; Licensed MIT */
 
 (function( factory ) {
@@ -11956,7 +11956,7 @@ var widgetsResizable = $.ui.resizable;
 //>>docs: http://api.jqueryui.com/dialog/
 //>>demos: http://jqueryui.com/dialog/
 //>>css.structure: ../../themes/base/core.css
-//>>css.structure: ../../themes/base/diaLog.Log.css
+//>>css.structure: ../../themes/base/dialog.css
 //>>css.theme: ../../themes/base/theme.css
 
 
@@ -12104,7 +12104,7 @@ $.widget( "ui.dialog", {
 			// Without detaching first, the following becomes really slow
 			.detach();
 
-		this.uiDiaLog.Log.remove();
+		this.uiDialog.remove();
 
 		if ( this.originalTitle ) {
 			this.element.attr( "title", this.originalTitle );
@@ -12162,13 +12162,13 @@ $.widget( "ui.dialog", {
 
 	_moveToTop: function( event, silent ) {
 		var moved = false,
-			zIndices = this.uiDiaLog.Log.siblings( ".ui-front:visible" ).map( function() {
+			zIndices = this.uiDialog.siblings( ".ui-front:visible" ).map( function() {
 				return +$( this ).css( "z-index" );
 			} ).get(),
 			zIndexMax = Math.max.apply( null, zIndices );
 
-		if ( zIndexMax >= +this.uiDiaLog.Log.css( "z-index" ) ) {
-			this.uiDiaLog.Log.css( "z-index", zIndexMax + 1 );
+		if ( zIndexMax >= +this.uiDialog.css( "z-index" ) ) {
+			this.uiDialog.css( "z-index", zIndexMax + 1 );
 			moved = true;
 		}
 
@@ -12199,7 +12199,7 @@ $.widget( "ui.dialog", {
 		// opening. The overlay shouldn't move after the dialog is open so that
 		// modeless dialogs opened after the modal dialog stack properly.
 		if ( this.overlay ) {
-			this.overlay.css( "z-index", this.uiDiaLog.Log.css( "z-index" ) - 1 );
+			this.overlay.css( "z-index", this.uiDialog.css( "z-index" ) - 1 );
 		}
 
 		this._show( this.uiDialog, this.options.show, function() {
@@ -12286,7 +12286,7 @@ $.widget( "ui.dialog", {
 				if ( event.keyCode !== $.ui.keyCode.TAB || event.isDefaultPrevented() ) {
 					return;
 				}
-				var tabbables = this.uiDiaLog.Log.find( ":tabbable" ),
+				var tabbables = this.uiDialog.find( ":tabbable" ),
 					first = tabbables.filter( ":first" ),
 					last = tabbables.filter( ":last" );
 
@@ -12315,7 +12315,7 @@ $.widget( "ui.dialog", {
 		// that the dialog content is marked up properly
 		// otherwise we brute force the content as the description
 		if ( !this.element.find( "[aria-describedby]" ).length ) {
-			this.uiDiaLog.Log.attr( {
+			this.uiDialog.attr( {
 				"aria-describedby": this.element.uniqueId().attr( "id" )
 			} );
 		}
@@ -12336,7 +12336,7 @@ $.widget( "ui.dialog", {
 				if ( !$( event.target ).closest( ".ui-dialog-titlebar-close" ) ) {
 
 					// Dialog isn't getting focus when dragging (#8063)
-					this.uiDiaLog.Log.trigger( "focus" );
+					this.uiDialog.trigger( "focus" );
 				}
 			}
 		} );
@@ -12366,7 +12366,7 @@ $.widget( "ui.dialog", {
 
 		this.uiDialogTitlebar.prependTo( this.uiDialog );
 
-		this.uiDiaLog.Log.attr( {
+		this.uiDialog.attr( {
 			"aria-labelledby": uiDialogTitle.attr( "id" )
 		} );
 	},
@@ -12458,7 +12458,7 @@ $.widget( "ui.dialog", {
 			};
 		}
 
-		this.uiDiaLog.Log.draggable( {
+		this.uiDialog.draggable( {
 			cancel: ".ui-dialog-content, .ui-dialog-titlebar-close",
 			handle: ".ui-dialog-titlebar",
 			containment: "document",
@@ -12494,7 +12494,7 @@ $.widget( "ui.dialog", {
 
 			// .ui-resizable has position: relative defined in the stylesheet
 			// but dialogs have to use absolute or fixed positioning
-			position = this.uiDiaLog.Log.css( "position" ),
+			position = this.uiDialog.css( "position" ),
 			resizeHandles = typeof handles === "string" ?
 				handles :
 				"n,e,s,w,se,sw,ne,nw";
@@ -12508,7 +12508,7 @@ $.widget( "ui.dialog", {
 			};
 		}
 
-		this.uiDiaLog.Log.resizable( {
+		this.uiDialog.resizable( {
 			cancel: ".ui-dialog-content",
 			containment: "document",
 			alsoResize: this.element,
@@ -12526,12 +12526,12 @@ $.widget( "ui.dialog", {
 				that._trigger( "resize", event, filteredUi( ui ) );
 			},
 			stop: function( event, ui ) {
-				var offset = that.uiDiaLog.Log.offset(),
+				var offset = that.uiDialog.offset(),
 					left = offset.left - that.document.scrollLeft(),
 					top = offset.top - that.document.scrollTop();
 
-				options.height = that.uiDiaLog.Log.height();
-				options.width = that.uiDiaLog.Log.width();
+				options.height = that.uiDialog.height();
+				options.width = that.uiDialog.width();
 				options.position = {
 					my: "left top",
 					at: "left" + ( left >= 0 ? "+" : "" ) + left + " " +
@@ -12588,13 +12588,13 @@ $.widget( "ui.dialog", {
 	_position: function() {
 
 		// Need to show the dialog to get the actual offset in the position plugin
-		var isVisible = this.uiDiaLog.Log.is( ":visible" );
+		var isVisible = this.uiDialog.is( ":visible" );
 		if ( !isVisible ) {
-			this.uiDiaLog.Log.show();
+			this.uiDialog.show();
 		}
-		this.uiDiaLog.Log.position( this.options.position );
+		this.uiDialog.position( this.options.position );
 		if ( !isVisible ) {
-			this.uiDiaLog.Log.hide();
+			this.uiDialog.hide();
 		}
 	},
 
@@ -12618,8 +12618,8 @@ $.widget( "ui.dialog", {
 			this._size();
 			this._position();
 		}
-		if ( this.uiDiaLog.Log.is( ":data(ui-resizable)" ) ) {
-			this.uiDiaLog.Log.resizable( "option", resizableOptions );
+		if ( this.uiDialog.is( ":data(ui-resizable)" ) ) {
+			this.uiDialog.resizable( "option", resizableOptions );
 		}
 	},
 
@@ -12634,7 +12634,7 @@ $.widget( "ui.dialog", {
 		this._super( key, value );
 
 		if ( key === "appendTo" ) {
-			this.uiDiaLog.Log.appendTo( this._appendTo() );
+			this.uiDialog.appendTo( this._appendTo() );
 		}
 
 		if ( key === "buttons" ) {
@@ -12650,9 +12650,9 @@ $.widget( "ui.dialog", {
 		}
 
 		if ( key === "draggable" ) {
-			isDraggable = uiDiaLog.Log.is( ":data(ui-draggable)" );
+			isDraggable = uiDialog.is( ":data(ui-draggable)" );
 			if ( isDraggable && !value ) {
-				uiDiaLog.Log.draggable( "destroy" );
+				uiDialog.draggable( "destroy" );
 			}
 
 			if ( !isDraggable && value ) {
@@ -12667,14 +12667,14 @@ $.widget( "ui.dialog", {
 		if ( key === "resizable" ) {
 
 			// currently resizable, becoming non-resizable
-			isResizable = uiDiaLog.Log.is( ":data(ui-resizable)" );
+			isResizable = uiDialog.is( ":data(ui-resizable)" );
 			if ( isResizable && !value ) {
-				uiDiaLog.Log.resizable( "destroy" );
+				uiDialog.resizable( "destroy" );
 			}
 
 			// Currently resizable, changing handles
 			if ( isResizable && typeof value === "string" ) {
-				uiDiaLog.Log.resizable( "option", "handles", value );
+				uiDialog.resizable( "option", "handles", value );
 			}
 
 			// Currently non-resizable, becoming resizable
@@ -12709,7 +12709,7 @@ $.widget( "ui.dialog", {
 
 		// Reset wrapper sizing
 		// determine the height of all the non-content elements
-		nonContentHeight = this.uiDiaLog.Log.css( {
+		nonContentHeight = this.uiDialog.css( {
 			height: "auto",
 			width: options.width
 		} )
@@ -12729,8 +12729,8 @@ $.widget( "ui.dialog", {
 			this.element.height( Math.max( 0, options.height - nonContentHeight ) );
 		}
 
-		if ( this.uiDiaLog.Log.is( ":data(ui-resizable)" ) ) {
-			this.uiDiaLog.Log.resizable( "option", "minHeight", this._minHeight() );
+		if ( this.uiDialog.is( ":data(ui-resizable)" ) ) {
+			this.uiDialog.resizable( "option", "minHeight", this._minHeight() );
 		}
 	},
 
@@ -12840,7 +12840,7 @@ if ( $.uiBackCompat !== false ) {
 		},
 		_createWrapper: function() {
 			this._super();
-			this.uiDiaLog.Log.addClass( this.options.dialogClass );
+			this.uiDialog.addClass( this.options.dialogClass );
 		},
 		_setOption: function( key, value ) {
 			if ( key === "dialogClass" ) {

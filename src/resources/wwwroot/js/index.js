@@ -10,7 +10,7 @@ $(document).ready(function () {
             console.log(data);
             if (data.status == "nodbconn"){
                 Swal.fire({
-                    type: "error",
+                    icon: "error",
                     title: 'No connection to Database',
                     html: 'Setup DB here --> <a href="index.html">click<a/>.',
                 }).then((result) => {

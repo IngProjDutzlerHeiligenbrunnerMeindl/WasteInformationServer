@@ -17,11 +17,13 @@ class NewDateRequest : PostRequest() {
     override fun request(params: HashMap<String, String>): String {
         val sb = StringBuilder()
         val set: ResultSet
-        val jdbc = JDBC.getInstance()
-        if (!jdbc.isConnected) {
+
+        if (!JDBC.isConnected()) {
             error("no connection to db")
             return "{\"query\" : \"nodbconn\"}"
         }
+        val jdbc: JDBC = JDBC.getInstance()
+
         when (params["action"]) {
             "getCitynames" -> {
                 set = jdbc.executeQuery("select * from cities")

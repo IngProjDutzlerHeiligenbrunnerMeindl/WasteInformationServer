@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpExchange
 import com.sun.net.httpserver.HttpHandler
 import com.wasteinformationserver.basicutils.Log.Log.debug
 import com.wasteinformationserver.basicutils.Log.Log.warning
+import com.wasteinformationserver.basicutils.Storage
 import com.wasteinformationserver.website.datarequests.login.LoginState
 import java.io.IOException
 
@@ -19,15 +20,20 @@ class MainPage : HttpHandler {
         if (path == "/") {
             path += "index.html"
         }
+
         debug("looking for: $path")
         if (path.contains(".html")) {
-            if (LoginState.getObject().isLoggedIn || path == "/register.html" || path == "/index.html") { //pass only register page
+            // if not logged in allow only register and index page!
+            if (LoginState.getObject().isLoggedIn || path == "/register.html" || path == "/index.html") {
                 sendPage(path, t)
-            } else {
+            }
+            else {
                 warning("user not logged in --> redirecting to login page")
                 sendPage("/index.html", t)
             }
-        } else { //only detect login state on html pages
+        }
+        else {
+            //only detect login state on html pages
             sendPage(path, t)
         }
     }
@@ -38,9 +44,11 @@ class MainPage : HttpHandler {
         if (fs == null && path.contains(".html")) {
             warning("wrong page sending 404")
             sendPage("/404Error.html", t)
-        } else if (fs == null) {
+        }
+        else if (fs == null) {
             warning("requested resource doesnt exist --> $path")
-        } else { // Object exists and is a file: accept with response code 200.
+        }
+        else { // Object exists and is a file: accept with response code 200.
             var mime = "text/html"
             val s = path.substring(path.length - 3)
             if (s == ".js") mime = "application/javascript"

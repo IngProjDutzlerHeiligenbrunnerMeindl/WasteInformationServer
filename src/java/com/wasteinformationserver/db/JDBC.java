@@ -99,6 +99,14 @@ public class JDBC {
         }
     }
 
+    public void disconnect(){
+        try {
+            conn.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
     /**
      * execute basic query --> requests only
      *
@@ -133,7 +141,7 @@ public class JDBC {
      *
      * @return connection state
      */
-    public boolean isConnected() {
+    public static boolean isConnected() {
         return loggedin;
     }
 }

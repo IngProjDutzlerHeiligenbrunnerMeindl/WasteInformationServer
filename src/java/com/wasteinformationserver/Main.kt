@@ -3,6 +3,7 @@ package com.wasteinformationserver
 
 import com.wasteinformationserver.basicutils.Info
 import com.wasteinformationserver.basicutils.Log
+import com.wasteinformationserver.basicutils.Storage
 import com.wasteinformationserver.db.JDBC
 import com.wasteinformationserver.mqtt.MqttService
 import com.wasteinformationserver.website.Webserver
@@ -16,6 +17,7 @@ import java.io.IOException
 fun main() {
     Log.setLevel(Log.DEBUG)
     Info.init()
+    Storage.getInstance().init()
 
     Log.info("startup of WasteInformationServer")
 
@@ -23,6 +25,7 @@ fun main() {
         try {
             Thread.sleep(200)
             Log.warning("Shutting down ...")
+            JDBC.getInstance().disconnect();
             //shutdown routine
         } catch (e: InterruptedException) {
             e.printStackTrace()
@@ -35,10 +38,11 @@ fun main() {
     //initial connect to db
     Log.message("initial login to db")
     try {
-        JDBC.init("ingproject", "Kb9Dxklumt76ieq6", "ingproject", "db.power4future.at", 3306)
-        // todo make dynamic with settings page
+        val stor = Storage.getInstance();
+        JDBC.init(stor.dbUser, stor.dbPassword, stor.dbName, stor.dbhost, stor.dbPort)
+        //JDBC.init("ingproject", "Kb9Dxklumt76ieq6", "ingproject", "db.power4future.at", 3306)
         //JDBC.init("users", "kOpaIJUjkgb9ur6S", "wasteinformation", "192.168.65.15", 3306);
-    } catch (e: IOException) { //e.printStackTrace();
+    } catch (e: IOException) {
         Log.error("no connection to db")
     }
 
@@ -51,6 +55,11 @@ fun main() {
     //startup mqtt service
     Log.message("starting mqtt service")
 
-    val m = MqttService("mqtt.heili.eu", "1883") // todo make dynamic with settings page
-    m.startupService()
+    if (JDBC.isConnected()) {
+        val m = MqttService(Storage.getInstance().mqttServer, Storage.getInstance().mqttPort.toString())
+        //    val m = MqttService("mqtt.heili.eu", "1883")
+        m.startupService()
+    }else{
+        Log.error("could't start mqtt service because of missing db connection!")
+    }
 }

@@ -25,8 +25,8 @@ class LoginRequest : PostRequest() {
         val username = params["username"]
         val jdbc: JDBC = try {
             JDBC.getInstance()
-        } catch (e: IOException) {
-            error("no connection to db")
+        } catch (e: Exception) {
+            error("no connection to db" + e.printStackTrace())
             return "{\"status\" : \"nodbconn\"}"
         }
 

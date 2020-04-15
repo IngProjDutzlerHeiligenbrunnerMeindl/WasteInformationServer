@@ -21,37 +21,43 @@ class Storage {
         }
     }
 
-    private var mqttServer: String = ""
+    var mqttServer: String = ""
         get() = field
         set(value) {
             field = value
         }
 
-    private var mqttPort: Int = -1
+    var mqttPort: Int = -1
         get() = field
         set(value) {
             field = value
         }
 
-    private var dbName: String = ""
+     var dbName: String = ""
         get() = field
         set(value) {
             field = value
         }
 
-    private var dbUser: String = ""
+    var dbhost: String = ""
         get() = field
         set(value) {
             field = value
         }
 
-    private var dbPassword: String = ""
+     var dbUser: String = ""
         get() = field
         set(value) {
             field = value
         }
 
-    private var dbPort: Int = -1
+     var dbPassword: String = ""
+        get() = field
+        set(value) {
+            field = value
+        }
+
+     var dbPort: Int = -1
         get() = field
         set(value) {
             field = value
@@ -70,6 +76,7 @@ class Storage {
 
             mqttServer = prop["mqttserver"] as String
             mqttPort = (prop["mqttport"] as String).toInt()
+            dbhost = prop["dbhost"] as String
             dbName = prop["dbname"] as String
             dbUser = prop["dbuser"] as String
             dbPassword = prop["dbpass"] as String
@@ -89,12 +96,13 @@ class Storage {
     fun store() {
         prop["mqttserver"] = mqttServer
         prop["mqttport"] = mqttPort.toString()
+        prop["dbhost"] = dbhost
         prop["dbname"] = dbName
         prop["dbuser"] = dbUser
         prop["dbpass"] = dbPassword
         prop["dbport"] = dbPort.toString()
 
-        prop.store(FileOutputStream("settings.prop"), "")
+        prop.store(FileOutputStream("settings.prop"), "main config")
     }
 
     /**
@@ -102,12 +110,12 @@ class Storage {
      * todo real check if connections can be established
      */
     fun isEveryThingDefined(): Boolean {
-        return (mqttServer != "" &&
-                mqttPort != 0 &&
-                dbName != "" &&
-                dbUser != "" &&
-                dbPassword != "" &&
-                dbPort != -1)
+        return (isMqttServerDefined() &&
+                isMqttPortDefined() &&
+                isDBNameDefined() &&
+                isDBUsernameDefined() &&
+                isDBPasswdDefined() &&
+                isDBPortDefined())
     }
 
 

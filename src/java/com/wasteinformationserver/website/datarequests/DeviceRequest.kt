@@ -15,11 +15,11 @@ import java.util.*
  */
 class DeviceRequest : PostRequest() {
     override fun request(params: HashMap<String, String>): String {
-        val jdbc = JDBC.getInstance()
-        if (!jdbc.isConnected) {
+        if (!JDBC.isConnected()) {
             error("no connection to db")
             return "{\"query\" : \"nodbconn\"}"
         }
+        val jdbc: JDBC = JDBC.getInstance()
 
         val sb = StringBuilder()
         val deviceset: ResultSet
@@ -28,7 +28,7 @@ class DeviceRequest : PostRequest() {
              * return all available devices
              */
             "getdevices" -> {
-                deviceset = jdbc!!.executeQuery("SELECT * FROM `devices")
+                deviceset = jdbc.executeQuery("SELECT * FROM `devices")
                 sb.append("{\"data\":[")
                 try {
                     while (deviceset.next()) {
@@ -67,7 +67,7 @@ class DeviceRequest : PostRequest() {
              * returns all available city names
              */
             "getCitynames" -> {
-                deviceset = jdbc!!.executeQuery("select * from cities")
+                deviceset = jdbc.executeQuery("select * from cities")
                 debug(deviceset.toString())
                 sb.append("{")
                 try {
@@ -91,7 +91,7 @@ class DeviceRequest : PostRequest() {
              * returns all available zones for specified city
              */
             "getzones" -> {
-                deviceset = jdbc!!.executeQuery("select * from cities WHERE `name`='" + params["cityname"] + "' ORDER BY zone ASC")
+                deviceset = jdbc.executeQuery("select * from cities WHERE `name`='" + params["cityname"] + "' ORDER BY zone ASC")
                 debug(deviceset.toString())
                 sb.append("{")
                 try {
@@ -114,7 +114,7 @@ class DeviceRequest : PostRequest() {
              * returns all available waste types for specified zone and city
              */
             "gettypes" -> {
-                deviceset = jdbc!!.executeQuery("select * from cities WHERE `name`='" + params["cityname"] + "' AND `zone`='" + params["zonename"] + "' ORDER BY zone ASC")
+                deviceset = jdbc.executeQuery("select * from cities WHERE `name`='" + params["cityname"] + "' AND `zone`='" + params["zonename"] + "' ORDER BY zone ASC")
                 debug(deviceset.toString())
                 sb.append("{")
                 try {
@@ -137,7 +137,7 @@ class DeviceRequest : PostRequest() {
              * configure device and save infos to db
              */
             "savetodb" -> try {
-                val cityset = jdbc!!.executeQuery("SELECT id from cities WHERE `name`='" + params["cityname"] + "' AND `zone`='" + params["zonename"] + "' AND `wastetype`='" + params["wastetype"] + "'")
+                val cityset = jdbc.executeQuery("SELECT id from cities WHERE `name`='" + params["cityname"] + "' AND `zone`='" + params["zonename"] + "' AND `wastetype`='" + params["wastetype"] + "'")
                 cityset.last()
                 if (cityset.row != 1) {
                     error("error saving device to db --> device multiply defined?")

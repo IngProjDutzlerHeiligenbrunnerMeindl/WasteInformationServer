@@ -22,11 +22,12 @@ class DataRequest : PostRequest() {
         val sb = StringBuilder()
         var set: ResultSet?
         var status = -1
-        val jdbc: JDBC = JDBC.getInstance()
-        if (!jdbc.isConnected) {
+
+        if (!JDBC.isConnected()) {
             error("no connection to db")
             return "{\"query\" : \"nodbconn\"}"
         }
+        val jdbc: JDBC = JDBC.getInstance()
 
         when (params["action"]) {
             /**

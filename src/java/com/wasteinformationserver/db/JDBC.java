@@ -82,7 +82,14 @@ public class JDBC {
             throw new IOException("No connection to database");
             // todo reconnect every 5mins or something
         }
+    }
 
+    public void disconnect(){
+        try {
+            conn.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     /**
@@ -114,7 +121,7 @@ public class JDBC {
         return stmt.executeUpdate();
     }
 
-    public boolean isConnected() {
+    public static boolean isConnected() {
         return loggedin;
     }
 }

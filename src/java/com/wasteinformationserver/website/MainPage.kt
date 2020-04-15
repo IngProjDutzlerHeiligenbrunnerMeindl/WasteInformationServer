@@ -23,14 +23,8 @@ class MainPage : HttpHandler {
 
         debug("looking for: $path")
         if (path.contains(".html")) {
-            // check if db and mqtt is configured properly
-            // todo check real connection / not only if filled in
-            if (!Storage.getInstance().isEveryThingDefined()) {
-                sendPage("/config.html", t)
-                return
-            }
-
-            if (LoginState.getObject().isLoggedIn || path == "/register.html" || path == "/index.html") { //pass only register page
+            // if not logged in allow only register and index page!
+            if (LoginState.getObject().isLoggedIn || path == "/register.html" || path == "/index.html") {
                 sendPage(path, t)
             }
             else {
@@ -38,7 +32,8 @@ class MainPage : HttpHandler {
                 sendPage("/index.html", t)
             }
         }
-        else { //only detect login state on html pages
+        else {
+            //only detect login state on html pages
             sendPage(path, t)
         }
     }

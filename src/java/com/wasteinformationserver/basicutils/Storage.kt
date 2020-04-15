@@ -7,7 +7,7 @@ import java.io.IOException
 import java.util.*
 
 /**
- * Storeage of user information
+ * Storage of user information
  * * database infos
  * * mqtt infos
  *
@@ -99,6 +99,7 @@ class Storage {
 
     /**
      * check if all needed properties are set up correctly
+     * todo real check if connections can be established
      */
     fun isEveryThingDefined(): Boolean {
         return (mqttServer != "" &&

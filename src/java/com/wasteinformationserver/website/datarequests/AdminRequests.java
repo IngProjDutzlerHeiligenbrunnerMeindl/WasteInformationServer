@@ -42,7 +42,7 @@ public class AdminRequests extends PostRequest {
                     Log.Log.warning("not jar --> cant restart");
 
                 /* Build command: java -jar application.jar */
-                final ArrayList<String> command = new ArrayList<String>();
+                final ArrayList<String> command = new ArrayList<>();
                 command.add(javaBin);
                 command.add("-jar");
                 command.add(currentJar.getPath());

@@ -3,10 +3,7 @@ package com.wasteinformationserver.db;
 import com.wasteinformationserver.basicutils.Log;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * basic connection class to a Database
@@ -24,6 +21,21 @@ public class JDBC {
     private static String dbnamec;
     private static String ipc;
     private static int portc;
+
+    private JDBC(String username, String password, String dbname, String ip, int port) throws IOException {
+        logintodb(username, password, dbname, ip, port);
+    }
+
+    /**
+     * instance of JDBC driver
+     */
+    static {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * initialize database values
@@ -45,10 +57,6 @@ public class JDBC {
         JDBC = new JDBC(username, password, dbname, ip, port);
     }
 
-    private JDBC(String username, String password, String dbname, String ip, int port) throws IOException {
-        logintodb(username, password, dbname, ip, port);
-    }
-
     /**
      * get instance of db object
      * logindata has to be set before!
@@ -67,16 +75,23 @@ public class JDBC {
         return JDBC;
     }
 
+    /**
+     * initial login to db -- should be called only one time or for reconnect
+     *
+     * @param username username
+     * @param password password
+     * @param dbname   Database name
+     * @param ip       Host or ip address
+     * @param port     Server port
+     * @throws IOException thrown if no connection to db is possible.
+     */
     private static void logintodb(String username, String password, String dbname, String ip, int port) throws IOException {
-        Database db = new MySQLConnector(
-                username,
-                password,
-                ip,
-                port,
-                dbname);
-
         try {
-            conn = db.getConnection();
+            DriverManager.setLoginTimeout(1);
+            conn = DriverManager.getConnection(
+                    "jdbc:mysql://" + ip + ":" + port + "/" + dbname + "?useSSL=false&serverTimezone=CET",
+                    username,
+                    password);
             loggedin = true;
         } catch (SQLException e) {
             throw new IOException("No connection to database");
@@ -121,6 +136,11 @@ public class JDBC {
         return stmt.executeUpdate();
     }
 
+    /**
+     * check if connection is still established
+     *
+     * @return connection state
+     */
     public static boolean isConnected() {
         return loggedin;
     }

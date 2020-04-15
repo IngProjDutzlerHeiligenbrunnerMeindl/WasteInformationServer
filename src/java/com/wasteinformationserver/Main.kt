@@ -40,7 +40,7 @@ fun main() {
     try {
         val stor = Storage.getInstance();
         JDBC.init(stor.dbUser, stor.dbPassword, stor.dbName, stor.dbhost, stor.dbPort)
-//        JDBC.init("ingproject", "Kb9Dxklumt76ieq6", "ingproject", "db.power4future.at", 3306)
+        //JDBC.init("ingproject", "Kb9Dxklumt76ieq6", "ingproject", "db.power4future.at", 3306)
         //JDBC.init("users", "kOpaIJUjkgb9ur6S", "wasteinformation", "192.168.65.15", 3306);
     } catch (e: IOException) {
         Log.error("no connection to db")
@@ -62,5 +62,4 @@ fun main() {
     }else{
         Log.error("could't start mqtt service because of missing db connection!")
     }
-
 }

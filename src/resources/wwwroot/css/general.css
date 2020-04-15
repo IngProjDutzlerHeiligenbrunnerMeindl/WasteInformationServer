@@ -1,3 +1,7 @@
 .hideit{
   display:none;
 }
+
+.sandwich:hover{
+  cursor: pointer;
+}

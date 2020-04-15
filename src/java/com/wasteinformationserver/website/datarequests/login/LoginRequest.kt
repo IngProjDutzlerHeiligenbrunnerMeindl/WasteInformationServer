@@ -5,7 +5,7 @@ import com.wasteinformationserver.basicutils.Log.Log.error
 import com.wasteinformationserver.basicutils.Log.Log.message
 import com.wasteinformationserver.basicutils.Storage
 import com.wasteinformationserver.db.JDBC
-import com.wasteinformationserver.website.HttpTools.Companion.StringToMD5
+import com.wasteinformationserver.website.HttpTools.Companion.stringToMD5
 import com.wasteinformationserver.website.basicrequest.PostRequest
 import java.io.IOException
 import java.sql.SQLException

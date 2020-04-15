@@ -74,7 +74,7 @@ class DeviceRequest : PostRequest() {
                     var prev = ""
                     while (deviceset.next()) {
                         if (prev != deviceset.getString("name")) {
-                            if (!deviceset.isFirst()) {
+                            if (!deviceset.isFirst) {
                                 sb.append(",")
                             }
                             sb.append("\"").append(deviceset.getString("name")).append("\":\"").append(deviceset.getString("name")).append("\"")
@@ -99,7 +99,7 @@ class DeviceRequest : PostRequest() {
                     while (deviceset.next()) {
                         if (prev != deviceset.getInt("zone")) {
                             sb.append("\"").append(deviceset.getInt("zone")).append("\":\"").append(deviceset.getInt("zone")).append("\"")
-                            if (!deviceset.isLast()) {
+                            if (!deviceset.isLast) {
                                 sb.append(",")
                             }
                         }
@@ -122,7 +122,7 @@ class DeviceRequest : PostRequest() {
                     while (deviceset.next()) {
                         if (prev != deviceset.getString("wastetype")) {
                             sb.append("\"" + deviceset.getString("wastetype") + "\":\"" + deviceset.getString("wastetype") + "\"")
-                            if (!deviceset.isLast()) {
+                            if (!deviceset.isLast) {
                                 sb.append(",")
                             }
                         }
@@ -171,7 +171,7 @@ class DeviceRequest : PostRequest() {
                 try {
                     val device = jdbc.executeQuery("SELECT * FROM cities WHERE name='" + params["cityname"] + "' AND wastetype='" + params["wastetype"] + "' AND zone='" + params["zonename"] + "'")
                     device.first()
-                    var cityid = device.getInt("id")
+                    val cityid = device.getInt("id")
                     jdbc.executeUpdate("INSERT INTO `device_city` (`DeviceID`, `CityID`) VALUES ('" + params["deviceid"] + "', '" + cityid + "');")
                 } catch (e: SQLException) {
                     e.printStackTrace()

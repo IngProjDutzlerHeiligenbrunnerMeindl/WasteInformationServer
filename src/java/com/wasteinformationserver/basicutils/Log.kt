@@ -5,22 +5,22 @@ import java.util.*
 
 class Log {
     companion object Log{
-        val CRITICAL_ERROR = 6
-        val ERROR = 5
-        val WARNING = 4
-        val INFO = 3
-        val MESSAGE = 2
-        val DEBUG = 1
+        const val CRITICAL_ERROR = 6
+        const val ERROR = 5
+        const val WARNING = 4
+        const val INFO = 3
+        const val MESSAGE = 2
+        const val DEBUG = 1
 
-        private val ANSI_RESET = "\u001B[0m"
-        private val ANSI_BLACK = "\u001B[30m"
-        private val ANSI_RED = "\u001B[31m"
-        private val ANSI_GREEN = "\u001B[32m"
-        private val ANSI_YELLOW = "\u001B[33m"
-        private val ANSI_BLUE = "\u001B[34m"
-        private val ANSI_PURPLE = "\u001B[35m"
-        private val ANSI_CYAN = "\u001B[36m"
-        private val ANSI_WHITE = "\u001B[37m"
+        private const val ANSI_RESET = "\u001B[0m"
+        private const val ANSI_BLACK = "\u001B[30m"
+        private const val ANSI_RED = "\u001B[31m"
+        private const val ANSI_GREEN = "\u001B[32m"
+        private const val ANSI_YELLOW = "\u001B[33m"
+        private const val ANSI_BLUE = "\u001B[34m"
+        private const val ANSI_PURPLE = "\u001B[35m"
+        private const val ANSI_CYAN = "\u001B[36m"
+        private const val ANSI_WHITE = "\u001B[37m"
 
         private var Loglevel = 0
 
@@ -126,14 +126,14 @@ class Log {
         fun setLevel(level: Int) {
             Loglevel = level
         }
-        private val colors = ArrayList(Arrays.asList("", "DEBUG", "MESSAGE", "INFO", "WARNING", "ERROR", "CRITICAL_ERROR"))
+
+        private val colors = ArrayList(listOf("", "DEBUG", "MESSAGE", "INFO", "WARNING", "ERROR", "CRITICAL_ERROR"))
 
 
-
-        private fun calcDate(millisecs: Long): String? {
-            val date_format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-            val resultdate = Date(millisecs)
-            return date_format.format(resultdate)
+        private fun calcDate(milliSecs: Long): String? {
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            val resultDate = Date(milliSecs)
+            return dateFormat.format(resultDate)
         }
     }
 }

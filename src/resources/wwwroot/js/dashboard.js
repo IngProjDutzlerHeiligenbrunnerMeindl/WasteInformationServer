@@ -21,6 +21,16 @@ class Dashboard {
 
         //add click listeners to all buttons
         this.addClickListeners();
+
+        // allow moveable tiles
+        $('.connectedSortable').sortable({
+            placeholder         : 'sort-highlight',
+            connectWith         : '.connectedSortable',
+            handle              : '.card-header, .nav-tabs',
+            forcePlaceholderSize: true,
+            zIndex              : 999999
+        })
+        $('.connectedSortable .card-header, .connectedSortable .nav-tabs-custom').css('cursor', 'move')
     }
 
     /* Constants */
@@ -53,7 +63,7 @@ class Dashboard {
                 console.log(data);
                 if (data.status == "inserted") {
                     Swal.fire({
-                        type: "success",
+                        icon: "success",
                         title: 'Successfully created city!',
                         html: 'This alert closes automatically.',
                         timer: 1000,
@@ -64,7 +74,7 @@ class Dashboard {
                     _this.reloadtable();
                 } else if (data.status == "exists") {
                     Swal.fire({
-                        type: "warning",
+                        icon: "warning",
                         title: 'Name already exists in db',
                         html: 'Close popup.',
                     }).then((result) => {
@@ -169,7 +179,7 @@ class Dashboard {
             $.post('/senddata/newdate', 'action=newdate&cityname=' + cityname.html() + "&zone=" + zone.html() + "&wastetype=" + wastetype.html() + "&date=" + date.val(), function (data) {
                 if (data.status == "success") {
                     Swal.fire({
-                        type: "success",
+                        icon: "success",
                         title: 'Successfully created Date!',
                         html: 'This alert closes automatically.',
                         timer: 1000,
@@ -185,7 +195,7 @@ class Dashboard {
                     _this.reloadDateTable();
                 } else if (data.status == "citydoesntexist") {
                     Swal.fire({
-                        type: "warning",
+                        icon: "warning",
                         title: 'city name doesnt exist',
                         html: 'Close popup.',
                     }).then((result) => {
@@ -265,7 +275,7 @@ class Dashboard {
                         console.log(data);
                         if (data.status === "success") {
                             Swal.fire({
-                                type: "success",
+                                icon: "success",
                                 title: 'Successfully deleted city!',
                                 html: 'This alert closes automatically.',
                                 timer: 1000,
@@ -276,7 +286,7 @@ class Dashboard {
                             reloadtable();
                         } else if (data.status === "dependenciesnotdeleted") {
                             Swal.fire({
-                                type: "warning",
+                                icon: "warning",
                                 title: 'This city is a dependency of a date',
                                 html: 'Do you want do delete it anyway with all dependencies?',
                             }).then((result) => {
@@ -292,7 +302,7 @@ class Dashboard {
                 _this.citytable = $("#example2").DataTable();
             } else if (data.query == "nodbconn") {
                 Swal.fire({
-                    type: "error",
+                    icon: "error",
                     title: 'No connection to Database',
                     html: 'Setup DB here --> <a href="index.html">click<a/>.',
                 }).then((result) => {
@@ -335,7 +345,7 @@ class Dashboard {
                         console.log(data);
                         if (data.status == "success") {
                             Swal.fire({
-                                type: "success",
+                                icon: "success",
                                 title: 'Successfully deleted city!',
                                 html: 'This alert closes automatically.',
                                 timer: 1000,
@@ -346,7 +356,7 @@ class Dashboard {
                             reloadDateTable();
                         } else if (data.status == "dependenciesnotdeleted") {
                             Swal.fire({
-                                type: "warning",
+                                icon: "warning",
                                 title: 'This city is a dependency of a date',
                                 html: 'Do you want do delete it anyway with all dependencies?',
                             }).then((result) => {

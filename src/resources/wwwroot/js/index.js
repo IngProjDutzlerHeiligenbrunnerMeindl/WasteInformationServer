@@ -7,8 +7,6 @@ $(document).ready(function () {
 
         $.post('/senddata/loginget', 'username=' + username + '&password=' + password, function (data) {
             console.log(data);
-            // todo parse different errors here with popups
-
 
             if (data.accept == true) {
                 console.log("successfully logged in!");

@@ -4,9 +4,9 @@ import com.wasteinformationserver.basicutils.Log.Log.debug
 import com.wasteinformationserver.basicutils.Log.Log.error
 import com.wasteinformationserver.basicutils.Log.Log.info
 import com.wasteinformationserver.basicutils.Log.Log.message
+import com.wasteinformationserver.basicutils.Log.Log.warning
 import com.wasteinformationserver.db.JDBC
 import org.eclipse.paho.client.mqttv3.*
-import java.io.IOException
 import java.sql.SQLException
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -25,11 +25,7 @@ class MqttService(serverurl: String, port: String) {
     private var db: JDBC = JDBC.getInstance()
 
     /**
-     * init mqtt service
-     * JDBC has to be inited before
-     *
-     * @param serverurl mqtt server ip or hostname
-     * @param port      mqtt server port
+     * initial login to db
      */
     init {
         connectToDb()
@@ -91,12 +87,19 @@ class MqttService(serverurl: String, port: String) {
         }
     }
 
+    /**
+     * Check if device is configured and zone infos are stored in db
+     *
+     * @param citywastezoneid zone/city id
+     * @param deviceid        device id
+     */
     private fun checkDatabase(citywastezoneid: Int, deviceid: Int) {
         var wastetype = -1
         val set2 = db.executeQuery("SELECT * FROM cities WHERE `id`='$citywastezoneid'")
         try {
             set2.last()
             if (set2.row != 1) { //error
+                warning("multiple Rows with same city id found - DB Error")
             }
             else {
                 val typ = set2.getString("wastetype")
@@ -136,8 +139,11 @@ class MqttService(serverurl: String, port: String) {
         }
     }
 
+    /**
+     * send a mqtt message to predefined topic
+     */
     private fun tramsmitMessage(temp: String) {
-        debug("sending message >>>$temp")
+        message("reply back to PCB: $temp")
         val message = MqttMessage(temp.toByteArray())
         message.qos = 2
         try {
@@ -147,16 +153,9 @@ class MqttService(serverurl: String, port: String) {
         }
     }
 
-    private fun getTyp(number: Int): String? {
-        return when (number) {
-            1 -> "Plastic"
-            2 -> "Metal"
-            3 -> "Residual waste"
-            4 -> "Biowaste"
-            else -> null
-        }
-    }
-
+    /**
+     * parse Type name to representing integer value
+     */
     private fun getIntTyp(temp: String): Int {
         return when (temp) {
             "Plastic" -> 1
@@ -167,6 +166,9 @@ class MqttService(serverurl: String, port: String) {
         }
     }
 
+    /**
+     * receives connection object and initial connection to db
+     */
     private fun connectToDb() {
         db = JDBC.getInstance()
     }

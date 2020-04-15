@@ -32,9 +32,7 @@ class NewDateRequest : PostRequest() {
                 try {
                     var prev = ""
                     while (set.next()) {
-                        if (prev == set.getString("name")) {
-                        }
-                        else {
+                        if (prev != set.getString("name")) { // not same --> new element
                             if (!set.isFirst) {
                                 sb.append(",")
                             }
@@ -57,9 +55,7 @@ class NewDateRequest : PostRequest() {
                 try {
                     var prev = 42
                     while (set.next()) {
-                        if (prev == set.getInt("zone")) {
-                        }
-                        else {
+                        if (prev != set.getInt("zone")) { // not same --> append next
                             sb.append("{\"zone\":\"" + set.getInt("zone") + "\"}")
                             if (!set.isLast) {
                                 sb.append(",")
@@ -81,9 +77,7 @@ class NewDateRequest : PostRequest() {
                 try {
                     var prev = "42"
                     while (set.next()) {
-                        if (prev === set.getString("wastetype")) {
-                        }
-                        else {
+                        if (prev !== set.getString("wastetype")) {
                             sb.append("{\"wastetype\":\"" + set.getString("wastetype") + "\"}")
                             if (!set.isLast) {
                                 sb.append(",")

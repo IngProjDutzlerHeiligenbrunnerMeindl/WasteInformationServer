@@ -124,7 +124,7 @@ class Device {
                                                 $.post('/senddata/Devicedata', 'action=addtodb&deviceid=' + id + '&cityname=' + cityname + '&zonename=' + zone + '&wastetype=' + wastetype, function (data) {
                                                     if (data.success) {
                                                         Swal.fire({
-                                                            type: "success",
+                                                            icon: "success",
                                                             title: 'Successfully configured!',
                                                             html: 'This alert closes added.',
                                                             timer: 1000,
@@ -157,7 +157,7 @@ class Device {
                 console.log(data);
                 if (data.status === "success") {
                     Swal.fire({
-                        type: "success",
+                        icon: "success",
                         title: 'Successfully deleted city!',
                         html: 'This alert closes automatically.',
                         timer: 1000,
@@ -168,7 +168,7 @@ class Device {
                     _this.reloadDevices();
                 } else if (data.status === "dependenciesnotdeleted") {
                     Swal.fire({
-                        type: "warning",
+                        icon: "warning",
                         title: 'This city is a dependency of a date',
                         html: 'Do you want do delete it anyway with all dependencies?',
                     }).then((result) => {
@@ -261,7 +261,7 @@ class Device {
                                                 $.post('/senddata/Devicedata', 'action=savetodb&deviceid=' + id + '&cityname=' + cityname + '&zonename=' + zone + '&wastetype=' + wastetype + '&devicename=' + devicename + '&devicelocation=' + devicelocation, function (data) {
                                                     if (data.success) {
                                                         Swal.fire({
-                                                            type: "success",
+                                                            icon: "success",
                                                             title: 'Successfully configured!',
                                                             html: 'This alert closes automatically.',
                                                             timer: 1000,

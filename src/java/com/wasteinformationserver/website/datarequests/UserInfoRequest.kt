@@ -6,14 +6,14 @@ import java.util.*
 class UserInfoRequest : PostRequest() {
     override fun request(params: HashMap<String, String>): String {
         //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        when (params.get("action")) {
+        when (params["action"]) {
             "getlogins" -> {
                 println("heyho")
             }
-            ""->{
+            "" -> {
                 //todo o
             }
         }
-        return "{}";
+        return "{}"
     }
 }

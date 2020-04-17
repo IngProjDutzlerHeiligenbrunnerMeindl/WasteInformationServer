@@ -6,6 +6,7 @@ import com.wasteinformationserver.basicutils.Storage;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.Scanner;
 
 /**
  * basic connection class to a Database
@@ -91,6 +92,7 @@ public class JDBC {
                     "jdbc:mysql://" + ip + ":" + port + "/" + dbname + "?useSSL=false&serverTimezone=CET",
                     username,
                     password);
+            checkDBStructure();
             loggedin = true;
             Log.Log.message("Connected to database");
         } catch (SQLException e) {
@@ -120,7 +122,7 @@ public class JDBC {
         return loggedin;
     }
 
-    public void disconnect(){
+    public void disconnect() {
         try {
             conn.close();
         } catch (SQLException throwables) {
@@ -181,5 +183,43 @@ public class JDBC {
      */
     public static boolean isConnected() {
         return loggedin;
+    }
+
+    /**
+     * validate the correctness of the current sql db structure
+     */
+    public void checkDBStructure() {
+        try {
+            ResultSet seti = executeQuery("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '" + dbnamec + "'");
+            seti.last();
+            Log.Log.debug("found " + seti.getInt(1) + " tables in db");
+            if (seti.getInt(1) != 5) {
+                // structure not valid
+                Log.Log.info("recreating Database structure!");
+                Scanner s = new Scanner(getClass().getResourceAsStream("/db.sql"));
+                s.useDelimiter("(;(\r)?\n)|(--\n)");
+                Statement st = null;
+                try {
+                    st = conn.createStatement();
+                    while (s.hasNext()) {
+                        String line = s.next();
+                        if (line.startsWith("/*!") && line.endsWith("*/")) {
+                            int i = line.indexOf(' ');
+                            line = line.substring(i + 1, line.length() - " */".length());
+                        }
+
+                        if (line.trim().length() > 0) {
+                            executeUpdate(line);
+                        }
+                    }
+                } finally {
+                    if (st != null) st.close();
+                }
+            } else {
+                Log.Log.message("found valid database structure!");
+            }
+        } catch (SQLException e) {
+            Log.Log.error("a unhandled SQLexception occured at db structure creation.");
+        }
     }
 }

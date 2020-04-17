@@ -94,8 +94,25 @@ public class JDBC {
                     password);
             loggedin = true;
         } catch (SQLException e) {
+            //logintodb(usernamec, passwordc, dbnamec, ipc, portc);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(10 * 1000);
+                    } catch (InterruptedException interruptedException) {
+                        interruptedException.printStackTrace();
+                    }
+                    try {
+                        logintodb(usernamec, passwordc, dbnamec, ipc, portc);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                }
+            }).start();
             throw new IOException("No connection to database");
             // todo reconnect every 5mins or something
+
         }
     }
 

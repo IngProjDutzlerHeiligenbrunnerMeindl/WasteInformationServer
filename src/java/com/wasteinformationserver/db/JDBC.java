@@ -1,5 +1,6 @@
 package com.wasteinformationserver.db;
 
+import com.mysql.cj.exceptions.ConnectionIsClosedException;
 import com.wasteinformationserver.basicutils.Log;
 import com.wasteinformationserver.basicutils.Storage;
 
@@ -135,12 +136,19 @@ public class JDBC {
      */
     public ResultSet executeQuery(String sql) {
         try {
+            conn.isValid(5);
             PreparedStatement stmt = conn.prepareStatement(sql);
             return stmt.executeQuery();
+        } catch (SQLNonTransientConnectionException ee){
+            if (logintodb(usernamec, passwordc, dbnamec, ipc, portc)) {
+                return this.executeQuery(sql);
+            } else {
+                return null;
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
+            return null;
         }
-        return null;
+
     }
 
     /**
@@ -151,9 +159,19 @@ public class JDBC {
      * @throws SQLException
      */
     public int executeUpdate(String sql) throws SQLException {
-        PreparedStatement stmt = conn.prepareStatement(sql);
-
-        return stmt.executeUpdate();
+        try {
+            conn.isValid(5);
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            return stmt.executeUpdate();
+        } catch (SQLNonTransientConnectionException ee){
+            if (logintodb(usernamec, passwordc, dbnamec, ipc, portc)) {
+                return this.executeUpdate(sql);
+            } else {
+                throw new SQLException();
+            }
+        } catch (SQLException e){
+            throw new SQLException();
+        }
     }
 
     /**

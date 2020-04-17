@@ -70,7 +70,7 @@ public class JDBC {
      */
     public static JDBC getInstance() {
         if (!loggedin) {
-            logintodb(usernamec, passwordc, dbnamec, ipc, portc);
+            JDBC = new JDBC(usernamec, passwordc, dbnamec, ipc, portc);
         }
         return JDBC;
     }
@@ -85,7 +85,7 @@ public class JDBC {
      * @param port     Server port
      * @throws IOException thrown if no connection to db is possible.
      */
-    private static boolean logintodb(String username, String password, String dbname, String ip, int port) {
+    private boolean logintodb(String username, String password, String dbname, String ip, int port) {
         try {
             DriverManager.setLoginTimeout(1);
             conn = DriverManager.getConnection(

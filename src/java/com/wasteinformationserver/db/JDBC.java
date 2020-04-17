@@ -1,6 +1,7 @@
 package com.wasteinformationserver.db;
 
 import com.wasteinformationserver.basicutils.Log;
+import com.wasteinformationserver.basicutils.Storage;
 
 import java.io.IOException;
 import java.sql.*;
@@ -9,6 +10,7 @@ import java.sql.*;
  * basic connection class to a Database
  *
  * @author Lukas Heiligenbrunner
+ * @author Emil Meindl
  */
 public class JDBC {
     private static Connection conn;
@@ -22,7 +24,7 @@ public class JDBC {
     private static String ipc;
     private static int portc;
 
-    private JDBC(String username, String password, String dbname, String ip, int port) throws IOException {
+    private JDBC(String username, String password, String dbname, String ip, int port) {
         logintodb(username, password, dbname, ip, port);
     }
 
@@ -66,11 +68,7 @@ public class JDBC {
      */
     public static JDBC getInstance() {
         if (!loggedin) {
-            try {
-                logintodb(usernamec, passwordc, dbnamec, ipc, portc);
-            } catch (IOException e) {
-                Log.Log.error("no connetion to db - retrying in 5min");
-            }
+            logintodb(usernamec, passwordc, dbnamec, ipc, portc);
         }
         return JDBC;
     }
@@ -85,7 +83,7 @@ public class JDBC {
      * @param port     Server port
      * @throws IOException thrown if no connection to db is possible.
      */
-    private static void logintodb(String username, String password, String dbname, String ip, int port) throws IOException {
+    private static boolean logintodb(String username, String password, String dbname, String ip, int port) {
         try {
             DriverManager.setLoginTimeout(1);
             conn = DriverManager.getConnection(
@@ -93,8 +91,10 @@ public class JDBC {
                     username,
                     password);
             loggedin = true;
+            Log.Log.message("Connected to database");
         } catch (SQLException e) {
-            //logintodb(usernamec, passwordc, dbnamec, ipc, portc);
+            // reconnect every 10 sec
+            Log.Log.warning("Database-Connection not possible");
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -103,17 +103,20 @@ public class JDBC {
                     } catch (InterruptedException interruptedException) {
                         interruptedException.printStackTrace();
                     }
-                    try {
-                        logintodb(usernamec, passwordc, dbnamec, ipc, portc);
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
+                    Log.Log.debug("Reading config");
+                    Storage st = Storage.Companion.getInstance();
+                    st.init();
+                    usernamec = st.getDbName();
+                    passwordc = st.getDbPassword();
+                    dbnamec = st.getDbName();
+                    ipc = st.getDbhost();
+                    portc = st.getDbPort();
+                    Log.Log.info("Retry connection");
+                    loggedin = logintodb(usernamec, passwordc, dbnamec, ipc, portc);
                 }
             }).start();
-            throw new IOException("No connection to database");
-            // todo reconnect every 5mins or something
-
         }
+        return loggedin;
     }
 
     public void disconnect(){

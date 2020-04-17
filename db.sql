@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 4.6.6deb4
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Erstellungszeit: 06. Dez 2019 um 16:11
--- Server-Version: 10.3.11-MariaDB
--- PHP-Version: 5.6.40
+-- Host: localhost:3306
+-- Erstellungszeit: 17. Apr 2020 um 09:07
+-- Server-Version: 10.1.44-MariaDB-0+deb9u1
+-- PHP-Version: 7.3.13-1+0~20191218.50+debian9~1.gbp23c2da
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -19,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Datenbank: `wasteinformation`
+-- Datenbank: `ingproject`
 --
 
 -- --------------------------------------------------------
@@ -36,16 +34,29 @@ CREATE TABLE `cities` (
   `zone` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
 --
--- Daten für Tabelle `cities`
+-- Tabellenstruktur für Tabelle `devices`
 --
 
-INSERT INTO `cities` (`id`, `userid`, `name`, `wastetype`, `zone`) VALUES
-(2, 0, 'Steyr', 'Bio', 2),
-(3, 0, 'Steyr', 'Bio', 3),
-(4, 0, 'Steyr', 'Bio', 4),
-(128, 0, 'Steyr', 'Biowaste', 1),
-(130, 0, 'abc', 'Biowaste', 1);
+CREATE TABLE `devices` (
+  `DeviceID` int(11) NOT NULL,
+  `CityID` int(11) NOT NULL DEFAULT '-1',
+  `DeviceName` varchar(15) DEFAULT NULL,
+  `DeviceLocation` varchar(15) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `device_city`
+--
+
+CREATE TABLE `device_city` (
+  `DeviceID` int(11) NOT NULL,
+  `CityID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -59,16 +70,6 @@ CREATE TABLE `pickupdates` (
   `pickupdate` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Daten für Tabelle `pickupdates`
---
-
-INSERT INTO `pickupdates` (`id`, `citywastezoneid`, `pickupdate`) VALUES
-(6, 4, '2019-12-06'),
-(7, 3, '2019-12-06'),
-(8, 2, '2019-12-06'),
-(9, 130, '2019-12-26');
-
 -- --------------------------------------------------------
 
 --
@@ -81,19 +82,10 @@ CREATE TABLE `user` (
   `firstName` varchar(32) NOT NULL,
   `secondName` varchar(32) NOT NULL,
   `password` varchar(32) NOT NULL,
-  `permission` int(11) NOT NULL DEFAULT 0,
+  `permission` int(11) NOT NULL DEFAULT '0',
   `email` varchar(64) NOT NULL,
-  `logindate` timestamp NOT NULL DEFAULT current_timestamp()
+  `logindate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Daten für Tabelle `user`
---
-
-INSERT INTO `user` (`id`, `username`, `firstName`, `secondName`, `password`, `permission`, `email`, `logindate`) VALUES
-(2, 'lheilige', 'lukas', 'heiligenbrunner', 'c6e2ddf577e0dfdc4366f788f1b27102', 0, 'lukas.heiligenbrunner@gmail.com', '2019-09-20 12:19:31'),
-(11, 'meindl', 'emil', 'meindl', '81dc9bdb52d04dc20036dbd8313ed055', 0, 'mailmeindl', '2019-09-27 10:23:46'),
-(15, 'horni', 'kk', 'kk', 'c4ca4238a0b923820dcc509a6f75849b', 1, 'kk', '2019-09-27 13:19:09');
 
 --
 -- Indizes der exportierten Tabellen
@@ -104,6 +96,12 @@ INSERT INTO `user` (`id`, `username`, `firstName`, `secondName`, `password`, `pe
 --
 ALTER TABLE `cities`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indizes für die Tabelle `devices`
+--
+ALTER TABLE `devices`
+  ADD PRIMARY KEY (`DeviceID`);
 
 --
 -- Indizes für die Tabelle `pickupdates`
@@ -126,20 +124,17 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT für Tabelle `cities`
 --
 ALTER TABLE `cities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=131;
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=143;
 --
 -- AUTO_INCREMENT für Tabelle `pickupdates`
 --
 ALTER TABLE `pickupdates`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 --
 -- AUTO_INCREMENT für Tabelle `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- Constraints der exportierten Tabellen
 --
@@ -149,7 +144,6 @@ ALTER TABLE `user`
 --
 ALTER TABLE `pickupdates`
   ADD CONSTRAINT `pickupdates_ibfk_1` FOREIGN KEY (`citywastezoneid`) REFERENCES `cities` (`id`);
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

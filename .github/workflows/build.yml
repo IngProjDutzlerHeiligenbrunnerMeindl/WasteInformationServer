@@ -22,3 +22,7 @@ jobs:
         with:
           gradle-version: rc
           arguments: build
+      - uses: eskatos/gradle-command-action@v1
+        with:
+          gradle-version: rc
+          arguments: jar

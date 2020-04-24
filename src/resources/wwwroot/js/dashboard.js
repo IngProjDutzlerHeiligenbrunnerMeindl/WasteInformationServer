@@ -269,7 +269,7 @@ class Dashboard {
                 }
 
                 $(".delbtn").click(function (event) {
-                    var id = event.target.getAttribute("dataid");
+                    const id = event.target.getAttribute("dataid");
                     console.log("clicked btn data " + id);
                     $.post('/senddata/wastedata', 'action=deletecity&id=' + id, function (data) {
                         console.log(data);
@@ -283,12 +283,12 @@ class Dashboard {
                                 console.log('Popup closed. ')
 
                             });
-                            reloadtable();
+                            _this.reloadtable();
                         } else if (data.status === "dependenciesnotdeleted") {
                             Swal.fire({
                                 icon: "warning",
                                 title: 'This city is a dependency of a date',
-                                html: 'Do you want do delete it anyway with all dependencies?',
+                                html: 'Please delete all dependencies first!',
                             }).then((result) => {
                                 console.log('Popup closed. ')
 
@@ -353,7 +353,7 @@ class Dashboard {
                                 console.log('Popup closed. ')
 
                             });
-                            reloadDateTable();
+                            _this.reloadDateTable();
                         } else if (data.status == "dependenciesnotdeleted") {
                             Swal.fire({
                                 icon: "warning",

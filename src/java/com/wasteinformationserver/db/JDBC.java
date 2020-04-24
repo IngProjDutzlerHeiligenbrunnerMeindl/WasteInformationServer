@@ -168,17 +168,15 @@ public class JDBC {
      */
     public int executeUpdate(String sql) throws SQLException {
         try {
-            conn.isValid(5);
+            conn.isValid(2);
             PreparedStatement stmt = conn.prepareStatement(sql);
             return stmt.executeUpdate();
         } catch (SQLNonTransientConnectionException ee) {
             if (logintodb(usernamec, passwordc, dbnamec, ipc, portc)) {
                 return this.executeUpdate(sql);
             } else {
-                throw new SQLException();
+                throw new SQLNonTransientConnectionException();
             }
-        } catch (SQLException e) {
-            throw new SQLException();
         }
     }
 

@@ -1,4 +1,5 @@
 @file:JvmName("Main")
+
 package com.wasteinformationserver
 
 import com.wasteinformationserver.basicutils.Info
@@ -7,7 +8,6 @@ import com.wasteinformationserver.basicutils.Storage
 import com.wasteinformationserver.db.JDBC
 import com.wasteinformationserver.mqtt.MqttService
 import com.wasteinformationserver.website.Webserver
-import java.io.IOException
 
 /**
  * application entry point
@@ -22,14 +22,9 @@ fun main() {
     Log.info("startup of WasteInformationServer")
 
     Runtime.getRuntime().addShutdownHook(Thread(Runnable {
-        try {
-            Thread.sleep(200)
-            Log.warning("Shutting down ...")
-            JDBC.getInstance().disconnect();
-            //shutdown routine
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
+        // shutdown routine
+        Log.warning("Shutting down ...")
+        JDBC.getInstance().disconnect();
     }))
 
     Log.info("Server version: " + Info.getVersion())
@@ -49,10 +44,7 @@ fun main() {
     //startup mqtt service
     Log.message("starting mqtt service")
 
-    if (JDBC.isConnected()) {
-        val m = MqttService(Storage.getInstance().mqttServer, Storage.getInstance().mqttPort.toString())
-        m.startupService()
-    }else{
-        Log.error("could't start mqtt service because of missing db connection!")
-    }
+    val m = MqttService.getInstance()
+    m.init(Storage.getInstance().mqttServer, Storage.getInstance().mqttPort.toString())
+    m.startupService()
 }

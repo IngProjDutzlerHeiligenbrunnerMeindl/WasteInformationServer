@@ -1,5 +1,6 @@
 package com.wasteinformationserver.mqtt
 
+import com.wasteinformationserver.basicutils.Log
 import com.wasteinformationserver.basicutils.Log.Log.debug
 import com.wasteinformationserver.basicutils.Log.Log.error
 import com.wasteinformationserver.basicutils.Log.Log.info
@@ -19,71 +20,84 @@ import java.util.*
  * @author Lukas Heiligenbrunner
  * @author Gregor Dutzler
  */
-class MqttService(serverurl: String, port: String) {
-    private val serveruri: String = "tcp://$serverurl:$port"
-    private var client: MqttClient = MqttClient(serveruri, "JavaSample42")
+class MqttService {
+    private var serveruri: String = "";
+    private lateinit var client: MqttClient;
     private var db: JDBC = JDBC.getInstance()
 
-    /**
-     * initial login to db
-     */
-    init {
-        connectToDb()
+    companion object {
+        private val obj = MqttService()
+        fun getInstance(): MqttService {
+            return obj;
+        }
+    }
+
+    fun init(serverurl: String, port: String){
+        serveruri = "tcp://$serverurl:$port"
     }
 
     /**
      * startup of the mqtt service
      */
     fun startupService() {
-        try {
-            client = MqttClient(serveruri, "JavaSample42")
-            val connOpts = MqttConnectOptions()
-            connOpts.isCleanSession = true
-            client.connect(connOpts)
-            client.setCallback(object : MqttCallback {
-                override fun connectionLost(throwable: Throwable) {
-                    error("connection lost")
-                    connectToDb()
-                }
+        if(JDBC.isConnected()) {
+            try {
+                client = MqttClient(serveruri, "WasteInformationServerID")
+                val connOpts = MqttConnectOptions()
+                connOpts.isCleanSession = true
+                client.connect(connOpts)
+                client.setCallback(object : MqttCallback {
+                    override fun connectionLost(throwable: Throwable) {
+                        error("connection lost")
+                        Thread.sleep(500)
+                        // restart service
+                        startupService()
+                    }
 
-                override fun messageArrived(s: String, mqttMessage: MqttMessage) {
-                    val deviceid = String(mqttMessage.payload)
-                    message("received Request from PCB")
-                    val res = db.executeQuery("SELECT * from devices WHERE DeviceID=$deviceid")
-                    try {
-                        res.last()
-                        if (res.row != 0) { //existing device
-                            res.first()
-                            val devicecities = db.executeQuery("SELECT * from device_city WHERE DeviceID='$deviceid'")
-                            devicecities.last()
-                            if (devicecities.row == 0) { //not configured
-                                tramsmitMessage("$deviceid,-1")
-                            }
-                            else {
-                                devicecities.first()
-                                devicecities.previous()
+                    override fun messageArrived(s: String, mqttMessage: MqttMessage) {
+                        val deviceid = String(mqttMessage.payload)
+                        message("received Request from PCB")
+                        val res = db.executeQuery("SELECT * from devices WHERE DeviceID=$deviceid")
+                        try {
+                            res.last()
+                            if (res.row != 0) {
+                                // existing device
+                                res.first()
+                                val devicecities = db.executeQuery("SELECT * from device_city WHERE DeviceID='$deviceid'")
+                                devicecities.last()
+                                if (devicecities.row == 0) {
+                                    // not configured
+                                    tramsmitMessage("$deviceid,-1")
+                                }
+                                else {
+                                    devicecities.first()
+                                    devicecities.previous()
 
-                                while (devicecities.next()) {
-                                    val cityid = devicecities.getInt("CityID")
-                                    checkDatabase(cityid, deviceid.toInt())
+                                    while (devicecities.next()) {
+                                        val cityid = devicecities.getInt("CityID")
+                                        checkDatabase(cityid, deviceid.toInt())
+                                    }
                                 }
                             }
+                            else {
+                                // new device
+                                db.executeUpdate("INSERT INTO devices (DeviceID) VALUES ($deviceid)")
+                                info("new device registered to server")
+                                tramsmitMessage("$deviceid,-1")
+                            }
+                        } catch (e: SQLException) {
+                            e.printStackTrace()
                         }
-                        else { //new device
-                            db.executeUpdate("INSERT INTO devices (DeviceID) VALUES ($deviceid)")
-                            info("new device registered to server")
-                            tramsmitMessage("$deviceid,-1")
-                        }
-                    } catch (e: SQLException) {
-                        e.printStackTrace()
                     }
-                }
 
-                override fun deliveryComplete(iMqttDeliveryToken: IMqttDeliveryToken) {}
-            })
-            client.subscribe("TopicIn")
-        } catch (e: MqttException) {
-            error("Connection to the Broker failed")
+                    override fun deliveryComplete(iMqttDeliveryToken: IMqttDeliveryToken) {}
+                })
+                client.subscribe("TopicIn")
+            } catch (e: MqttException) {
+                error("Connection to the Broker failed")
+            }
+        }else{
+            Log.error("could't start mqtt service because of missing db connection!")
         }
     }
 
@@ -98,7 +112,8 @@ class MqttService(serverurl: String, port: String) {
         val set2 = db.executeQuery("SELECT * FROM cities WHERE `id`='$citywastezoneid'")
         try {
             set2.last()
-            if (set2.row != 1) { //error
+            if (set2.row != 1) {
+                //error
                 warning("multiple Rows with same city id found - DB Error")
             }
             else {
@@ -111,7 +126,8 @@ class MqttService(serverurl: String, port: String) {
         val result = db.executeQuery("SELECT pickupdates.pickupdate FROM pickupdates WHERE pickupdates.citywastezoneid=$citywastezoneid")
         try {
             result.last()
-            if (result.row == 0) { //if not found in db --> send zero
+            if (result.row == 0) {
+                //if not found in db --> send zero
                 debug("not found in db")
                 tramsmitMessage("$deviceid,$wastetype,0")
             }
@@ -130,7 +146,8 @@ class MqttService(serverurl: String, port: String) {
                         return
                     }
                 } while (result.next())
-                tramsmitMessage("$deviceid,$wastetype,0") //transmit zero if not returned before
+                tramsmitMessage("$deviceid,$wastetype,0")
+                //transmit zero if not returned before
             }
         } catch (e: SQLException) {
             e.printStackTrace()
@@ -164,12 +181,5 @@ class MqttService(serverurl: String, port: String) {
             "Biowaste" -> 4
             else -> 0
         }
-    }
-
-    /**
-     * receives connection object and initial connection to db
-     */
-    private fun connectToDb() {
-        db = JDBC.getInstance()
     }
 }

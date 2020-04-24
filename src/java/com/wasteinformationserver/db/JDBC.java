@@ -1,8 +1,8 @@
 package com.wasteinformationserver.db;
 
-import com.mysql.cj.exceptions.ConnectionIsClosedException;
 import com.wasteinformationserver.basicutils.Log;
 import com.wasteinformationserver.basicutils.Storage;
+import com.wasteinformationserver.mqtt.MqttService;
 
 import java.io.IOException;
 import java.sql.*;
@@ -116,6 +116,12 @@ public class JDBC {
                     portc = st.getDbPort();
                     Log.Log.info("Retry connection");
                     loggedin = logintodb(usernamec, passwordc, dbnamec, ipc, portc);
+                    if (loggedin) {
+                        // startup mqtt service if successfully connected
+                        MqttService srvc = MqttService.Companion.getInstance();
+                        srvc.init(st.getMqttServer(), String.valueOf(st.getMqttPort()));
+                        srvc.startupService();
+                    }
                 }
             }).start();
         }
@@ -141,7 +147,7 @@ public class JDBC {
             conn.isValid(5);
             PreparedStatement stmt = conn.prepareStatement(sql);
             return stmt.executeQuery();
-        } catch (SQLNonTransientConnectionException ee){
+        } catch (SQLNonTransientConnectionException ee) {
             if (logintodb(usernamec, passwordc, dbnamec, ipc, portc)) {
                 return this.executeQuery(sql);
             } else {
@@ -165,13 +171,13 @@ public class JDBC {
             conn.isValid(5);
             PreparedStatement stmt = conn.prepareStatement(sql);
             return stmt.executeUpdate();
-        } catch (SQLNonTransientConnectionException ee){
+        } catch (SQLNonTransientConnectionException ee) {
             if (logintodb(usernamec, passwordc, dbnamec, ipc, portc)) {
                 return this.executeUpdate(sql);
             } else {
                 throw new SQLException();
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             throw new SQLException();
         }
     }
